@@ -1,0 +1,690 @@
+@import url('https://fonts.googleapis.com/css2?family=Inter:wght@400;500;600;700;800&display=swap');
+
+* {
+    margin: 0;
+    padding: 0;
+    box-sizing: border-box;
+}
+
+body {
+    font-family: 'Inter', system-ui, -apple-system, sans-serif;
+    background: radial-gradient(circle at 10% 20%, rgba(185, 28, 28, 0.15) 0%, transparent 40%),
+                radial-gradient(circle at 90% 80%, rgba(202, 138, 4, 0.15) 0%, transparent 40%),
+                #0f0e13;
+    background-attachment: fixed;
+    color: #f3f4f6;
+    line-height: 1.6;
+}
+
+/* =========================================================
+   DOCUMENTAÇÃO: NAVBAR COM LOGO NO TOPO E BOTÕES ABAIXO
+   ========================================================= */
+.navbar {
+    position: fixed;
+    top: 0;
+    left: 0;
+    width: 105%;
+    background-color: rgba(15, 14, 19, 0.95);
+    backdrop-filter: blur(8px);
+    color: #ffffff;
+    display: flex;
+    flex-direction: column;           /* COLOCA A LOGO NO TOPO E OS BOTÕES ABAIXO */
+    justify-content: center;
+    align-items: center;               /* CENTRALIZA TUDO NO MEIO DA TELA */
+    padding: 12px 20px;
+    gap: 12px;                         /* ESPAÇO ENTRE A LOGO E A LISTA DE BOTÕES */
+    border-bottom: 3px solid #e50914;  /* Linha inferior vermelha */
+    box-shadow: 0 4px 25px rgba(0, 0, 0, 0.6);
+    z-index: 1000;
+}
+
+.site-logo {
+    width: 50px;
+    height: 50px;
+    border-radius: 50%;
+    object-fit: cover;
+    border: 2px solid #ca8a04;
+}
+
+.nav-list {
+    list-style: none;
+    display: flex;
+    gap: 15px;
+    flex-wrap: wrap;                   /* Garante que os botões não quebrem em telas menores */
+    justify-content: center;
+}
+
+/* Estilo dos Botões de Filtro */
+.filter-btn {
+    background: transparent;
+    border: 2px solid transparent;
+    color: #e5e7eb;
+    font-family: inherit;
+    font-size: 0.9rem;
+    font-weight: 600;
+    padding: 6px 14px;
+    border-radius: 20px;
+    cursor: pointer;
+    transition: all 0.2s ease;
+}
+
+.filter-btn:hover {
+    color: #ffffff;
+    background-color: rgba(229, 9, 20, 0.2);
+    border-color: rgba(229, 9, 20, 0.4);
+}
+
+.filter-btn.active {
+    background-color: #e50914;
+    color: #ffffff;
+    border-color: #e50914;
+    box-shadow: 0 2px 10px rgba(229, 9, 20, 0.4);
+}
+
+header {
+    text-align: center;
+    padding: 40px 20px;
+    max-width: 850px;
+    margin: 110px auto 10px auto;
+}
+
+header strong {
+    color: #ca8a04; 
+    font-size: 1.1rem;
+    text-transform: uppercase;
+    letter-spacing: 1.5px;
+    font-weight: 700;
+}
+
+header h1 {
+    font-size: 2.3rem;
+    font-weight: 800;
+    color: #ffffff;
+    margin: 12px 0 20px 0;
+    line-height: 1.2;
+}
+
+header p {
+    color: #9ca3af;
+    font-size: 1.05rem;
+    margin-bottom: 25px;
+}
+
+.container-pesquisa {
+    display: flex;
+    justify-content: center;
+    gap: 10px;
+    max-width: 580px;
+    margin: 0 auto;
+}
+
+#pesquisa {
+    flex: 1;
+    padding: 14px 22px;
+    font-size: 0.95rem;
+    border: 2px solid #374151;
+    border-radius: 50px;
+    outline: none;
+    background-color: #1f1d24;
+    color: #ffffff;
+    box-shadow: 0 4px 12px rgba(0, 0, 0, 0.3);
+    transition: all 0.2s ease;
+}
+
+#pesquisa:focus {
+    border-color: #e50914; 
+    box-shadow: 0 0 0 4px rgba(229, 9, 20, 0.25);
+}
+
+#botao-pesquisa {
+    background-color: #e50914;
+    color: #ffffff;
+    border: none;
+    padding: 0 28px;
+    font-size: 0.95rem;
+    font-weight: 700;
+    border-radius: 50px;
+    cursor: pointer;
+    box-shadow: 0 4px 15px rgba(229, 9, 20, 0.4);
+    transition: all 0.2s ease;
+}
+
+#botao-pesquisa:hover {
+    background-color: #b91c1c;
+    transform: translateY(-2px);
+}
+
+.grid-container {
+    display: grid !important;
+    width: 100%;
+    grid-template-columns: repeat(5, 1fr); 
+    gap: 24px; 
+    max-width: 1400px; 
+    margin: 20px auto 40px auto;
+    padding: 0 24px;
+    box-sizing: border-box;
+}
+
+.card {
+    display: flex;
+    flex-direction: column;
+    height: auto;
+    min-height: 100%;
+    overflow: visible;
+    padding: 15px;
+}
+
+.card:hover {
+    transform: translateY(-8px) scale(1.02);
+    border-top-color: #e50914; /* Muda para vermelho vibrante no hover */
+    box-shadow: 0 15px 30px rgba(229, 9, 20, 0.25);
+}
+
+.card .badge {
+    align-self: flex-start;
+    background-color: rgba(202, 138, 4, 0.2);
+    color: #facc15; /* Amarelo vivo */
+    padding: 4px 10px;
+    border-radius: 20px;
+    font-size: 0.7rem;
+    font-weight: 700;
+    text-transform: uppercase;
+    letter-spacing: 0.5px;
+    margin-bottom: 10px;
+    border: 1px solid rgba(250, 204, 21, 0.3);
+}
+
+.card h2, .card .titulo {
+    font-size: 0.98rem;
+    font-weight: 700;
+    color: #ffffff;
+    margin-bottom: 8px;
+    line-height: 1.35;
+    max-height: none !important; 
+    overflow: visible !important;
+    white-space: normal;
+    overflow-wrap: break-word; 
+}
+
+.card img {
+    width: 100%;
+    aspect-ratio: 3/4;
+    object-fit: cover;
+    object-position:center;
+    border-radius: 8px;
+    margin: 0 auto 10px auto;
+    display: block;
+}
+
+.card p {
+    font-size: 0.8rem;
+    color: #d1d5db;
+    margin-bottom: 4px;
+}
+
+.card .descricao {
+    font-size: 0.78rem;
+    color: #9ca3af;
+    margin-bottom: 8px;
+    line-height: 1.4;
+    max-height: 3.9em; 
+    overflow: hidden;
+}
+
+.card .detalhes {
+    font-size: 0.75rem;
+    color: #6b7280;
+    border-top: 1px solid #2e2a35;
+    padding-top: 8px;
+    margin-top: 2px;
+}
+
+.card-acoes {
+    margin-top: auto; 
+    display: flex;
+    flex-direction: column;
+    gap: 6px;
+}
+
+.card button {
+    width: 100%;
+    padding: 9px;
+    border: none;
+    border-radius: 8px;
+    font-size: 0.78rem;
+    font-weight: 700;
+    cursor: pointer;
+    letter-spacing: 0.3px;
+    transition: all 0.2s ease-in-out;
+    box-shadow: 0 2px 6px rgba(0, 0, 0, 0.3);
+}
+
+.card button:hover {
+    filter: brightness(1.18);
+    transform: translateY(-1px);
+    box-shadow: 0 4px 12px rgba(0,0,0,0.4);
+}
+
+.card .Saiba-Mais, .card .saiba-mais {
+    text-align: center;
+    margin-top: 6px;
+    font-size: 0.75rem;
+}
+
+.card .Saiba-Mais a, .card .saiba-mais a {
+    color: #facc15;
+    text-decoration: none;
+    font-weight: 700;
+}
+
+.card .Saiba-Mais a:hover, .card .saiba-mais a:hover {
+    color: #e50914;
+}
+
+.ler-catalogo-Livro {
+    background-color: #2563eb; /* Azul Vibrante Educativo */
+    color: #ffffff;
+}
+
+.adicionar-catalogo-Livro {
+    background-color: #ca8a04; /* Dourado/Amarelo Ancestral */
+    color: #ffffff;
+}
+
+.remover-catalogo-Livro {
+    background-color: #dc2626; /* Vermelho Alerta */
+    color: #ffffff;
+}
+
+/* --- BOTÕES PARA FILMES --- */
+.assistir-catalogo-Filme {
+    background-color: #059669; /* Verde Esmeralda NEABI */
+    color: #ffffff;
+}
+
+.adicionar-catalogo-Filme {
+    background-color: #ca8a04; /* Dourado/Amarelo Ancestral */
+    color: #ffffff;
+}
+
+.remover-catalogo-Filme {
+    background-color: #dc2626; /* Vermelho Alerta */
+    color: #ffffff;
+}
+
+/* --- BOTÕES PARA SÉRIES E DOCUMENTÁRIOS --- */
+.assistir-catalogo-Documentario,
+.assistir-catalogo-documentario,
+.assistir-catalogo-Serie-Documentario,
+.assistir-catalogo-serie-documentario {
+    background-color: #0891b2; /* Azul Turquesa / Mídia */
+    color: #ffffff;
+}
+
+.adicionar-catalogo-Documentario,
+.adicionar-catalogo-documentario,
+.adicionar-catalogo-Serie-Documentario,
+.adicionar-catalogo-serie-documentario {
+    background-color: #ca8a04; /* Dourado/Amarelo Ancestral */
+    color: #ffffff;
+}
+
+.remover-catalogo-Documentario,
+.remover-catalogo-documentario,
+.remover-catalogo-Serie-Documentario,
+.remover-catalogo-serie-documentario {
+    background-color: #dc2626; /* Vermelho Alerta */
+    color: #ffffff;
+}
+/* =========================================================
+   6. RODAPÉ ESTILIZADO
+   ========================================================= */
+footer {
+    text-align: center;
+    padding: 35px;
+    background-color: #08070a;
+    color: #9ca3af;
+    border-top: 3px solid #e50914;
+    font-size: 0.9rem;
+    margin-top: 50px;
+}
+
+/* =========================================================
+   AJUSTES FINAIS E RESPONSIVIDADE
+   ========================================================= */
+
+.site-logo-img {
+    display: flex;
+    align-items: center;
+    justify-content: center;
+}
+
+.filter-btn:focus-visible,
+#botao-pesquisa:focus-visible,
+.card button:focus-visible,
+.card a:focus-visible {
+    outline: 2px solid #facc15;
+    outline-offset: 3px;
+}
+
+.card button:active,
+#botao-pesquisa:active {
+    transform: translateY(0);
+}
+
+@media (max-width: 1200px) {
+    .grid-container {
+        grid-template-columns: repeat(4, 1fr);
+    }
+}
+
+@media (max-width: 900px) {
+    .grid-container {
+        grid-template-columns: repeat(3, 1fr);
+        gap: 18px;
+        padding: 0 18px;
+    }
+
+    header {
+        margin-top: 120px;
+    }
+}
+
+@media (max-width: 650px) {
+    .navbar {
+        padding: 10px 12px;
+        gap: 8px;
+    }
+
+    .nav-list {
+        gap: 6px;
+    }
+
+    .filter-btn {
+        font-size: 0.8rem;
+        padding: 5px 10px;
+    }
+
+    header {
+        padding: 30px 16px;
+        margin-top: 125px;
+    }
+
+    header h1 {
+        font-size: 1.8rem;
+    }
+
+    header p {
+        font-size: 0.95rem;
+    }
+
+    .container-pesquisa {
+        flex-direction: column;
+    }
+
+    #pesquisa,
+    #botao-pesquisa {
+        width: 100%;
+        min-height: 46px;
+    }
+
+    .grid-container {
+        grid-template-columns: repeat(2, 1fr);
+        gap: 14px;
+        padding: 0 12px;
+    }
+
+    .card {
+        padding: 11px;
+    }
+}
+
+@media (max-width: 420px) {
+    .grid-container {
+        grid-template-columns: 1fr;
+        max-width: 360px;
+    }
+
+    .card {
+        padding: 14px;
+    }
+}
+
+
+/* ===== CORREÇÕES DO CATÁLOGO ===== */
+
+.navbar {
+    width: 100%;
+    max-width: 100%;
+}
+
+/* Evita que o catálogo ultrapasse a tela */
+.grid-container {
+    display: grid;
+    grid-template-columns: repeat(5, minmax(0, 1fr));
+    width: 100%;
+    max-width: 1400px;
+    margin-inline: auto;
+}
+
+/* Aparência consistente dos cards */
+.card {
+    min-width: 0;
+    height: 100%;
+    padding: 15px;
+    background: #1b1921;
+    border: 1px solid #302b38;
+    border-top: 3px solid #ca8a04;
+    border-radius: 12px;
+    box-shadow: 0 5px 16px rgba(0, 0, 0, 0.25);
+    transition: transform 0.2s ease, box-shadow 0.2s ease;
+}
+
+.card img {
+    max-width: 100%;
+}
+
+#card-container {
+    scroll-margin-top: 180px;
+}
+
+/* Ajustes para telas menores */
+@media (max-width: 1200px) {
+    .grid-container {
+        grid-template-columns: repeat(4, minmax(0, 1fr));
+    }
+}
+
+@media (max-width: 900px) {
+    .grid-container {
+        grid-template-columns: repeat(3, minmax(0, 1fr));
+    }
+}
+
+@media (max-width: 650px) {
+    .grid-container {
+        grid-template-columns: repeat(2, minmax(0, 1fr));
+    }
+
+    .navbar {
+        position: sticky;
+    }
+}
+
+@media (max-width: 420px) {
+    .grid-container {
+        grid-template-columns: 1fr;
+    }
+}
+
+
+/* ===== INTEGRAÇÃO COM O HTML DO CATÁLOGO ===== */
+
+.navbar {
+    width: 100%;
+}
+
+.grid-cards,
+.grid-container {
+    display: grid;
+    grid-template-columns: repeat(5, minmax(0, 1fr));
+    width: 100%;
+    max-width: 1400px;
+    gap: 24px;
+    margin: 20px auto 40px;
+    padding: 0 24px;
+}
+
+.card {
+    min-width: 0;
+    height: 100%;
+    padding: 15px;
+    background: #1b1921;
+    border: 1px solid #302b38;
+    border-top: 3px solid #ca8a04;
+    border-radius: 12px;
+    box-shadow: 0 5px 16px rgba(0, 0, 0, 0.25);
+}
+
+.card-content {
+    min-width: 0;
+}
+
+.card-actions {
+    display: flex;
+    flex-direction: column;
+    gap: 8px;
+    margin-top: auto;
+}
+
+.card-actions .btn-info {
+    display: block;
+    padding: 9px;
+    text-align: center;
+    border-radius: 8px;
+    color: #facc15;
+    text-decoration: none;
+    font-weight: 700;
+}
+
+.btn-filtro {
+    background: transparent;
+    border: 2px solid transparent;
+    color: #e5e7eb;
+    padding: 6px 14px;
+    border-radius: 20px;
+    cursor: pointer;
+}
+
+.btn-filtro:hover,
+.btn-filtro.ativo {
+    background: #e50914;
+    color: #fff;
+}
+
+@media (max-width: 1200px) {
+    .grid-cards,
+    .grid-container {
+        grid-template-columns: repeat(4, minmax(0, 1fr));
+    }
+}
+
+@media (max-width: 900px) {
+    .grid-cards,
+    .grid-container {
+        grid-template-columns: repeat(3, minmax(0, 1fr));
+    }
+}
+
+@media (max-width: 650px) {
+    .grid-cards,
+    .grid-container {
+        grid-template-columns: repeat(2, minmax(0, 1fr));
+        gap: 14px;
+        padding: 0 12px;
+    }
+}
+
+@media (max-width: 420px) {
+    .grid-cards,
+    .grid-container {
+        grid-template-columns: 1fr;
+        max-width: 360px;
+    }
+}
+
+
+/* Menu suspenso de categorias */
+.menu-categorias {
+    position: relative;
+    display: inline-block;
+    z-index: 1000;
+}
+
+.opcoes-categorias {
+    display: none;
+    position: absolute;
+    top: 100%;
+    left: 0;
+    min-width: 200px;
+    background-color: #27130C;
+    border: 1px solid #E5A23B;
+    border-radius: 8px;
+    padding: 8px;
+    box-sizing: border-box;
+    flex-direction: column;
+    gap: 6px;
+    box-shadow: 0 8px 20px rgba(0, 0, 0, 0.4);
+    z-index: 1001;
+}
+
+.menu-categorias.aberto .opcoes-categorias {
+    display: flex;
+}
+
+.opcoes-categorias .btn-filtro {
+    display: block;
+    width: 100%;
+    text-align: left;
+    margin: 0;
+}
+
+/* Evita que o menu seja cortado */
+.menu-categorias,
+.catalogo-header,
+.catalogo-intro {
+    overflow: visible;
+}
+
+.menu-categorias {
+    position: relative;
+    display: inline-block;
+    overflow: visible;
+    z-index: 1000;
+}
+
+.opcoes-categorias {
+    display: none;
+    position: absolute;
+    top: 100%;
+    left: 0;
+    min-width: 200px;
+    padding: 8px;
+    flex-direction: column;
+    gap: 6px;
+    background: #27130C;
+    border: 1px solid #E5A23B;
+    border-radius: 8px;
+    z-index: 1001;
+}
+
+.menu-categorias.aberto .opcoes-categorias {
+    display: flex;
+}
+
+.opcoes-categorias .btn-filtro {
+    display: block;
+    width: 100%;
+    text-align: left;
+    margin: 0;
+}

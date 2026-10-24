@@ -1,0 +1,47 @@
+{% extends "base.html" %}
+
+{% block title %}Meus Favoritos | AfroEdu Stream{% endblock %}
+
+{% block css %}
+<link rel="stylesheet" href="{{ url_for('static', filename='css/meus-favoritos.css') }}">
+{% endblock %}
+
+{% block conteudo %}
+
+<header class="header-favoritos">
+    <strong>Minha Coleção Pessoal</strong>
+    <h1>Meus Livros, Filmes e Séries Favoritos</h1>
+    <p>Acompanhe e gerencie todos os itens salvos do seu catálogo educacional.</p>
+</header>
+
+<main class="grid-container" id="container-favoritos">
+
+    {% for favorito in favoritos %}
+    <article class="card">
+        <div class="card-content">
+            <h2 class="titulo">{{ favorito.titulo }}</h2>
+            <p class="genero-badge">{{ favorito.categoria }}</p>
+            <p>{{ favorito.genero }}</p>
+        </div>
+
+        <form action="{{ url_for('remover_favoritos') }}" method="POST">
+            <input
+                type="hidden"
+                name="favorito_id"
+                value="{{ favorito.id }}"
+            >
+
+            <button type="submit" class="btn-remover-obra">
+                Remover dos favoritos
+            </button>
+        </form>
+    </article>
+    {% else %}
+    <p class="mensagem-catalogo-vazio">
+        Você ainda não adicionou obras aos favoritos.
+    </p>
+    {% endfor %}
+
+</main>
+
+{% endblock conteudo %}

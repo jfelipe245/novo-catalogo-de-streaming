@@ -1,0 +1,163 @@
+
+{% extends 'base.html' %}
+
+{% block title %}Catálogo AfroEdu Stream{% endblock %}
+
+{% block css %}
+<link rel="stylesheet" href="{{ url_for('static', filename='css/catalogo.css') }}">
+{% endblock %}
+
+{% block conteudo %}
+<header class="catalogo-header">
+    <div class="logo-area">
+        <img src="{{ url_for('static', filename='css/image/img/tipos/logo_do_site/logo_educacao_negra.png') }}"
+            width="80" height="80" alt="Logo AfroEdu">
+        <span>AfroEdu Stream</span>
+    </div>
+</header>
+
+<header class="catalogo-intro">
+    <strong>Catálogo de livros, filmes e documentários educacionais</strong>
+    <h1>Uma seleção diversificada de livros, filmes e séries que abordam temas educacionais, sociais e culturais.</h1>
+</header>
+
+<div class="container-pesquisa">
+    <input type="text" id="pesquisa" placeholder="Buscar por título, autor ou gênero...">
+    <button id="botao-pesquisa" type="button">Pesquisar</button>
+</div>
+
+<main class="grid-cards" id="card-container">
+    {% for livro in livros %}
+    <article class="card" data-category="livro" data-genero="{{ livro.genero }}">
+        <img src="{{ url_for('static', filename=livro.imagem) }}" alt="{{ livro.titulo }}">
+        <div class="card-content">
+            <span class="badge genero-badge">Livro</span>
+            <h3 class="titulo">{{ livro.titulo }}</h3>
+            <p class="autor">Autor/Diretor: {{ livro.autor }}</p>
+            <p class="descricao">Descrição: {{ livro.descricao }}</p>
+            <p class="detalhes">Ano: {{ livro.ano_publicacao }} | Páginas: {{ livro.ano_lancamento }} | Estado: Brasil</p>
+        </div>
+        <div class="card-actions">
+            <button type="button" class="btn-acao ler-catalogo-Livro">Ler este livro</button>
+            <button type="button" class="btn-acao btn-add adicionar-catalogo-Livro">+ Adicionar aos favoritos</button>
+            <button type="button" class="btn-acao remover-catalogo-Livro">Remover este livro</button>
+            <a href="{{ url_for('saiba_mais') }}" class="btn-info">Saiba Mais</a>
+        </div>
+    </article>
+    {% endfor %}
+
+    {% for filme in filmes %}
+    <article class="card" data-category="filme" data-genero="{{ filme.genero }}">
+        <img src="{{ url_for('static', filename=filme.imagem) }}" alt="{{ filme.titulo }}">
+        <div class="card-content">
+            <span class="badge genero-badge">Filme</span>
+            <h3 class="titulo">{{ filme.titulo }}</h3>
+            <p class="autor">Autor/Diretor: {{ filme.diretor }}</p>
+            <p class="descricao">Descrição: {{ filme.descricao }}</p>
+            <p class="detalhes">Ano: {{ filme.ano_lancamento }} | Duração: 01h 50m | Estado: Brasil</p>
+        </div>
+        <div class="card-actions">
+            <button type="button" class="btn-acao assistir-catalogo-Filme">Assistir este Filme</button>
+            <button type="button" class="btn-acao btn-add adicionar-catalogo-Filme">+ Adicionar aos favoritos</button>
+            <button type="button" class="btn-acao remover-catalogo-Filme">Remover este Filme</button>
+            <a href="{{ url_for('saiba_mais') }}" class="btn-info">Saiba Mais</a>
+        </div>
+    </article>
+    {% endfor %}
+
+    {% for serie in series %}
+    <article class="card" data-category="serie" data-genero="{{ serie.genero }}">
+        <img src="{{ url_for('static', filename=serie.imagem) }}" alt="{{ serie.titulo }}">
+        <div class="card-content">
+            <span class="badge genero-badge">Série</span>
+            <h3 class="titulo">{{ serie.titulo }}</h3>
+            <p class="autor">Autor/Diretor: {{ serie.diretor }}</p>
+            <p class="descricao">Descrição: {{ serie.descricao }}</p>
+            <p class="detalhes">Ano: {{ serie.ano_lancamento }} | Episódios: 8 | Estado: Brasil</p>
+        </div>
+        <div class="card-actions">
+            <button type="button" class="btn-acao assistir-catalogo-Serie">Assistir esta Série</button>
+            <button type="button" class="btn-acao btn-add adicionar-catalogo-Serie">+ Adicionar aos favoritos</button>
+            <button type="button" class="btn-acao remover-catalogo-Serie">Remover esta Série</button>
+            <a href="{{ url_for('saiba_mais') }}" class="btn-info">Saiba Mais</a>
+        </div>
+    </article>
+    {% endfor %}
+
+    {% for documentario in documentarios %}
+    <article class="card" data-category="documentario" data-genero="{{ documentario.genero }}">
+        <img src="{{ url_for('static', filename=documentario.imagem) }}" alt="{{ documentario.titulo }}">
+        <div class="card-content">
+            <span class="badge genero-badge">Documentário</span>
+            <h3 class="titulo">{{ documentario.titulo }}</h3>
+            <p class="autor">Autor/Diretor: {{ documentario.diretor }}</p>
+            <p class="descricao">Descrição: {{ documentario.descricao }}</p>
+            <p class="detalhes">Ano: {{ documentario.ano_lancamento }} | Duração: 02h 00m | Estado: Brasil</p>
+        </div>
+        <div class="card-actions">
+            <button type="button" class="btn-acao assistir-catalogo-documentario">Assistir este Documentário</button>
+            <button type="button" class="btn-acao btn-add adicionar-catalogo-documentario">+ Adicionar aos favoritos</button>
+            <button type="button" class="btn-acao remover-catalogo-documentario">Remover este Documentário</button>
+            <a href="{{ url_for('saiba_mais') }}" class="btn-info">Saiba Mais</a>
+        </div>
+    </article>
+    {% endfor %}
+
+    {% for musica in musicas %}
+    <article class="card" data-category="musica" data-genero="{{ musica.genero }}">
+        <img src="{{ url_for('static', filename=musica.imagem) }}" alt="{{ musica.titulo }}">
+        <div class="card-content">
+            <span class="badge genero-badge">Música</span>
+            <h3 class="titulo">{{ musica.titulo }}</h3>
+            <p class="autor">Autor/Diretor: {{ musica.artista }}</p>
+            <p class="descricao">Descrição: {{ musica.descricao }}</p>
+            <p class="detalhes">Ano: {{ musica.ano_lancamento }} | Estilo: Protesto | Estado: Brasil</p>
+        </div>
+        <div class="card-actions">
+            <button type="button" class="btn-acao assistir-catalogo-musica">Ouvir esta música</button>
+            <button type="button" class="btn-acao btn-add adicionar-catalogo-musica">+ Adicionar aos favoritos</button>
+            <button type="button" class="btn-acao remover-catalogo-musica">Remover esta música</button>
+            <a href="{{ url_for('saiba_mais') }}" class="btn-info">Saiba Mais</a>
+        </div>
+    </article>
+    {% endfor %}
+
+    {% for curta in curtas %}
+    <article class="card" data-category="curta-metragem" data-genero="{{ curta.genero }}">
+        <img src="{{ url_for('static', filename=curta.imagem) }}" alt="{{ curta.titulo }}">
+        <div class="card-content">
+            <span class="badge genero-badge">Curta-metragem</span>
+            <h3 class="titulo">{{ curta.titulo }}</h3>
+            <p class="autor">Autor/Diretor: {{ curta.diretor }}</p>
+            <p class="descricao">Descrição: {{ curta.descricao }}</p>
+            <p class="detalhes">Ano: {{ curta.ano_lancamento }} | Duração: 15 min | Estado: Brasil</p>
+        </div>
+        <div class="card-actions">
+            <button type="button" class="btn-acao assistir-catalogo-curta">Assistir este curta</button>
+            <button type="button" class="btn-acao btn-add adicionar-catalogo-curta">+ Adicionar aos favoritos</button>
+            <button type="button" class="btn-acao remover-catalogo-curta">Remover este curta</button>
+            <a href="{{ url_for('saiba_mais') }}" class="btn-info">Saiba Mais</a>
+        </div>
+    </article>
+    {% endfor %}
+</main>
+
+<div hidden>
+    {% for favorito in favoritos %}
+        <span
+            data-favorito-id="{{ favorito.id }}"
+            data-favorito-titulo="{{ favorito.titulo }}">
+        </span>
+    {% endfor %}
+</div>
+{% endblock %}
+
+{% block js %}
+<script>
+    window.url_Adicionar_Favoritos = "{{ url_for('adicionar_favoritos') }}";
+    window.url_Remover_Favoritos = "{{ url_for('remover_favoritos') }}";
+    window.url_Saiba_Mais = "{{ url_for('saiba_mais') }}";
+    window.url_Obra = "{{ url_for('obra') }}";
+</script>
+<script src="{{ url_for('static', filename='js/catalogo.js') }}"></script>
+{% endblock js %}

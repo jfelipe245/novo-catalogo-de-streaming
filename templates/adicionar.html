@@ -1,0 +1,86 @@
+{% extends "base.html" %}
+
+{% block title %}
+Adicionar obra | AfroEdu Stream
+{% endblock title %}
+
+{% block css %}
+<link rel="stylesheet" href="{{ url_for('static', filename='css/catalogo.css') }}">
+{% endblock css %}
+
+{% block conteudo %}
+
+<section class="pagina-adicionar card">
+
+    <a href="{{ url_for('catalogo') }}">
+        ← Voltar ao catálogo
+    </a>
+
+    <header class="catalogo-intro">
+        <h1>Adicionar uma obra</h1>
+        <p>
+            Organize os conteúdos educativos e culturais
+            do AfroEdu Stream.
+        </p>
+    </header>
+
+    <form class="formulario-obra" action="{{ url_for('adicionar_obra') }}" method="POST">
+
+        <div class="campo-obra">
+            <label for="titulo">Título da obra</label>
+            <input type="text" id="titulo" name="titulo" maxlength="100" required>
+        </div>
+
+        <div class="campo-obra">
+            <label for="categoria">Categoria</label>
+            <select id="categoria" name="categoria" required>
+                <option value="">Selecione uma categoria</option>
+                <option value="livro">Livro</option>
+                <option value="filme">Filme</option>
+                <option value="serie">Série</option>
+                <option value="documentario">Documentário</option>
+                <option value="curta-metragem">Curta-metragem</option>
+                <option value="musica-de-protesto">
+                    Música de protesto
+                </option>
+            </select>
+        </div>
+
+        <div class="campo-obra">
+            <label for="genero">Gênero ou tema</label>
+            <input type="text" id="genero" name="genero" maxlength="50" required>
+        </div>
+
+        <div class="campo-obra">
+            <label for="autor">Autor, diretor ou artista</label>
+            <input type="text" id="autor" name="autor" maxlength="100" required>
+        </div>
+
+        <div class="campo-obra">
+            <label for="ano">Ano de publicação ou lançamento</label>
+            <input type="number" id="ano" name="ano" min="1800" max="2100" required>
+        </div>
+
+        <div class="campo-obra">
+            <label for="imagem">Caminho da imagem</label>
+            <input type="text" id="imagem" name="imagem" maxlength="200" required>
+        </div>
+
+        <div class="campo-obra">
+            <label for="descricao">Descrição da obra</label>
+            <textarea id="descricao" name="descricao" rows="5" maxlength="5000" required></textarea>
+        </div>
+
+        <button type="submit">
+            Adicionar obra
+        </button>
+
+    </form>
+
+</section>
+
+{% endblock conteudo %}
+
+{% block js %}
+<script src="{{ url_for('static', filename='js/catalogo.js') }}"></script>
+{% endblock js %}

@@ -1,0 +1,22 @@
+{% for livro in livros %}
+    <article class="card"
+             data-category="livro"
+             data-genero="{{ livro.genero }}">
+
+        <img src="{{ url_for('static', filename=livro.imagem) }}"
+             alt="{{ livro.titulo }}">
+
+        <div class="card-content">
+            <span class="badge genero-badge">Livro</span>
+            <h3 class="titulo">{{ livro.titulo }}</h3>
+            <p class="autor">Autor: {{ livro.autor }}</p>
+            <p class="descricao">{{ livro.descricao }}</p>
+            <p class="detalhes">
+                Publicação: {{ livro.ano_publicacao }}
+                | Lançamento: {{ livro.ano_lancamento }}
+            </p>
+        </div>
+    </article>
+{% endfor %}
+
+{% endfor %}

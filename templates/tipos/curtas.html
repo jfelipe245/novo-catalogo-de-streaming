@@ -1,0 +1,22 @@
+{% for curta in curtas %}
+    <article class="card"
+             data-category="curta"
+             data-genero="{{ curta.genero }}">
+
+        <img src="{{ url_for('static', filename=curta.imagem) }}"
+             alt="{{ curta.titulo }}">
+
+        <div class="card-content">
+            <span class="badge genero-badge">curta</span>
+            <h3 class="titulo">{{ curta.titulo }}</h3>
+            <p class="autor">Autor: {{ curta.autor }}</p>
+            <p class="descricao">{{ curta.descricao }}</p>
+            <p class="detalhes">
+                Publicação: {{ curta.ano_publicacao }}
+                | Lançamento: {{ curta.ano_lancamento }}
+            </p>
+        </div>
+    </article>
+{% endfor %}
+
+{% endfor %}

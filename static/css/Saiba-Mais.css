@@ -1,0 +1,255 @@
+@import url('https://fonts.googleapis.com/css2?family=Inter:wght@400;500;600;700;800&display=swap');
+
+* {
+    margin: 0;
+    padding: 0;
+    box-sizing: border-box;
+}
+
+body {
+    font-family: 'Inter', system-ui, -apple-system, sans-serif;
+    /* Fundo escuro suave NEABI + Streaming */
+    background: radial-gradient(circle at 10% 20%, rgba(185, 28, 28, 0.15) 0%, transparent 40%),
+                radial-gradient(circle at 90% 80%, rgba(202, 138, 4, 0.15) 0%, transparent 40%),
+                #0f0e13;
+    background-attachment: fixed;
+    color: #f3f4f6;
+    line-height: 1.6;
+    min-height: 100vh;
+    display: flex;
+    flex-direction: column;
+}
+
+/* Barra Superior */
+.navbar {
+    background-color: rgba(15, 14, 19, 0.95);
+    padding: 15px 40px;
+    display: flex;
+    align-items: center;
+    justify-content: space-between;
+    border-bottom: 3px solid #ca8a04;
+}
+
+.botao-voltar {
+    color: #facc15;
+    text-decoration: none;
+    font-weight: 700;
+    font-size: 0.95rem;
+    transition: color 0.2s;
+}
+
+.botao-voltar:hover {
+    color: #e50914;
+}
+
+.titulo-pagina {
+    color: #9ca3af;
+    font-size: 0.9rem;
+}
+
+/* Layout Principal */
+.container-detalhes {
+    max-width: 1100px;
+    margin: 40px auto;
+    padding: 0 20px;
+    display: grid;
+    grid-template-columns: 320px 1fr;
+    gap: 40px;
+    flex: 1;
+}
+
+/* Lado Esquerdo */
+.capa-container {
+    display: flex;
+    flex-direction: column;
+    gap: 20px;
+}
+
+.capa-container img {
+    width: 100%;
+    height: 450px;
+    object-fit: cover;
+    border-radius: 12px;
+    border: 2px solid #ca8a04;
+    box-shadow: 0 10px 25px rgba(0, 0, 0, 0.5);
+}
+
+.botoes-acao {
+    display: flex;
+    flex-direction: column;
+    gap: 10px;
+}
+
+.btn-principal, .btn-secundario {
+    padding: 12px;
+    border: none;
+    border-radius: 8px;
+    font-weight: 700;
+    cursor: pointer;
+    font-size: 0.9rem;
+    transition: transform 0.2s, filter 0.2s;
+}
+
+.btn-principal {
+    background-color: #e50914;
+    color: white;
+}
+
+.btn-secundario {
+    background-color: #ca8a04;
+    color: white;
+}
+
+.btn-principal:hover, .btn-secundario:hover {
+    filter: brightness(1.15);
+    transform: translateY(-2px);
+}
+
+/* Lado Direito */
+.info-container {
+    background-color: #18161b;
+    border: 1px solid #2e2a35;
+    border-radius: 16px;
+    padding: 30px;
+    box-shadow: 0 8px 20px rgba(0, 0, 0, 0.4);
+}
+
+.badge {
+    display: inline-block;
+    background-color: rgba(202, 138, 4, 0.2);
+    color: #facc15;
+    padding: 4px 12px;
+    border-radius: 20px;
+    font-size: 0.8rem;
+    font-weight: 700;
+    text-transform: uppercase;
+    margin-bottom: 12px;
+    border: 1px solid rgba(250, 204, 21, 0.3);
+}
+
+.info-container h1 {
+    font-size: 2rem;
+    color: #ffffff;
+    margin-bottom: 8px;
+}
+
+.autor-diretor {
+    color: #9ca3af;
+    font-size: 1.05rem;
+    margin-bottom: 25px;
+}
+
+.autor-diretor strong {
+    color: #facc15;
+}
+
+.secao-detalhe {
+    margin-bottom: 25px;
+    border-top: 1px solid #2e2a35;
+    padding-top: 20px;
+}
+
+.secao-detalhe h2 {
+    font-size: 1.2rem;
+    color: #ca8a04;
+    margin-bottom: 10px;
+}
+
+.secao-detalhe p {
+    color: #d1d5db;
+    font-size: 0.98rem;
+}
+
+.lista-ficha {
+    list-style: none;
+    display: flex;
+    flex-direction: column;
+    gap: 8px;
+}
+
+.lista-ficha li {
+    color: #d1d5db;
+    font-size: 0.95rem;
+}
+
+.lista-ficha strong {
+    color: #ffffff;
+}
+
+footer {
+    text-align: center;
+    padding: 25px;
+    background-color: #08070a;
+    color: #9ca3af;
+    border-top: 3px solid #e50914;
+    font-size: 0.85rem;
+}
+
+/* =========================================================
+   AJUSTES FINAIS E RESPONSIVIDADE
+   ========================================================= */
+
+.btn-principal:focus-visible,
+.btn-secundario:focus-visible,
+.botao-voltar:focus-visible {
+    outline: 2px solid #facc15;
+    outline-offset: 3px;
+}
+
+@media (max-width: 800px) {
+    .navbar {
+        padding: 12px 20px;
+    }
+
+    .container-detalhes {
+        grid-template-columns: 1fr;
+        max-width: 700px;
+        gap: 25px;
+        margin: 30px auto;
+    }
+
+    .capa-container {
+        max-width: 320px;
+        width: 100%;
+        margin: 0 auto;
+    }
+
+    .capa-container img {
+        height: auto;
+        max-height: 450px;
+    }
+}
+
+@media (max-width: 520px) {
+    .navbar {
+        flex-direction: column;
+        gap: 8px;
+        text-align: center;
+    }
+
+    .container-detalhes {
+        padding: 0 14px;
+        margin: 22px auto;
+    }
+
+    .info-container {
+        padding: 22px 18px;
+    }
+
+    .info-container h1 {
+        font-size: 1.6rem;
+    }
+
+    .autor-diretor {
+        font-size: 0.95rem;
+    }
+
+    .secao-detalhe p,
+    .lista-ficha li {
+        font-size: 0.9rem;
+    }
+
+    .capa-container img {
+        max-height: 400px;
+    }
+}

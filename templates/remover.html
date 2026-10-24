@@ -1,0 +1,52 @@
+{% extends "base.html" %}
+
+{% block title %}
+Remover obra | AfroEdu Stream
+{% endblock title %}
+
+{% block css %}
+<link rel="stylesheet" href="{{ url_for('static', filename='css/catalogo.css') }}">
+{% endblock css %}
+
+{% block conteudo %}
+
+<section class="pagina-remover card">
+
+    <h1>Remover obra</h1>
+
+    <p>
+        Você selecionou a seguinte obra para remoção:
+    </p>
+
+    <h2>{{ titulo or 'Obra não selecionada' }}</h2>
+
+    <p>
+        Categoria: {{ categoria or 'Não informada' }}
+    </p>
+
+    <p>
+        Confirme a remoção somente se tiver certeza.
+    </p>
+
+    <form action="{{ url_for('remover_obra') }}" method="POST">
+
+        <input type="hidden" name="titulo" value="{{ titulo }}">
+        <input type="hidden" name="categoria" value="{{ categoria }}">
+
+        <button type="submit" class="btn-remover-obra">
+            Confirmar remoção
+        </button>
+
+        <a href="{{ url_for('catalogo') }}">
+            Cancelar e voltar ao catálogo
+        </a>
+
+    </form>
+
+</section>
+
+{% endblock conteudo %}
+
+{% block js %}
+<script src="{{ url_for('static', filename='js/catalogo.js') }}"></script>
+{% endblock js %}

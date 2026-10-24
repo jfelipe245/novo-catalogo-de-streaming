@@ -1,0 +1,379 @@
+
+/* ===== TELA DE ENTRADA ===== */
+
+.login-container {
+    min-height: 80vh;
+    display: flex;
+    justify-content: center;
+    align-items: center;
+    padding: 40px 20px;
+    background: #110B08;
+    box-sizing: border-box;
+}
+
+.login-card {
+    width: 100%;
+    max-width: 430px;
+    padding: 35px;
+    background: #1B100B;
+    border: 1px solid #6C4B30;
+    border-radius: 20px;
+    box-shadow: 0 12px 35px rgba(0, 0, 0, 0.35);
+    box-sizing: border-box;
+}
+
+.login-titulo {
+    text-align: center;
+    margin-bottom: 30px;
+}
+
+.texto-destaque {
+    color: #E5A23B;
+    font-size: 0.75rem;
+    font-weight: 700;
+    letter-spacing: 2px;
+}
+
+.login-titulo h1 {
+    color: #F5E8D3;
+    font-family: 'Sora', sans-serif;
+    font-size: 2rem;
+    margin: 14px 0 10px;
+}
+
+.login-titulo h1 span {
+    color: #E5A23B;
+}
+
+.login-titulo p {
+    color: #D8C5AE;
+    font-size: 0.95rem;
+    line-height: 1.6;
+}
+
+.login-card .campo {
+    display: flex;
+    flex-direction: column;
+    gap: 8px;
+    margin-bottom: 22px;
+}
+
+.login-card .campo label {
+    color: #F5E8D3;
+    font-weight: 600;
+    font-size: 0.9rem;
+}
+
+.login-card .campo input {
+    width: 100%;
+    min-width: 0;
+    padding: 13px 14px;
+    background: #27130C;
+    color: #F5E8D3;
+    border: 1px solid #75563B;
+    border-radius: 9px;
+    outline: none;
+    box-sizing: border-box;
+    font-size: 0.95rem;
+}
+
+.login-card .campo input::placeholder {
+    color: #BBA894;
+}
+
+.login-card .campo input:focus {
+    border-color: #E5A23B;
+    box-shadow: 0 0 0 3px rgba(229, 162, 59, 0.15);
+}
+
+.senha-container {
+    display: flex;
+    align-items: center;
+    gap: 8px;
+    padding-right: 10px;
+    background: #27130C;
+    border: 1px solid #75563B;
+    border-radius: 9px;
+}
+
+.senha-container:focus-within {
+    border-color: #E5A23B;
+    box-shadow: 0 0 0 3px rgba(229, 162, 59, 0.15);
+}
+
+.login-card .senha-container input {
+    border: none;
+    box-shadow: none;
+    background: transparent;
+}
+
+.btn-olho {
+    padding: 6px;
+    background: transparent;
+    color: #E5A23B;
+    border: none;
+    cursor: pointer;
+    font-size: 0.8rem;
+    font-weight: 600;
+}
+
+.btn-entrar {
+    display: flex;
+    justify-content: center;
+    align-items: center;
+    gap: 10px;
+    width: 100%;
+    padding: 15px;
+    margin-top: 10px;
+    background: #E5A23B;
+    color: #24140B;
+    border: none;
+    border-radius: 9px;
+    font-size: 1rem;
+    font-weight: 700;
+    cursor: pointer;
+    transition: background 0.2s, transform 0.2s;
+}
+
+.btn-entrar:hover {
+    background: #F2B957;
+    transform: translateY(-1px);
+}
+
+.mensagem-erro,
+.mensagem {
+    padding: 12px;
+    border-radius: 8px;
+    line-height: 1.5;
+    overflow-wrap: anywhere;
+}
+
+.mensagem-erro {
+    color: #F3C15D;
+    background: #352016;
+    border: 1px solid #80512B;
+}
+
+.mensagem {
+    color: #F5E8D3;
+    background: #203522;
+    border: 1px solid #416D48;
+}
+
+.separador {
+    display: flex;
+    align-items: center;
+    gap: 12px;
+    margin: 28px 0 20px;
+    color: #BBA894;
+    font-size: 0.7rem;
+    letter-spacing: 1.5px;
+}
+
+.separador::before,
+.separador::after {
+    content: "";
+    flex: 1;
+    height: 1px;
+    background: #6C4B30;
+}
+
+.registrar-usuario {
+    text-align: center;
+}
+
+.registrar-usuario p {
+    color: #D8C5AE;
+    font-size: 0.9rem;
+    margin-bottom: 12px;
+}
+
+.btn-cadastrar {
+    display: inline-block;
+    color: #E5A23B;
+    font-weight: 700;
+    text-decoration: none;
+    padding: 10px;
+}
+
+.btn-cadastrar:hover {
+    color: #F5E8D3;
+    text-decoration: underline;
+}
+
+.login-rodape {
+    display: flex;
+    justify-content: center;
+    align-items: center;
+    gap: 8px;
+    margin-top: 28px;
+    color: #BBA894;
+    font-size: 0.75rem;
+    text-align: center;
+}
+
+.ponto-decorativo {
+    width: 7px;
+    height: 7px;
+    background: #E5A23B;
+    border-radius: 50%;
+}
+
+@media (max-width: 480px) {
+    .login-container {
+        padding: 25px 14px;
+    }
+
+    .login-card {
+        padding: 25px 20px;
+    }
+
+    .login-titulo h1 {
+        font-size: 1.7rem;
+    }
+}
+
+
+/* ===== AJUSTE: LOGIN MAIS CLARO ===== */
+
+.login-container {
+    background: #21140F;
+}
+
+.login-card {
+    background: #352219;
+    border-color: #896342;
+    box-shadow: 0 12px 35px rgba(0, 0, 0, 0.22);
+}
+
+.login-titulo h1 {
+    color: #FFF4E3;
+}
+
+.login-titulo p {
+    color: #E6D3BD;
+}
+
+.login-card .campo label {
+    color: #FFF0DC;
+}
+
+.login-card .campo input {
+    background: #493126;
+    color: #FFF4E3;
+    border-color: #9B7958;
+}
+
+.login-card .campo input::placeholder {
+    color: #D3BDA6;
+}
+
+.senha-container {
+    background: #493126;
+    border-color: #9B7958;
+}
+
+.senha-container:focus-within {
+    border-color: #F0B94E;
+    box-shadow: 0 0 0 3px rgba(240, 185, 78, 0.18);
+}
+
+.login-card .campo input:focus {
+    border-color: #F0B94E;
+    box-shadow: 0 0 0 3px rgba(240, 185, 78, 0.18);
+}
+
+.btn-entrar {
+    background: #F0B94E;
+    color: #352219;
+}
+
+.btn-entrar:hover {
+    background: #FFD078;
+}
+
+.separador {
+    color: #D3BDA6;
+}
+
+.separador::before,
+.separador::after {
+    background: #896342;
+}
+
+.registrar-usuario p {
+    color: #E6D3BD;
+}
+
+.btn-cadastrar {
+    color: #FFD078;
+}
+
+.btn-cadastrar:hover {
+    color: #FFF4E3;
+}
+
+.login-rodape {
+    color: #D3BDA6;
+}
+
+.mensagem-erro {
+    color: #FFE0A3;
+    background: #503326;
+    border-color: #A87943;
+}
+
+
+/* ===== CAMPOS LADO A LADO NO LOGIN ===== */
+
+#login-form {
+    display: grid;
+    grid-template-columns: 1fr 1fr;
+    column-gap: 16px;
+    row-gap: 18px;
+}
+
+/* Título e botão ocupam a largura toda */
+#login-form h1,
+#login-form > p,
+#login-form .campo_email,
+#login-form .campo-senha,
+#login-form #btn-entrar {
+    grid-column: 1 / -1;
+}
+
+/* Campos com espaçamento organizado */
+#login-form .campo_email,
+#login-form .campo-senha {
+    display: flex;
+    flex-direction: column;
+    gap: 8px;
+    min-width: 0;
+}
+
+#login-form input {
+    width: 100%;
+    box-sizing: border-box;
+}
+
+/* Cadastro e rodapé abaixo do formulário */
+.login-card > .separador,
+.login-card > .registrar-usuario,
+.login-card > .login-rodape {
+    width: 100%;
+}
+
+/* No celular, volta para uma coluna */
+@media (max-width: 480px) {
+    #login-form {
+        grid-template-columns: 1fr;
+    }
+
+    #login-form h1,
+    #login-form > p,
+    #login-form .campo_email,
+    #login-form .campo-senha,
+    #login-form #btn-entrar {
+        grid-column: 1;
+    }
+}

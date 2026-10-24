@@ -1,0 +1,20 @@
+  {% for filme in filmes %}
+    <article class="card"
+             data-category="filme"
+             data-genero="{{ filme.genero }}">
+
+<img src="{{ url_for('static', filename=filme.imagem) }}"
+             alt="{{ filme.titulo }}">
+
+<div class="card-content">
+            <span class="badge genero-badge">Filme</span>
+            <h3 class="titulo">{{ filme.titulo }}</h3>
+            <p class="autor">Autor: {{ filme.autor }}</p>
+            <p class="descricao">{{ filme.descricao }}</p>
+            <p class="detalhes">
+                Publicação: {{ filme.ano_publicacao }}
+                | Lançamento: {{ filme.ano_lancamento }}
+            </p>
+        </div>
+    </article>
+{% endfor %}

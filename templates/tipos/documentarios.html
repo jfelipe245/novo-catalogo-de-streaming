@@ -1,0 +1,21 @@
+{% for livro in livros %}
+    <article class="card"
+             data-category="documentario"
+             data-genero="{{ documentario.genero }}">
+
+        <img src="{{ url_for('static', filename=documentario.imagem) }}"
+             alt="{{ documentario.titulo }}">
+
+        <div class="card-content">
+            <span class="badge genero-badge">documentario</span>
+            <h3 class="titulo">{{ documentario.titulo }}</h3>
+            <p class="autor">Autor: {{ documentario.autor }}</p>
+            <p class="descricao">{{ documentario.descricao }}</p>
+            <p class="detalhes">
+                Publicação: {{ documentario.ano_publicacao }}
+                | Lançamento: {{ documentario.ano_lancamento }}
+            </p>
+        </div>
+    </article>
+{% endfor %}
+{% endfor %}

@@ -1,0 +1,22 @@
+{% for serie in series %}
+    <article class="card"
+             data-category="serie"
+             data-genero="{{ serie.genero }}">
+
+        <img src="{{ url_for('static', filename=serie.imagem) }}"
+             alt="{{ serie.titulo }}">
+
+        <div class="card-content">
+            <span class="badge genero-badge">Livro</span>
+            <h3 class="titulo">{{ serie.titulo }}</h3>
+            <p class="autor">Autor: {{ serie.autor }}</p>
+            <p class="descricao">{{ serie.descricao }}</p>
+            <p class="detalhes">
+                Publicação: {{ serie.ano_publicacao }}
+                | Lançamento: {{ serie.ano_lancamento }}
+            </p>
+        </div>
+    </article>
+{% endfor %}
+
+{% endfor %}
