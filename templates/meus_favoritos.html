@@ -1,0 +1,33 @@
+{% extends "base.html" %}
+
+{% block title %}Meus Favoritos{% endblock %}
+
+{% block css %}
+     <link rel="stylesheet" href="{{ url_for('static', filename='css/meus-favoritos.css') }}">
+{% endblock %}
+
+{% block conteudo %}
+    <div class="logo-container">
+        <img src="{{ url_for('static', filename='css/image/img/tipos/logo_do_site/logo_educacao_negra.png') }}" 
+        alt="Logo do Catálogo"
+        class="site-logo" 
+        width="80" height="80">
+        <span class="logo-texto">AfroEdu Favoritos</span>
+    </div>
+<!-- CABEÇALHO DA PÁGINA -->
+<header class="header-favoritos">
+    <strong>Minha Coleção Pessoal</strong>
+    <h1>Meus Livros, Filmes e Séries Favoritos</h1>
+    <p>Acompanhe e gerencie todos os itens salvos do seu catálogo educacional.</p>
+</header>
+
+<!-- ÁREA PRINCIPAL COM A GRADE DE FAVORITOS -->
+<main class="grid-container" id="container-favoritos">
+    <!-- Os cards favoritados no localStorage serão inseridos dinamicamente aqui pelo JavaScript -->
+</main>
+
+{% endblock conteudo %}
+
+{% block js %}
+    <script src="{{ url_for('static', filename=css/js/meus_favoritos.js') }}"></script>
+{% endblock js %}

@@ -1,0 +1,240 @@
+@import url('https://fonts.googleapis.com/css2?family=Inter:wght@400;500;600;700;800&display=swap');
+
+* {
+    margin: 0;
+    padding: 0;
+    box-sizing: border-box;
+}
+
+body {
+    font-family: 'Inter', system-ui, -apple-system, sans-serif;
+    background: radial-gradient(circle at 10% 20%, rgba(185, 28, 28, 0.15) 0%, transparent 40%),
+                radial-gradient(circle at 90% 80%, rgba(202, 138, 4, 0.15) 0%, transparent 40%),
+                #0f0e13;
+    background-attachment: fixed;
+    color: #f3f4f6;
+    line-height: 1.5;
+    min-height: 100vh;
+    display: flex;
+    flex-direction: column;
+}
+
+/* NAVBAR */
+.navbar {
+    position: fixed;
+    top: 0;
+    left: 0;
+    width: 100%;
+    background-color: rgba(15, 14, 19, 0.95);
+    backdrop-filter: blur(8px);
+    display: flex;
+    justify-content: space-between;
+    align-items: center;
+    padding: 12px 40px;
+    border-bottom: 3px solid #e50914;
+    box-shadow: 0 4px 25px rgba(0, 0, 0, 0.6);
+    z-index: 1000;
+}
+
+.logo-container {
+    display: flex;
+    align-items: center;
+    gap: 12px;
+}
+
+.site-logo {
+    width: 50px;
+    height: 50px;
+    border-radius: 50%;
+    object-fit: cover;
+    border: 2px solid #ca8a04;
+}
+
+.logo-texto {
+    color: #facc15;
+    font-weight: 700;
+    font-size: 1.1rem;
+}
+
+.nav-list {
+    list-style: none;
+    display: flex;
+    gap: 20px;
+}
+
+.nav-list a {
+    color: #e5e7eb;
+    text-decoration: none;
+    font-size: 0.95rem;
+    font-weight: 600;
+    transition: color 0.2s;
+}
+
+.nav-list a:hover {
+    color: #e50914;
+}
+
+/* HEADER */
+.header-favoritos {
+    text-align: center;
+    padding: 30px 20px;
+    max-width: 800px;
+    margin: 110px auto 10px auto;
+}
+
+.header-favoritos strong {
+    color: #ca8a04;
+    font-size: 1rem;
+    text-transform: uppercase;
+    letter-spacing: 1.5px;
+}
+
+.header-favoritos h1 {
+    font-size: 2.2rem;
+    color: #ffffff;
+    margin: 10px 0;
+}
+
+.header-favoritos p {
+    color: #9ca3af;
+    font-size: 1rem;
+}
+
+/* GRADE DE CARDS EM 5 COLUNAS */
+.grid-container {
+    display: grid;
+    grid-template-columns: repeat(5, 1fr);
+    gap: 24px;
+    max-width: 1400px;
+    margin: 20px auto 40px auto;
+    padding: 0 24px;
+    width: 100%;
+    flex: 1;
+}
+
+.card {
+    background-color: #18161b;
+    border-radius: 14px;
+    border: 1px solid #2e2a35;
+    border-top: 4px solid #ca8a04;
+    padding: 16px;
+    display: flex;
+    flex-direction: column;
+    height: auto;
+    min-height: 250px;
+    box-shadow: 0 8px 20px rgba(0, 0, 0, 0.4);
+}
+
+.card .titulo-fav {
+    font-size: 1.1rem;
+    font-weight: 700;
+    color: #ffffff;
+    margin-bottom: 12px;
+}
+
+.btn-remover-fav {
+    margin-top: auto;
+    padding: 10px;
+    background-color: #dc2626;
+    color: #ffffff;
+    border: none;
+    border-radius: 8px;
+    font-weight: 700;
+    cursor: pointer;
+    transition: background-color 0.2s;
+}
+
+.btn-remover-fav:hover {
+    background-color: #b91c1c;
+}
+
+.sem-favoritos {
+    grid-column: 1 / -1;
+    text-align: center;
+    color: #9ca3af;
+    font-size: 1.2rem;
+    padding: 60px 0;
+}
+
+/* RODAPÉ */
+footer {
+    text-align: center;
+    padding: 25px;
+    background-color: #08070a;
+    color: #9ca3af;
+    border-top: 3px solid #e50914;
+    font-size: 0.85rem;
+}
+
+/* =========================================================
+   AJUSTES FINAIS E RESPONSIVIDADE
+   ========================================================= */
+
+.card {
+    transition: transform 0.2s ease, box-shadow 0.2s ease, border-color 0.2s ease;
+}
+
+.card:hover {
+    transform: translateY(-5px);
+    border-color: #ca8a04;
+    box-shadow: 0 12px 26px rgba(0, 0, 0, 0.5);
+}
+
+.btn-remover-fav:focus-visible,
+.nav-list a:focus-visible {
+    outline: 2px solid #facc15;
+    outline-offset: 3px;
+}
+
+@media (max-width: 1200px) {
+    .grid-container {
+        grid-template-columns: repeat(4, 1fr);
+    }
+}
+
+@media (max-width: 900px) {
+    .navbar {
+        padding: 12px 20px;
+    }
+
+    .grid-container {
+        grid-template-columns: repeat(3, 1fr);
+        gap: 18px;
+    }
+}
+
+@media (max-width: 650px) {
+    .navbar {
+        flex-direction: column;
+        gap: 10px;
+        padding: 12px;
+    }
+
+    .nav-list {
+        gap: 10px;
+        flex-wrap: wrap;
+        justify-content: center;
+    }
+
+    .header-favoritos {
+        margin-top: 145px;
+        padding: 25px 16px;
+    }
+
+    .header-favoritos h1 {
+        font-size: 1.8rem;
+    }
+
+    .grid-container {
+        grid-template-columns: repeat(2, 1fr);
+        gap: 14px;
+        padding: 0 12px;
+    }
+}
+
+@media (max-width: 420px) {
+    .grid-container {
+        grid-template-columns: 1fr;
+        max-width: 360px;
+    }
+}

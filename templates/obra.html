@@ -1,0 +1,59 @@
+{% extends "base.html" %}
+
+{% block title %}
+{{ titulo }} | AfroEdu Stream
+{% endblock title %}
+
+{% block css %}
+    <link rel="stylesheet" href="{{ url_for('static', filename='css/obra.css') }}">
+{% endblock css %}
+
+{% block conteudo %}
+<main class="pagina-obra">
+
+    <a class="voltar" href="{{ url_for('catalogo') }}">
+        ← Voltar ao catálogo
+    </a>
+
+    <h1>{{ titulo }}</h1>
+
+    {% if imagem %}
+    <img class="capa-obra" src="{{ imagem }}" alt="Capa de {{ titulo }}">
+    {% endif %}
+
+    {% if autor %}
+    <p><strong>Autor/Diretor:</strong> {{ autor }}</p>
+    {% endif %}
+
+    {% if genero %}
+    <p><strong>Gênero:</strong> {{ genero }}</p>
+    {% endif %}
+
+    {% if detalhes %}
+    <p>{{ detalhes }}</p>
+    {% endif %}
+
+    <p>{{ descricao }}</p>
+
+    {% if arquivo and categoria|lower == 'livro' %}
+    <h2>Leitura</h2>
+    <iframe class="conteudo-obra" src="{{ url_for('static', filename=arquivo) }}" title="Leitura de {{ titulo }}">
+    </iframe>
+
+    {% elif arquivo %}
+    <h2>Assistir</h2>
+    <video class="conteudo-obra" controls>
+        <source src="{{ url_for('static', filename=arquivo) }}">
+        Seu navegador não conseguiu reproduzir este vídeo.
+    </video>
+
+    {% else %}
+    <p>O conteúdo completo desta obra ainda não está disponível.</p>
+    {% endif %}
+
+</main>
+{% endblock conteudo %}
+
+{% block js %}
+<script src="{{ url_for('static', filename='js/obra.js') }}"></script>
+{% endblock js %}

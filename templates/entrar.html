@@ -1,0 +1,55 @@
+{% extends "base.html" %}
+
+{% block css %}
+<link rel="stylesheet" href="{{ url_for('static', filename='css/login.css') }}">
+{% endblock css %}
+
+{% block conteudo %}
+<main class="login-container">
+
+    <div class="auth-header">
+        <img src="{{ url_for('static', filename='css/image/img/tipos/logo_do_site/logo_educacao_negra.png') }}"
+            alt="Logo AfroEdu Stream" class="logo-img" width="85" height="85">
+    </div>
+
+    <form action="{{ url_for('login') }}" method="post" id="login-form">
+
+        <h1>AfroEdu Stream</h1>
+        <p>Entre na sua conta para acessar o catálogo.</p>
+
+        {% if error %}
+        <p style="color: #F3C15D; margin-top: 15px;">
+            {{ error }}
+        </p>
+        {% endif %}
+
+        <div class="campo_email">
+            <label for="email-login">E-mail:</label>
+            <input type="email" id="email-login" name="email" placeholder="Digite seu e-mail" required>
+        </div>
+
+        <div class="campo-senha">
+            <label for="senha-login">Senha:</label>
+            <input type="password" id="senha-login" name="senha" placeholder="Digite sua senha" required>
+        </div>
+
+        <button type="submit" id="btn-entrar">
+            Entrar
+        </button>
+
+        <div class="registrar-usuario">
+            <p>
+                Ainda não tem uma conta?
+                <a href="{{ url_for('cadastrar_Usuario') }}">
+                    Cadastre-se
+                </a>
+            </p>
+        </div>
+
+    </form>
+</main>
+{% endblock conteudo %}
+
+{% block js %}
+<script src="{{ url_for('static', filename='js/login.js') }}"></script>
+{% endblock js %}
