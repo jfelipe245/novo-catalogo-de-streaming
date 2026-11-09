@@ -1,0 +1,70 @@
+
+{% for livro in obras %}
+
+<article
+    class="card"
+    data-id="{{ livro.id }}"
+    data-category="livro"
+    data-titulo="{{ livro.titulo or '' }}"
+    data-genero="{{ livro.genero or '' }}"
+    data-tipo="{{ livro.tipo or '' }}"
+    data-autor="{{ livro.autor or '' }}"
+    data-ano-publicacao="{{ livro.ano_publicacao if livro.ano_publicacao is not none else '' }}"
+    data-ano-lancamento="{{ livro.ano_lancamento if livro.ano_lancamento is not none else '' }}"
+    data-descricao="{{ livro.descricao or '' }}"
+    data-imagem="{{ livro.imagem or '' }}">
+
+    {% if livro.imagem %}
+    <img
+        src="{{ url_for('static', filename=livro.imagem) }}"
+        alt="Capa de {{ livro.titulo }}">
+    {% endif %}
+
+    <div class="card-content">
+
+        <h2 class="titulo">{{ livro.titulo }}</h2>
+
+        <p class="autor">
+            Autor: {{ livro.autor or 'Não informado' }}
+        </p>
+
+        <p class="descricao">
+            {{ livro.descricao or 'Descrição não disponível.' }}
+        </p>
+
+        <p class="detalhes">
+            Gênero: {{ livro.genero or 'Não informado' }}
+        </p>
+
+        <p class="detalhes">
+            Ano de publicação:
+            {{ livro.ano_publicacao if livro.ano_publicacao is not none else 'Não informado' }}
+        </p>
+
+        <p class="detalhes">
+            Ano de lançamento:
+            {{ livro.ano_lancamento if livro.ano_lancamento is not none else 'Não informado' }}
+        </p>
+
+    </div>
+
+    <div class="card-actions">
+
+        <a
+            href="{{ url_for('acessar_obra', obra_id=livro.id, categoria='livro') }}"
+            class="btn-acao ler-catalogo-Livro">
+
+            Ler este livro
+        </a>
+
+    </div>
+
+</article>
+
+{% else %}
+
+<p class="catalogo-vazio">
+    Nenhum livro cadastrado ainda.
+</p>
+
+{% endfor %}

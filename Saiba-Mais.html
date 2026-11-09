@@ -1,0 +1,163 @@
+
+{% extends "base.html" %}
+
+{% block title %}Saiba Mais | AfroEdu Stream{% endblock title %}
+
+{% block css %}
+<link rel="stylesheet" href="{{ url_for('static', filename='css/Saiba-Mais.css') }}">
+{% endblock css %}
+
+{% block conteudo %}
+<main class="detalhes-pagina">
+
+    <a class="voltar-catalogo" href="{{ url_for('catalogo') }}">
+        ← Voltar ao catálogo
+    </a>
+
+    <section class="container-detalhes">
+
+        <div class="capa-container">
+            <div class="moldura-capa">
+                <img id="detalhe-img"
+                    src="{{ url_for('static', filename=imagem) if imagem else url_for('static', filename='css/image/img/tipos/logo_do_site/logo_educacao_negra.png') }}"
+                    alt="Capa da obra selecionada">
+            </div>
+
+            <span class="legenda-capa">Obra selecionada no catálogo</span>
+        </div>
+
+        <div class="info-container">
+
+            <span id="detalhe-badge" class="badge">
+                {{ categoria or 'Obra' }}
+            </span>
+
+            <h1 id="detalhe-titulo">
+                {{ titulo or 'Detalhes da obra' }}
+            </h1>
+
+            <p class="autor-diretor">
+                Por <strong id="detalhe-autor">
+                    {{ autor or 'Autor não informado' }}
+                </strong>
+            </p>
+
+            <section class="secao-detalhe">
+                <h2>Sobre a obra</h2>
+
+                <p id="detalhe-sinopse">
+                    {{ descricao or 'A descrição ainda não foi cadastrada.' }}
+                </p>
+            </section>
+
+            <section class="secao-detalhe">
+                <h2>Ficha técnica</h2>
+
+                <dl class="lista-ficha">
+
+                    <div>
+                        <dt>Categoria</dt>
+                        <dd id="ficha-categoria">
+                            {{ categoria or 'Não informada' }}
+                        </dd>
+                    </div>
+
+                    <div>
+                        <dt>Gênero / tema</dt>
+                        <dd id="ficha-genero">
+                            {{ genero or 'Não informado' }}
+                        </dd>
+                    </div>
+
+                    <div id="campo-ano" hidden>
+                        <dt>Ano de publicação / lançamento</dt>
+                        <dd id="ficha-ano">Não informado</dd>
+                    </div>
+
+                    <div id="campo-editora" hidden>
+                        <dt>Editora</dt>
+                        <dd id="ficha-editora">Não informada</dd>
+                    </div>
+
+                    <div id="campo-paginas" hidden>
+                        <dt>Páginas</dt>
+                        <dd id="ficha-paginas">Não informado</dd>
+                    </div>
+
+                    <div id="campo-diretor" hidden>
+                        <dt>Direção</dt>
+                        <dd id="ficha-diretor">Não informado</dd>
+                    </div>
+
+                    <div id="campo-artista" hidden>
+                        <dt>Artista</dt>
+                        <dd id="ficha-artista">Não informado</dd>
+                    </div>
+
+                    <div id="campo-nacionalidade" hidden>
+                        <dt>Nacionalidade</dt>
+                        <dd id="ficha-nacionalidade">Não informada</dd>
+                    </div>
+
+                    <div id="campo-edicao" hidden>
+                        <dt>Edição</dt>
+                        <dd id="ficha-edicao">Não informada</dd>
+                    </div>
+
+                    <div id="campo-tematica" hidden>
+                        <dt>Temática</dt>
+                        <dd id="ficha-tematica">Não informada</dd>
+                    </div>
+
+                </dl>
+            </section>
+
+            <section class="secao-detalhe relevancia">
+                <h2>Relevância pedagógica</h2>
+
+                <p id="ficha-relevancia">
+                    Esta obra pode contribuir para discussões sobre educação,
+                    história, cultura, identidade, diversidade e formação cidadã.
+                    Sua utilização pedagógica depende dos temas e conteúdos
+                    apresentados.
+                </p>
+            </section>
+
+            <section class="secao-detalhe">
+                <h2>Temas abordados</h2>
+
+                <div class="temas-abordados" id="temas-abordados">
+                    <span>{{ genero or 'Tema não informado' }}</span>
+                </div>
+            </section>
+
+            <div class="botoes-acao">
+
+                <button id="btn-acessar"
+                    class="btn-principal"
+                    type="button">
+                    Acessar obra / ler
+                </button>
+
+                <button id="btn-favoritos"
+                    class="btn-secundario"
+                    type="button">
+                    Adicionar aos favoritos
+                </button>
+
+            </div>
+
+            <p class="aviso-acesso" id="aviso-acesso">
+                O link de acesso à obra precisa ser cadastrado para abrir
+                o conteúdo diretamente.
+            </p>
+
+        </div>
+    </section>
+
+</main>
+{% endblock conteudo %}
+
+{% block js %}
+<script src="{{ url_for('static', filename='js/saiba-mais.js') }}"></script>
+{% endblock js %}

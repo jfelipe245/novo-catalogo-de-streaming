@@ -1,0 +1,84 @@
+
+{% for documentario in obras %}
+
+<article
+    class="card"
+    data-category="documentario"
+    data-titulo="{{ documentario.titulo or '' }}"
+    data-genero="{{ documentario.genero or '' }}"
+    data-tipo="{{ documentario.tipo or '' }}"
+    data-diretor="{{ documentario.diretor or '' }}"
+    data-ano-lancamento="{{ documentario.ano_lancamento or '' }}"
+    data-descricao="{{ documentario.descricao or '' }}"
+    data-imagem="{{ documentario.imagem or '' }}">
+
+    {% if documentario.imagem %}
+    <img
+        src="{{ url_for('static', filename=documentario.imagem) }}"
+        alt="Capa de {{ documentario.titulo }}">
+    {% endif %}
+
+    <div class="card-content">
+
+        <span class="badge genero-badge">
+            Documentário
+        </span>
+
+        <h3 class="titulo">
+            {{ documentario.titulo }}
+        </h3>
+
+        <p class="diretor">
+            Diretor: {{ documentario.diretor or 'Não informado' }}
+        </p>
+
+        <p class="descricao">
+            {{ documentario.descricao or 'Descrição não disponível.' }}
+        </p>
+
+        <p class="detalhes">
+            Gênero: {{ documentario.genero or 'Não informado' }}
+        </p>
+
+        <p class="detalhes">
+            Tipo: {{ documentario.tipo or 'Não informado' }}
+        </p>
+
+        <p class="detalhes">
+            Ano de lançamento:
+            {{ documentario.ano_lancamento or 'Não informado' }}
+        </p>
+
+    </div>
+
+    <div class="card-actions">
+
+        <a
+            href="{{ url_for(
+                'acessar_obra',
+                titulo=documentario.titulo,
+                imagem=documentario.imagem or '',
+                diretor=documentario.diretor or '',
+                categoria='documentario',
+                genero=documentario.genero or '',
+                tipo=documentario.tipo or '',
+                ano_lancamento=documentario.ano_lancamento or '',
+                descricao=documentario.descricao or ''
+            ) }}"
+            class="btn-acao assistir-catalogo-documentario">
+
+            Assistir documentário
+
+        </a>
+
+    </div>
+
+</article>
+
+{% else %}
+
+<p class="catalogo-vazio">
+    Nenhum documentário cadastrado ainda.
+</p>
+
+{% endfor %}

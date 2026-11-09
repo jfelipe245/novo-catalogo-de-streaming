@@ -1,0 +1,76 @@
+
+{% for serie in obras %}
+
+<article
+    class="card"
+    data-category="serie"
+    data-titulo="{{ serie.titulo or '' }}"
+    data-genero="{{ serie.genero or '' }}"
+    data-tipo="{{ serie.tipo or '' }}"
+    data-diretor="{{ serie.diretor or '' }}"
+    data-ano-lancamento="{{ serie.ano_lancamento or '' }}"
+    data-descricao="{{ serie.descricao or '' }}"
+    data-imagem="{{ serie.imagem or '' }}">
+
+    {% if serie.imagem %}
+    <img
+        src="{{ url_for('static', filename=serie.imagem) }}"
+        alt="Capa de {{ serie.titulo }}">
+    {% endif %}
+
+    <div class="card-content">
+
+        <span class="badge genero-badge">Série</span>
+
+        <h3 class="titulo">{{ serie.titulo }}</h3>
+
+        <p class="diretor">
+            Diretor: {{ serie.diretor or 'Não informado' }}
+        </p>
+
+        <p class="descricao">
+            {{ serie.descricao or 'Descrição não disponível.' }}
+        </p>
+
+        <p class="detalhes">
+            Gênero: {{ serie.genero or 'Não informado' }}
+        </p>
+
+        <p class="detalhes">
+            Ano de lançamento:
+            {{ serie.ano_lancamento or 'Não informado' }}
+        </p>
+
+    </div>
+
+    <div class="card-actions">
+
+        <a
+            href="{{ url_for(
+                'acessar_obra',
+                titulo=serie.titulo,
+                imagem=serie.imagem or '',
+                diretor=serie.diretor or '',
+                categoria='serie',
+                genero=serie.genero or '',
+                tipo=serie.tipo or '',
+                ano_lancamento=serie.ano_lancamento or '',
+                descricao=serie.descricao or ''
+            ) }}"
+            class="btn-acao assistir-catalogo-Serie">
+
+            Assistir série
+
+        </a>
+
+    </div>
+
+</article>
+
+{% else %}
+
+<p class="catalogo-vazio">
+    Nenhuma série cadastrada ainda.
+</p>
+
+{% endfor %}
