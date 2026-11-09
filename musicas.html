@@ -1,0 +1,78 @@
+
+{% for musica in obras %}
+
+<article
+    class="card"
+    data-category="musica-de-protesto"
+    data-titulo="{{ musica.titulo or '' }}"
+    data-genero="{{ musica.genero or '' }}"
+    data-tipo="{{ musica.tipo or '' }}"
+    data-artista="{{ musica.artista or '' }}"
+    data-ano-lancamento="{{ musica.ano_lancamento or '' }}"
+    data-descricao="{{ musica.descricao or '' }}"
+    data-imagem="{{ musica.imagem or '' }}">
+
+    {% if musica.imagem %}
+    <img
+        src="{{ url_for('static', filename=musica.imagem) }}"
+        alt="Capa de {{ musica.titulo }}">
+    {% endif %}
+
+    <div class="card-content">
+
+        <span class="badge genero-badge">
+            Música de protesto
+        </span>
+
+        <h3 class="titulo">{{ musica.titulo }}</h3>
+
+        <p class="artista">
+            Artista: {{ musica.artista or 'Não informado' }}
+        </p>
+
+        <p class="descricao">
+            {{ musica.descricao or 'Descrição não disponível.' }}
+        </p>
+
+        <p class="detalhes">
+            Gênero: {{ musica.genero or 'Não informado' }}
+        </p>
+
+        <p class="detalhes">
+            Ano de lançamento:
+            {{ musica.ano_lancamento or 'Não informado' }}
+        </p>
+
+    </div>
+
+    <div class="card-actions">
+
+        <a
+            href="{{ url_for(
+                'acessar_obra',
+                titulo=musica.titulo,
+                imagem=musica.imagem or '',
+                artista=musica.artista or '',
+                categoria='musica-de-protesto',
+                genero=musica.genero or '',
+                tipo=musica.tipo or '',
+                ano_lancamento=musica.ano_lancamento or '',
+                descricao=musica.descricao or ''
+            ) }}"
+            class="btn-acao ouvir-catalogo-musica">
+
+            Ouvir música
+
+        </a>
+
+    </div>
+
+</article>
+
+{% else %}
+
+<p class="catalogo-vazio">
+    Nenhuma música cadastrada ainda.
+</p>
+
+{% endfor %}

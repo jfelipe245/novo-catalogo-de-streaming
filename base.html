@@ -1,0 +1,57 @@
+
+<!DOCTYPE html>
+<html lang="pt-br">
+
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+
+    <title>{% block title %}AfroEdu Stream{% endblock %}</title>
+
+    {% block css %}
+    <link rel="stylesheet" href="{{ url_for('static', filename='css/base.css') }}">
+    {% endblock css %}
+</head>
+
+<body>
+
+    {% if session.get('usuario_id') %}
+    <nav class="navbar">
+    <ul class="nav-list">
+    <li><a href="{{ url_for('catalogo') }}">Catálogo</a></li>
+
+    <li><a href="{{ url_for('meus_favoritos') }}">
+        Meus Favoritos
+    </a></li>
+
+    <li><a href="{{ url_for('adicionar') }}">
+        Adicionar Livro
+    </a></li>
+
+    <li><a href="{{ url_for('saiba_mais') }}">
+        Saiba Mais
+    </a></li>
+
+    <li><a href="{{ url_for('logout') }}">Sair</a></li>
+</ul>
+    </nav>
+    {% endif %}
+
+    <div class="pagina">
+        {% block conteudo %}
+        {% endblock conteudo %}
+    </div>
+
+    <footer>
+        <p>
+            &copy; Catálogo Educacional NEABI -
+            Promoção da Igualdade Racial e Diversidade nas Escolas.
+        </p>
+    </footer>
+
+    {% block js %}
+        <script src="{{ url_for('static', filename='js/base.js') }}"></script>
+    {% endblock js %}
+
+</body>
+</html>

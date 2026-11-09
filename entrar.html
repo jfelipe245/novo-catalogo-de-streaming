@@ -1,0 +1,111 @@
+
+{% extends "base.html" %}
+
+{% block title %}Entrar | AfroEdu Stream{% endblock title %}
+
+{% block css %}
+<link rel="stylesheet" href="{{ url_for('static', filename='css/login.css') }}">
+{% endblock css %}
+
+{% block conteudo %}
+
+<main class="login-container">
+
+    <section class="login-card">
+
+        <div class="login-titulo">
+            <span class="texto-destaque">BEM-VINDO DE VOLTA</span>
+
+            <h1>AfroEdu <span>Stream</span></h1>
+
+            <p>Entre na sua conta para acessar o catálogo.</p>
+        </div>
+
+        {% if error %}
+        <p class="mensagem-erro" role="alert">
+            {{ error }}
+        </p>
+        {% endif %}
+
+        {% if mensagem %}
+        <p class="mensagem" role="status">
+            {{ mensagem }}
+        </p>
+        {% endif %}
+
+        <form action="{{ url_for('login') }}" method="post" id="login-form">
+
+            <div class="campo">
+                <label for="email-login">E-mail</label>
+
+                <input
+                    type="email"
+                    id="email-login"
+                    name="email"
+                    placeholder="Digite seu e-mail"
+                    autocomplete="email"
+                    required
+                >
+            </div>
+
+            <div class="campo">
+                <label for="senha-login">Senha</label>
+
+                <div class="senha-container">
+                    <input
+                        type="password"
+                        id="senha-login"
+                        name="senha"
+                        placeholder="Digite sua senha"
+                        autocomplete="current-password"
+                        required
+                    >
+
+                    <button
+                        type="button"
+                        id="toggle-password"
+                        class="btn-olho"
+                        aria-label="Mostrar senha"
+                        aria-pressed="false"
+                    >
+                        Mostrar
+                    </button>
+                </div>
+            </div>
+
+            <button type="submit" id="btn-entrar" class="btn-entrar">
+                Entrar na minha conta
+                <span aria-hidden="true">→</span>
+            </button>
+
+        </form>
+
+        <div class="separador">
+            <span>NOVO POR AQUI?</span>
+        </div>
+
+        <div class="registrar-usuario">
+            <p>Ainda não tem uma conta?</p>
+
+            <a
+                href="{{ url_for('cadastrar_usuarios') }}"
+                class="btn-cadastrar"
+            >
+                Criar minha conta
+            </a>
+        </div>
+
+        <div class="login-rodape">
+            <span class="ponto-decorativo"></span>
+            Educação, cultura e ancestralidade.
+        </div>
+
+    </section>
+
+</main>
+
+{% endblock conteudo %}
+
+{% block js %}
+<script src="{{ url_for('static', filename='js/login.js') }}"></script>
+{% endblock js %}
