@@ -3,10 +3,9 @@ from flask_sqlalchemy import SQLAlchemy
 from flask_migrate import Migrate
 
 app = Flask(__name__)
+
 app.secret_key = 'AfroEdu_RaizesDosSaberes_Conexao_2026!'
-
-
-app.config['SQLALCHEMY_DATABASE_URI'] = 'sqlite:///D:/meu github/meus projetos/catalogo de streaming/instance/login.db'
+app.config['SQLALCHEMY_DATABASE_URI'] = 'sqlite:///login.db'
 app.config['SQLALCHEMY_TRACK_MODIFICATIONS'] = False
 
 db = SQLAlchemy(app)
