@@ -114,21 +114,23 @@
             Ler este livro
         </button>
 
-        <button type="button"
-                class="btn-acao btn-add adicionar-catalogo-Livro">
+        <a href="{{ url_for('cadastrar_obra') }}" class="btn-acao btn-add">
             + Adicionar esta obra
-        </button>
+        </a>
 
         <div class="acoes-secundarias">
 
-            <button type="button"
-                    class="btn-acao remover-catalogo-Livro"
-                    data-id="{{ livro.id }}"
-                    data-titulo="{{ livro.titulo }}"
-                    data-categoria="livro">
-                Remover este livro
-            </button>
+<form action="{{ url_for('remover') }}" method="POST">
 
+    <input type="hidden"
+           name="obra_id"
+           value="{{ livro.id }}">
+
+    <button type="submit" class="btn-acao">
+        Remover do catálogo
+    </button>
+
+</form>
             <a href="{{ url_for('meus_favoritos') }}"
                class="btn-acao btn-favoritos">
                 ♥ Meus Favoritos
@@ -188,21 +190,24 @@
             Assistir este filme
         </button>
 
-        <button type="button"
-                class="btn-acao btn-add adicionar-catalogo-Filme">
+        <a href="{{ url_for('cadastrar_obra') }}" class="btn-acao btn-add">
             + Adicionar esta obra
-        </button>
+        </a>
+        
 
         <div class="acoes-secundarias">
 
-            <button type="button"
-                    class="btn-acao remover-catalogo-Filme"
-                    data-id="{{ filme.id }}"
-                    data-titulo="{{ filme.titulo }}"
-                    data-categoria="filme">
-                Remover este filme
-            </button>
+<form action="{{ url_for('remover') }}" method="POST">
 
+    <input type="hidden"
+           name="obra_id"
+           value="{{ filme.id }}">
+
+    <button type="submit" class="btn-acao">
+        Remover do catálogo
+    </button>
+
+</form>
             <a href="{{ url_for('meus_favoritos') }}"
                class="btn-acao btn-favoritos">
                 ♥ Meus Favoritos
@@ -262,21 +267,24 @@
             Assistir esta série
         </button>
 
-        <button type="button"
-                class="btn-acao btn-add adicionar-catalogo-Serie">
+        <a href="{{ url_for('cadastrar_obra') }}" class="btn-acao btn-add">
             + Adicionar esta série
+        </a>
         </button>
 
         <div class="acoes-secundarias">
 
-            <button type="button"
-                    class="btn-acao remover-catalogo-Serie"
-                    data-id="{{ serie.id }}"
-                    data-titulo="{{ serie.titulo }}"
-                    data-categoria="serie">
-                Remover esta série
-            </button>
+<form action="{{ url_for('remover') }}" method="POST">
 
+    <input type="hidden"
+           name="obra_id"
+           value="{{ series.id }}">
+
+    <button type="submit" class="btn-acao">
+        Remover do catálogo
+    </button>
+
+</form>
             <a href="{{ url_for('meus_favoritos') }}"
                class="btn-acao btn-favoritos">
                 ♥ Meus Favoritos
@@ -338,20 +346,27 @@
             Assistir este documentário
         </button>
 
-        <button type="button"
-                class="btn-acao btn-add adicionar-catalogo-documentario">
+        <a href="{{ url_for('cadastrar_obra') }}" class="btn-acao btn-add">
             + Adicionar esta obra
-        </button>
-
+        </a>
+        
         <div class="acoes-secundarias">
 
-            <button type="button"
-                    class="btn-acao remover-catalogo-documentario"
-                    data-id="{{ documentario.id }}"
-                    data-titulo="{{ documentario.titulo or '' }}"
-                    data-categoria="documentario">
-                Remover este documentário
-            </button>
+<form action="{{ url_for('remover') }}" method="POST">
+
+    <input type="hidden"
+           name="obra_id"
+           value="{{ documentario.id }}">
+
+    <input type="hidden"
+           name="categoria"
+           value="documentario">
+
+    <button type="submit" class="btn-acao">
+        Remover do catálogo
+    </button>
+
+</form>
 
             <a href="{{ url_for('meus_favoritos') }}"
                class="btn-acao btn-favoritos">
@@ -415,20 +430,27 @@
             Ouvir esta música
         </button>
 
-        <button type="button"
-                class="btn-acao btn-add adicionar-catalogo-musica">
-            + Adicionar este álbum
-        </button>
-
+        <a href="{{ url_for('cadastrar_obra') }}" class="btn-acao btn-add">
+            + Adicionar esta obra
+        </a>
+        
         <div class="acoes-secundarias">
 
-            <button type="button"
-                    class="btn-acao remover-catalogo-musica"
-                    data-id="{{ musica.id }}"
-                    data-titulo="{{ musica.titulo }}"
-                    data-categoria="musica">
-                Remover esta música
-            </button>
+<form action="{{ url_for('remover') }}" method="POST">
+
+    <input type="hidden"
+           name="obra_id"
+           value="{{ musica.id }}">
+
+    <input type="hidden"
+           name="categoria"
+           value="musica">
+
+    <button type="submit" class="btn-acao">
+        Remover do catálogo
+    </button>
+
+</form>
 
             <a href="{{ url_for('meus_favoritos') }}"
                class="btn-acao btn-favoritos">
@@ -491,21 +513,23 @@
             Assistir este curta
         </button>
 
-        <button type="button"
-                class="btn-acao btn-add adicionar-catalogo-curta">
+        <a href="{{ url_for('cadastrar_obra') }}" class="btn-acao btn-add">
             + Adicionar esta obra
-        </button>
+        </a>
 
         <div class="acoes-secundarias">
 
-            <button type="button"
-                    class="btn-acao remover-catalogo-curta"
-                    data-id="{{ curta.id }}"
-                    data-titulo="{{ curta.titulo }}"
-                    data-categoria="curta">
-                Remover este curta
-            </button>
+<form action="{{ url_for('remover') }}" method="POST">
 
+    <input type="hidden"
+           name="obra_id"
+           value="{{ curta.id }}">
+
+    <button type="submit" class="btn-acao">
+        Remover do catálogo
+    </button>
+
+</form>
             <a href="{{ url_for('meus_favoritos') }}"
                class="btn-acao btn-favoritos">
                 ♥ Meus Favoritos
@@ -551,17 +575,11 @@
 
 <script>
     window.url_Obra = "{{ url_for('acessar_obra') }}";
-
     window.url_Adicionar_Favoritos = "{{ url_for('adicionar_favoritos') }}";
-
     window.url_Remover_Favoritos = "{{ url_for('deletar_favorito') }}";
-
     window.url_Remover_catalogo = "{{ url_for('remover') }}"
-
     window.url_Saiba_Mais = "{{ url_for('saiba_mais') }}";
-
     window.url_Adicionar = "{{ url_for('adicionar_favoritos') }}";
-
     window.url_deletar = "{{ url_for('deletar') }}";
 </script>
 

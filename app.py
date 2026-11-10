@@ -163,7 +163,7 @@ class saiba_mais(db.Model):
 
 @app.route('/')
 def home():
-    return redirect(url_for('cadastrar_usuarios'))
+    return redirect(url_for('cadastrar_usuario'))
 
 
 @app.route('/login', methods=['GET', 'POST'])
@@ -191,18 +191,16 @@ def login():
 
     return render_template('entrar.html')
 
-
 @app.route('/entrar')
 def entrar():
     return render_template('entrar.html')
-
 
 # ==========================================
 # CADASTRO
 # ==========================================
 
 @app.route('/cadastrar', methods=['GET', 'POST'])
-def cadastrar_usuarios():
+def cadastrar_usuario():
     if request.method == 'GET':
         return render_template('login.html')
 
@@ -278,23 +276,88 @@ def cadastrar_usuarios():
             error='Não foi possível concluir o cadastro. Confira o terminal.'
         )
 
+@app.route('/cadastrar_obra', methods=['GET', 'POST'])
+def cadastrar_obra():
 
+    if request.method == 'POST':
+
+        titulo = request.form.get('titulo', '').strip()
+        tipo = request.form.get('tipo', '').strip().lower()
+
+        tipos_validos = [
+            'livro',
+            'filme',
+            'serie',
+            'documentario',
+            'musica',
+            'curta'
+        ]
+
+        if not titulo:
+            return render_template(
+                'cadastrar_obra.html',
+                error='O título é obrigatório.'
+            )
+
+        if tipo not in tipos_validos:
+            return render_template(
+                'cadastrar_obra.html',
+                error='Selecione uma categoria válida.'
+            )
+
+        try:
+            obra = Obra(
+                titulo=titulo,
+                tipo=tipo,
+                genero=request.form.get('genero', '').strip(),
+                descricao=request.form.get('descricao', '').strip(),
+                imagem=request.form.get('imagem', '').strip(),
+                autor=request.form.get('autor', '').strip(),
+                diretor=request.form.get('diretor', '').strip(),
+                artista=request.form.get('artista', '').strip(),
+                album=request.form.get('album', '').strip(),
+                ano_publicacao=request.form.get('ano_publicacao', type=int),
+                ano_lancamento=request.form.get('ano_lancamento', type=int),
+                numero_paginas=request.form.get('numero_paginas', type=int),
+                duracao=request.form.get('duracao', '').strip(),
+                temporadas=request.form.get('temporadas', type=int)
+            )
+
+            db.session.add(obra)
+            db.session.commit()
+
+            return redirect(url_for('catalogo'))
+
+        except Exception:
+            db.session.rollback()
+            app.logger.exception('Erro ao cadastrar obra')
+
+            return render_template(
+                'cadastrar_obra.html',
+                error='Erro ao salvar a obra.'
+            )
+
+    return render_template('cadastrar_obra.html')
 # ==========================================
 # CATÁLOGO PRINCIPAL
 # ==========================================
-
-@app.route("/catalogo")
+@app.route('/catalogo')
 def catalogo():
 
-    livros = Obra.query.filter_by(tipo="livro").all()
-    filmes = Obra.query.filter_by(tipo="filme").all()
-    series = Obra.query.filter_by(tipo="série").all()
-    documentarios = Obra.query.filter_by(tipo="documentário").all()
-    musicas = Obra.query.filter_by(tipo="música").all()
-    curtas = Obra.query.filter_by(tipo="curta").all()
+    obras = Obra.query.order_by(
+        Obra.id.desc()
+    ).all()
+
+    livros = [o for o in obras if o.tipo == 'livro']
+    filmes = [o for o in obras if o.tipo == 'filme']
+    series = [o for o in obras if o.tipo == 'serie']
+    documentarios = [o for o in obras if o.tipo == 'documentario']
+    musicas = [o for o in obras if o.tipo == 'musica']
+    curtas = [o for o in obras if o.tipo == 'curta']
 
     return render_template(
-        "catalogo.html",
+        'catalogo.html',
+        obras=obras,
         livros=livros,
         filmes=filmes,
         series=series,
@@ -302,25 +365,15 @@ def catalogo():
         musicas=musicas,
         curtas=curtas
     )
-
-
-
 # ==========================================
 # PÁGINAS DAS CATEGORIAS
 # ==========================================
-
 @app.route('/livros')
 def livros():
-    obras = Livros.query.order_by(Livros.id.desc()).all()
-    
-    for livro in obras:
-        print(
-            livro.titulo or '',
-            livro.autor or '',
-            livro.descricao or '',
-            livro.ano_publicacao or '',
-            livro.ano_lancamento or ''  
-            )
+
+    obras = Obra.query.filter_by(
+        tipo="livro"
+    ).order_by(Obra.id.desc()).all()
 
     return render_template(
         'tipos/livros.html',
@@ -331,7 +384,9 @@ def livros():
 
 @app.route('/filmes')
 def filmes():
-    obras = Filmes.query.order_by(Filmes.id.desc()).all()
+    obras = Obra.query.filter_by(
+        tipo="filme"
+    ).order_by(Obra.id.desc()).all()
 
     return render_template(
         'tipos/filmes.html',
@@ -342,7 +397,9 @@ def filmes():
 
 @app.route('/series')
 def series():
-    obras = Series.query.order_by(Series.id.desc()).all()
+    obras = Obra.query.filter_by(
+        tipo="série"
+    ).order_by(Obra.id.desc()).all()
 
     return render_template(
         'tipos/series.html',
@@ -353,9 +410,9 @@ def series():
 
 @app.route('/musica')
 def musica():
-    obras = Musica.query.order_by(
-        Musica.id.desc()
-    ).all()
+    obras = Obra.query.filter_by(
+        tipo="música"
+    ).order_by(Obra.id.desc()).all()
 
     return render_template(
         'tipos/musicas.html',
@@ -366,9 +423,9 @@ def musica():
 
 @app.route('/documentarios')
 def documentarios():
-    obras = Documentarios.query.order_by(
-        Documentarios.id.desc()
-    ).all()
+    obras = Obra.query.filter_by(
+        tipo="documentário"
+    ).order_by(Obra.id.desc()).all()
 
     return render_template(
         'tipos/documentarios.html',
@@ -379,9 +436,9 @@ def documentarios():
 
 @app.route('/curtas')
 def curtas():
-    obras = Curta_Metragem.query.order_by(
-        Curta_Metragem.id.desc()
-    ).all()
+    obras = Obra.query.filter_by(
+        tipo="curta"
+    ).order_by(Obra.id.desc()).all()
 
     return render_template(
         'tipos/curtas.html',
@@ -533,69 +590,27 @@ def obras_visiveis(modelo, categoria):
 # ==========================================
 # rota REMOVER OBRA TEMPORARIAMENTE DO CATÁLOGO
 # ==========================================
-
-
-@app.route('/remover', methods=['GET', 'POST'])
+@app.route('/remover', methods=['POST'])
 def remover():
-    if request.method == 'POST':
-        categoria_recebida = request.form.get(
-            'categoria', ''
-        ).strip().lower()
 
-        obra_id = request.form.get(
-            'obra_id',
-            request.form.get('id', '')
-        ).strip()
+    obra_id = request.form.get('obra_id', type=int)
 
-        mapa_categorias = {
-            'livro': 'livros',
-            'livros': 'livros',
-            'filme': 'filmes',
-            'filmes': 'filmes',
-            'serie': 'series',
-            'series': 'series',
-            'documentario': 'documentarios',
-            'documentarios': 'documentarios',
-            'musica': 'musicas',
-            'musicas': 'musicas',
-            'curta': 'curtas',
-            'curtas': 'curtas'
-        }
+    if not obra_id:
+        return redirect(url_for('catalogo'))
 
-        categoria = mapa_categorias.get(categoria_recebida)
+    obra = db.session.get(Obra, obra_id)
 
-        if not categoria or not obra_id.isdigit():
-            return render_template(
-                'remover.html',
-                mensagem='Não foi possível identificar a obra.',
-                titulo=request.form.get('titulo', ''),
-                categoria=categoria_recebida,
-                obra_id=obra_id
-            )
+    if obra:
 
-        obras_ocultas = dict(
-            session.get('obras_ocultas', {})
-        )
+        obras_ocultas = session.get('obras_ocultas', [])
 
-        ids_categoria = list(
-            obras_ocultas.get(categoria, [])
-        )
+        if obra_id not in obras_ocultas:
+            obras_ocultas.append(obra_id)
 
-        if int(obra_id) not in ids_categoria:
-            ids_categoria.append(int(obra_id))
-
-        obras_ocultas[categoria] = ids_categoria
         session['obras_ocultas'] = obras_ocultas
 
         return redirect(url_for('catalogo'))
-
-    return render_template(
-        'funcoes/remover.html',
-        titulo=request.args.get('titulo', ''),
-        categoria=request.args.get('categoria', ''),
-        obra_id=request.args.get('obra_id', '')
-    )
-
+    return render_template('funcoes/remover.html', obra=obra)
 #============================================
 # rota deletar                                     #
 #============================================

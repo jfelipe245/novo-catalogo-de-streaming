@@ -237,19 +237,17 @@ function abrirDetalhesDaObra(card) {
    4. REMOVER OBRA DO CATÁLOGO
    REMOÇÃO TEMPORÁRIA COM CONFIRMAÇÃO
 ========================================= */
+/* =========================================
+   4. REMOVER OBRA DO CATÁLOGO
+   APENAS ESCONDE O CARD
+========================================= */
 
 function inicializarRemoverDoCatalogo() {
+
     document.addEventListener("click", (evento) => {
+
         const botao = evento.target.closest(
-            ".remover-catalogo-Livro, " +
-            ".remover-catalogo-Filme, " +
-            ".remover-catalogo-Serie, " +
-            ".remover-catalogo-documentario, " +
-            ".remover-catalogo-Documentario, " +
-            ".remover-catalogo-musica, " +
-            ".remover-catalogo-Musica, " +
-            ".remover-catalogo-curta, " +
-            ".remover-catalogo-Curta"
+            "[class*='remover-catalogo-']"
         );
 
         if (!botao) return;
@@ -264,32 +262,26 @@ function inicializarRemoverDoCatalogo() {
         }
 
         const titulo = obterTitulo(card);
-        const categoria = obterCategoria(card);
         const obraId = card.dataset.id;
 
-        if (!titulo || !categoria || !obraId) {
+        if (!titulo || !obraId) {
             alert("Não foi possível identificar esta obra.");
             return;
         }
 
-        if (!window.url_Remover_Catalogo) {
-            alert("A rota de remoção não foi configurada.");
-            return;
-        }
-
-        const destino = new URL(
-            window.url_Remover_Catalogo,
-            window.location.origin
+        const confirmar = confirm(
+            `Deseja esconder "${titulo}" do catálogo?`
         );
 
-        destino.searchParams.set("titulo", titulo);
-        destino.searchParams.set("categoria", categoria);
-        destino.searchParams.set("obra_id", obraId);
+        if (!confirmar) return;
 
-        window.location.href = destino.toString();
+        criarFormulario(window.url_Remover_Catalogo, {
+            obra_id: obraId
+        });
+
     });
-}
 
+}
 /* =========================================
    5. FORMULÁRIOS AUXILIARES
 ========================================= */
