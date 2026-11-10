@@ -1,20 +1,34 @@
 
 /* ========================================
-   AFROEDU STREAM - ESTILO GERAL
+   AFROEDU STREAM - IDENTIDADE VISUAL GLOBAL
 ======================================== */
 
 :root {
-    --fundo: #21140F;
-    --marrom-card: #352219;
-    --marrom-campo: #493126;
-    --dourado: #F0B94E;
-    --dourado-claro: #FFD078;
-    --creme: #FFF4E3;
-    --texto-secundario: #E6D3BD;
-    --borda: #896342;
+    color-scheme: dark;
+
+    --fundo: #18110F;
+    --fundo-secundario: #211714;
+    --marrom-card: #2B1D19;
+    --marrom-campo: #3B2922;
+
+    --dourado: #E9B653;
+    --dourado-claro: #FFD783;
+    --dourado-suave: rgba(233, 182, 83, 0.12);
+
+    --creme: #FFF5E8;
+    --texto-secundario: #D8C4B1;
+    --borda: rgba(233, 182, 83, 0.22);
+
+    --sombra-suave: 0 8px 24px rgba(0, 0, 0, 0.18);
+    --sombra-destaque: 0 10px 28px rgba(0, 0, 0, 0.28);
+
+    --raio-pequeno: 8px;
+    --raio-medio: 14px;
+
+    --transicao: 0.22s ease;
 }
 
-/* ===== CONFIGURAÇÕES GERAIS ===== */
+/* ===== RESET E CONFIGURAÇÕES GERAIS ===== */
 
 * {
     box-sizing: border-box;
@@ -23,26 +37,76 @@
 html {
     min-height: 100%;
     scroll-behavior: smooth;
+    scrollbar-color: var(--dourado) var(--fundo);
 }
 
 body {
     min-height: 100vh;
     margin: 0;
+
     display: flex;
     flex-direction: column;
-    background-color: var(--fundo);
+
+    background:
+        radial-gradient(
+            ellipse at top,
+            rgba(112, 62, 38, 0.13),
+            transparent 55%
+        ),
+        var(--fundo);
+
     color: var(--creme);
-    font-family: 'Plus Jakarta Sans', Arial, sans-serif;
+    font-family: "Plus Jakarta Sans", Arial, sans-serif;
+    font-size: 16px;
+    line-height: 1.6;
+
+    -webkit-font-smoothing: antialiased;
+    text-rendering: optimizeLegibility;
 }
+
+/* ===== LINKS ===== */
 
 a {
     color: var(--dourado);
     text-decoration: none;
-    transition: color 0.2s ease;
+    transition:
+        color var(--transicao),
+        background-color var(--transicao);
 }
 
 a:hover {
     color: var(--dourado-claro);
+}
+
+a:focus-visible,
+button:focus-visible,
+input:focus-visible,
+select:focus-visible,
+textarea:focus-visible {
+    outline: 2px solid var(--dourado-claro);
+    outline-offset: 4px;
+}
+
+/* ===== TÍTULOS ===== */
+
+h1,
+h2,
+h3,
+h4,
+h5,
+h6 {
+    color: var(--creme);
+    line-height: 1.25;
+    
+}
+
+h1,
+h2 {
+    letter-spacing: -0.025em;
+}
+
+p {
+    overflow-wrap: break-word;
 }
 
 /* ===== CONTEÚDO PRINCIPAL ===== */
@@ -50,6 +114,7 @@ a:hover {
 .pagina {
     flex: 1;
     width: 100%;
+    min-width: 0;
 }
 
 /* ===== MENU DE NAVEGAÇÃO ===== */
@@ -57,14 +122,17 @@ a:hover {
 .navbar {
     position: relative;
     z-index: 10;
+
     display: flex;
     align-items: center;
     justify-content: center;
+
     width: 100%;
-    padding: 18px 30px;
-    background-color: var(--marrom-card);
+    padding: 16px 30px;
+
+    background: rgba(43, 29, 25, 0.96);
     border-bottom: 1px solid var(--borda);
-    box-shadow: 0 4px 15px rgba(0, 0, 0, 0.15);
+    box-shadow: var(--sombra-suave);
 }
 
 .nav-list {
@@ -72,9 +140,11 @@ a:hover {
     align-items: center;
     justify-content: center;
     flex-wrap: wrap;
-    gap: 12px;
+    gap: 8px;
+
     margin: 0;
     padding: 0;
+
     list-style: none;
 }
 
@@ -84,29 +154,38 @@ a:hover {
 }
 
 .nav-list a {
-    display: inline-block;
-    padding: 11px 16px;
-    color: var(--creme);
+    position: relative;
+
+    display: inline-flex;
+    align-items: center;
+    justify-content: center;
+
+    min-height: 42px;
+    padding: 10px 17px;
+
+    color: var(--texto-secundario);
     font-size: 0.92rem;
     font-weight: 600;
-    border-radius: 8px;
+
+    border: 1px solid transparent;
+    border-radius: var(--raio-pequeno);
+
     transition:
-        background-color 0.2s ease,
-        color 0.2s ease,
-        transform 0.2s ease;
+        color var(--transicao),
+        background-color var(--transicao),
+        border-color var(--transicao),
+        transform var(--transicao);
 }
 
 .nav-list a:hover {
-    background-color: var(--marrom-campo);
     color: var(--dourado-claro);
+    background-color: var(--dourado-suave);
+    border-color: var(--borda);
     transform: translateY(-1px);
 }
 
-.nav-list a:focus-visible,
-a:focus-visible,
-button:focus-visible {
-    outline: 2px solid var(--dourado-claro);
-    outline-offset: 3px;
+.nav-list a:active {
+    transform: translateY(0);
 }
 
 /* ===== RODAPÉ ===== */
@@ -114,35 +193,71 @@ button:focus-visible {
 footer {
     width: 100%;
     margin-top: auto;
-    padding: 22px 20px;
-    background-color: var(--marrom-card);
+    padding: 24px 20px;
+
+    background: var(--fundo-secundario);
     border-top: 1px solid var(--borda);
+
     text-align: center;
 }
 
 footer p {
     max-width: 900px;
     margin: 0 auto;
+
     color: var(--texto-secundario);
     font-size: 0.82rem;
-    line-height: 1.7;
+    line-height: 1.8;
+}
+
+/* ===== SELEÇÃO DE TEXTO ===== */
+
+::selection {
+    color: var(--fundo);
+    background: var(--dourado-claro);
+}
+
+/* ===== ROLAGEM ===== */
+
+:focus:not(:focus-visible) {
+    outline: none;
 }
 
 /* ===== RESPONSIVIDADE ===== */
 
-@media (max-width: 600px) {
+@media (max-width: 768px) {
     .navbar {
-        padding: 12px;
+        padding: 14px 16px;
     }
 
     .nav-list {
-        width: 100%;
         gap: 6px;
     }
 
     .nav-list a {
-        padding: 10px;
-        font-size: 0.82rem;
+        padding: 10px 12px;
+        font-size: 0.88rem;
+    }
+}
+
+@media (max-width: 480px) {
+    .navbar {
+        padding: 12px 8px;
+    }
+
+    .nav-list {
+        width: 100%;
+        gap: 5px;
+    }
+
+    .nav-list li {
+        flex: 0 1 auto;
+    }
+
+    .nav-list a {
+        min-height: 40px;
+        padding: 9px 10px;
+        font-size: 0.8rem;
     }
 
     footer {
@@ -151,5 +266,18 @@ footer p {
 
     footer p {
         font-size: 0.76rem;
+    }
+}
+
+/* ===== MOVIMENTO REDUZIDO ===== */
+
+@media (prefers-reduced-motion: reduce) {
+    *,
+    *::before,
+    *::after {
+        scroll-behavior: auto !important;
+        animation-duration: 0.01ms !important;
+        animation-iteration-count: 1 !important;
+        transition-duration: 0.01ms !important;
     }
 }

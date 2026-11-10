@@ -1,22 +1,82 @@
-{% for curta in curtas %}
-    <article class="card"
-             data-category="curta"
-             data-genero="{{ curta.genero }}">
 
-        <img src="{{ url_for('static', filename=curta.imagem) }}"
-             alt="{{ curta.titulo }}">
+{% for curta in obras %}
 
-        <div class="card-content">
-            <span class="badge genero-badge">curta</span>
-            <h3 class="titulo">{{ curta.titulo }}</h3>
-            <p class="autor">Autor: {{ curta.autor }}</p>
-            <p class="descricao">{{ curta.descricao }}</p>
-            <p class="detalhes">
-                Publicação: {{ curta.ano_publicacao }}
-                | Lançamento: {{ curta.ano_lancamento }}
-            </p>
-        </div>
-    </article>
-{% endfor %}
+<article
+    class="card"
+    data-category="curta"
+    data-titulo="{{ curta.titulo or '' }}"
+    data-genero="{{ curta.genero or '' }}"
+    data-tipo="{{ curta.tipo or '' }}"
+    data-diretor="{{ curta.diretor or '' }}"
+    data-ano-lancamento="{{ curta.ano_lancamento or '' }}"
+    data-descricao="{{ curta.descricao or '' }}"
+    data-imagem="{{ curta.imagem or '' }}">
+
+    {% if curta.imagem %}
+    <img
+        src="{{ url_for('static', filename=curta.imagem) }}"
+        alt="Capa de {{ curta.titulo }}">
+    {% endif %}
+
+    <div class="card-content">
+
+        <span class="badge genero-badge">
+            Curta-metragem
+        </span>
+
+        <h3 class="titulo">{{ curta.titulo }}</h3>
+
+        <p class="diretor">
+            Diretor: {{ curta.diretor or 'Não informado' }}
+        </p>
+
+        <p class="descricao">
+            {{ curta.descricao or 'Descrição não disponível.' }}
+        </p>
+
+        <p class="detalhes">
+            Gênero: {{ curta.genero or 'Não informado' }}
+        </p>
+
+        <p class="detalhes">
+            Tipo: {{ curta.tipo or 'Não informado' }}
+        </p>
+
+        <p class="detalhes">
+            Ano de lançamento:
+            {{ curta.ano_lancamento or 'Não informado' }}
+        </p>
+
+    </div>
+
+    <div class="card-actions">
+
+        <a
+            href="{{ url_for(
+                'acessar_obra',
+                titulo=curta.titulo,
+                imagem=curta.imagem or '',
+                diretor=curta.diretor or '',
+                categoria='curta',
+                genero=curta.genero or '',
+                tipo=curta.tipo or '',
+                ano_lancamento=curta.ano_lancamento or '',
+                descricao=curta.descricao or ''
+            ) }}"
+            class="btn-acao assistir-catalogo-curta">
+
+            Assistir curta
+
+        </a>
+
+    </div>
+
+</article>
+
+{% else %}
+
+<p class="catalogo-vazio">
+    Nenhum curta-metragem cadastrado ainda.
+</p>
 
 {% endfor %}

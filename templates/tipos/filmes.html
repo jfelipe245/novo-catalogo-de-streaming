@@ -1,20 +1,77 @@
-  {% for filme in filmes %}
-    <article class="card"
-             data-category="filme"
-             data-genero="{{ filme.genero }}">
 
-<img src="{{ url_for('static', filename=filme.imagem) }}"
-             alt="{{ filme.titulo }}">
+{% for filme in obras %}
 
-<div class="card-content">
-            <span class="badge genero-badge">Filme</span>
-            <h3 class="titulo">{{ filme.titulo }}</h3>
-            <p class="autor">Autor: {{ filme.autor }}</p>
-            <p class="descricao">{{ filme.descricao }}</p>
-            <p class="detalhes">
-                Publicação: {{ filme.ano_publicacao }}
-                | Lançamento: {{ filme.ano_lancamento }}
-            </p>
-        </div>
-    </article>
+<article
+    class="card"
+    data-category="filme"
+    data-titulo="{{ filme.titulo or '' }}"
+    data-genero="{{ filme.genero or '' }}"
+    data-tipo="{{ filme.tipo or '' }}"
+    data-diretor="{{ filme.diretor or '' }}"
+    data-ano-lancamento="{{ filme.ano_lancamento or '' }}"
+    data-descricao="{{ filme.descricao or '' }}"
+    data-imagem="{{ filme.imagem or '' }}">
+
+    {% if filme.imagem %}
+    <img
+        src="{{ url_for('static', filename=filme.imagem) }}"
+        alt="Capa de {{ filme.titulo }}">
+    {% endif %}
+
+    <div class="card-content">
+
+        <span class="badge genero-badge">Filme</span>
+
+        <h3 class="titulo">{{ filme.titulo }}</h3>
+
+        <p class="diretor">
+            Diretor: {{ filme.diretor or 'Não informado' }}
+        </p>
+
+        <p class="descricao">
+            {{ filme.descricao or 'Descrição não disponível.' }}
+        </p>
+
+        <p class="detalhes">
+            Gênero: {{ filme.genero or 'Não informado' }}
+        </p>
+
+        <p class="detalhes">
+            Ano de lançamento:
+            {{ filme.ano_lancamento or 'Não informado' }}
+        </p>
+
+    </div>
+
+    <div class="card-actions">
+
+        <a
+            href="{{ url_for(
+                'acessar_obra',
+                titulo=filme.titulo,
+                imagem=filme.imagem or '',
+                diretor=filme.diretor or '',
+                categoria='filme',
+                genero=filme.genero or '',
+                tipo=filme.tipo or '',
+                ano_lancamento=filme.ano_lancamento or '',
+                descricao=filme.descricao or ''
+            ) }}"
+            class="btn-acao assistir-catalogo-Filme">
+
+            Assistir filme
+
+        </a>
+
+    </div>
+
+</article>
+
+{% else %}
+
+<p class="catalogo-vazio">
+    Nenhum filme cadastrado ainda.
+</p>
+
 {% endfor %}
+

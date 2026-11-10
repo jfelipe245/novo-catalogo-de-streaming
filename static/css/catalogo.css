@@ -1,690 +1,1401 @@
-@import url('https://fonts.googleapis.com/css2?family=Inter:wght@400;500;600;700;800&display=swap');
+
+/* =========================================================
+   AFROEDU STREAM
+   Identidade visual: preto digital, roxo, dourado,
+   ciano e terracota
+   Catálogo, detalhes, adicionar e remover obras
+   ========================================================= */
+
+/* ---------- 1. Variáveis e configuração geral ---------- */
+
+:root {
+    --afro-bg: #121116;
+    --afro-surface: #292333;
+    --afro-surface-hover: #382B46;
+    --afro-border: #494052;
+
+    --afro-gold: #E5B84B;
+    --afro-gold-light: #F4D98A;
+    --afro-tech: #20C6D2;
+    --afro-tech-light: #83E8EB;
+    --afro-terracotta: #C74732;
+    --afro-terracotta-dark: #963624;
+
+    --afro-text: #F5F0E8;
+    --afro-muted: #CEC6D5;
+
+    --afro-radius: 14px;
+    --afro-shadow: 0 10px 30px rgb(0 0 0 / 28%);
+    --afro-transition: 0.22s ease;
+}
 
 * {
-    margin: 0;
-    padding: 0;
     box-sizing: border-box;
 }
 
+html {
+    scroll-behavior: smooth;
+    scroll-padding-top: 120px;
+}
+
 body {
-    font-family: 'Inter', system-ui, -apple-system, sans-serif;
-    background: radial-gradient(circle at 10% 20%, rgba(185, 28, 28, 0.15) 0%, transparent 40%),
-                radial-gradient(circle at 90% 80%, rgba(202, 138, 4, 0.15) 0%, transparent 40%),
-                #0f0e13;
-    background-attachment: fixed;
-    color: #f3f4f6;
+    color: var(--afro-text);
+    background:
+        radial-gradient(
+            ellipse at 8% 10%,
+            rgb(32 198 210 / 7%),
+            transparent 34%
+        ),
+        radial-gradient(
+            ellipse at 90% 35%,
+            rgb(100 55 145 / 15%),
+            transparent 40%
+        ),
+        var(--afro-bg);
     line-height: 1.6;
 }
 
-/* =========================================================
-   DOCUMENTAÇÃO: NAVBAR COM LOGO NO TOPO E BOTÕES ABAIXO
-   ========================================================= */
+::selection {
+    color: var(--afro-bg);
+    background: var(--afro-gold);
+}
+
+img {
+    max-width: 100%;
+}
+
+a,
+button,
+input,
+select,
+textarea {
+    transition:
+        color var(--afro-transition),
+        background-color var(--afro-transition),
+        border-color var(--afro-transition),
+        box-shadow var(--afro-transition);
+}
+
+button {
+    font: inherit;
+    cursor: pointer;
+}
+
+button:disabled {
+    opacity: 0.6;
+    cursor: not-allowed;
+}
+
+:focus-visible {
+    outline: 2px solid var(--afro-tech);
+    outline-offset: 3px;
+}
+
+/* ---------- 2. Menu principal ---------- */
+
 .navbar {
-    position: fixed;
-    top: 0;
-    left: 0;
-    width: 105%;
-    background-color: rgba(15, 14, 19, 0.95);
-    backdrop-filter: blur(8px);
-    color: #ffffff;
-    display: flex;
-    flex-direction: column;           /* COLOCA A LOGO NO TOPO E OS BOTÕES ABAIXO */
-    justify-content: center;
-    align-items: center;               /* CENTRALIZA TUDO NO MEIO DA TELA */
-    padding: 12px 20px;
-    gap: 12px;                         /* ESPAÇO ENTRE A LOGO E A LISTA DE BOTÕES */
-    border-bottom: 3px solid #e50914;  /* Linha inferior vermelha */
-    box-shadow: 0 4px 25px rgba(0, 0, 0, 0.6);
-    z-index: 1000;
+    background: rgb(18 17 22 / 96%);
+    border-bottom: 1px solid rgb(229 184 75 / 35%);
+    box-shadow: 0 8px 28px rgb(0 0 0 / 25%);
+    backdrop-filter: blur(14px);
+    -webkit-backdrop-filter: blur(14px);
 }
 
 .site-logo {
-    width: 50px;
-    height: 50px;
-    border-radius: 50%;
-    object-fit: cover;
-    border: 2px solid #ca8a04;
+    border: 2px solid var(--afro-gold);
+    box-shadow: 0 0 0 4px rgb(229 184 75 / 9%);
 }
 
-.nav-list {
-    list-style: none;
+.filter-btn,
+.btn-filtro {
+    color: var(--afro-muted);
+    border-radius: 999px;
+}
+
+.filter-btn:hover,
+.btn-filtro:hover {
+    color: var(--afro-tech-light);
+    background: rgb(32 198 210 / 10%);
+    border-color: var(--afro-tech);
+}
+
+.filter-btn.active,
+.btn-filtro.ativo {
+    color: #17131E;
+    background: var(--afro-gold);
+    border-color: var(--afro-gold);
+}
+
+/* ---------- 3. Menus de categorias ---------- */
+
+.opcoes-categorias,
+.lista-categorias-catalogo {
+    color: var(--afro-text);
+    background: var(--afro-surface);
+    border: 1px solid var(--afro-border);
+    border-radius: 12px;
+    box-shadow: var(--afro-shadow);
+}
+
+.opcoes-categorias {
+    padding: 10px;
+}
+
+.opcoes-categorias .btn-filtro {
+    border-radius: 9px;
+}
+
+.menu-categorias-catalogo {
+    position: relative;
+    z-index: 20;
+    width: min(100%, 320px);
+    margin: 20px 0 28px;
+}
+
+.botao-menu-categorias {
     display: flex;
-    gap: 15px;
-    flex-wrap: wrap;                   /* Garante que os botões não quebrem em telas menores */
-    justify-content: center;
-}
-
-/* Estilo dos Botões de Filtro */
-.filter-btn {
-    background: transparent;
-    border: 2px solid transparent;
-    color: #e5e7eb;
-    font-family: inherit;
-    font-size: 0.9rem;
+    align-items: center;
+    justify-content: space-between;
+    gap: 12px;
+    width: 100%;
+    padding: 14px 16px;
+    color: var(--afro-text);
+    background: var(--afro-surface);
+    border: 1px solid var(--afro-tech);
+    border-radius: 12px;
+    font-size: 1rem;
     font-weight: 600;
-    padding: 6px 14px;
-    border-radius: 20px;
-    cursor: pointer;
-    transition: all 0.2s ease;
 }
 
-.filter-btn:hover {
-    color: #ffffff;
-    background-color: rgba(229, 9, 20, 0.2);
-    border-color: rgba(229, 9, 20, 0.4);
+.botao-menu-categorias:hover {
+    background: var(--afro-surface-hover);
+    border-color: var(--afro-gold);
 }
 
-.filter-btn.active {
-    background-color: #e50914;
-    color: #ffffff;
-    border-color: #e50914;
-    box-shadow: 0 2px 10px rgba(229, 9, 20, 0.4);
+.seta-categorias {
+    margin-left: auto;
+    color: var(--afro-gold);
+    font-size: 22px;
 }
+
+.botao-menu-categorias[aria-expanded="true"] .seta-categorias {
+    transform: rotate(180deg);
+}
+
+.lista-categorias-catalogo {
+    position: absolute;
+    top: calc(100% + 8px);
+    left: 0;
+    z-index: 30;
+    width: 100%;
+    padding: 8px;
+}
+
+.lista-categorias-catalogo[hidden] {
+    display: none !important;
+}
+
+.item-categoria-menu {
+    display: block;
+    padding: 11px 13px;
+    margin: 3px 0;
+    color: var(--afro-text);
+    text-decoration: none;
+    border-radius: 8px;
+}
+
+.item-categoria-menu:hover,
+.item-categoria-menu.ativo {
+    color: var(--afro-gold-light);
+    background: var(--afro-surface-hover);
+}
+
+.item-categoria-menu.ativo {
+    border-left: 3px solid var(--afro-terracotta);
+}
+
+/* ---------- 4. Cabeçalho do catálogo ---------- */
 
 header {
-    text-align: center;
-    padding: 40px 20px;
-    max-width: 850px;
-    margin: 110px auto 10px auto;
+    max-width: 1100px;
 }
 
 header strong {
-    color: #ca8a04; 
-    font-size: 1.1rem;
-    text-transform: uppercase;
+    color: var(--afro-gold);
     letter-spacing: 1.5px;
-    font-weight: 700;
+}
+
+header h1,
+.secao-livros > h1 {
+    color: var(--afro-text);
+    letter-spacing: -0.035em;
 }
 
 header h1 {
-    font-size: 2.3rem;
-    font-weight: 800;
-    color: #ffffff;
-    margin: 12px 0 20px 0;
+    font-size: clamp(2rem, 4vw, 3.4rem);
     line-height: 1.2;
 }
 
 header p {
-    color: #9ca3af;
-    font-size: 1.05rem;
-    margin-bottom: 25px;
+    max-width: 720px;
+    margin-right: auto;
+    margin-left: auto;
+    color: var(--afro-muted);
 }
+
+/* ---------- 5. Pesquisa e filtros ---------- */
 
 .container-pesquisa {
-    display: flex;
-    justify-content: center;
-    gap: 10px;
-    max-width: 580px;
-    margin: 0 auto;
+    align-items: stretch;
 }
 
-#pesquisa {
-    flex: 1;
-    padding: 14px 22px;
-    font-size: 0.95rem;
-    border: 2px solid #374151;
-    border-radius: 50px;
+#pesquisa,
+#filtro-categoria,
+#filtro-genero {
+    width: 100%;
+    min-height: 46px;
+    padding: 11px 14px;
+    color: var(--afro-text);
+    background: var(--afro-surface);
+    border: 1px solid var(--afro-border);
+    border-radius: 10px;
+}
+
+#pesquisa::placeholder {
+    color: #B8ADBF;
+    opacity: 1;
+}
+
+#pesquisa:focus,
+#filtro-categoria:focus,
+#filtro-genero:focus {
     outline: none;
-    background-color: #1f1d24;
-    color: #ffffff;
-    box-shadow: 0 4px 12px rgba(0, 0, 0, 0.3);
-    transition: all 0.2s ease;
+    border-color: var(--afro-tech);
+    box-shadow: 0 0 0 3px rgb(32 198 210 / 12%);
 }
 
-#pesquisa:focus {
-    border-color: #e50914; 
-    box-shadow: 0 0 0 4px rgba(229, 9, 20, 0.25);
+#filtro-categoria option,
+#filtro-genero option,
+.pagina-adicionar select option {
+    color: var(--afro-text);
+    background: var(--afro-surface);
 }
 
 #botao-pesquisa {
-    background-color: #e50914;
-    color: #ffffff;
-    border: none;
-    padding: 0 28px;
-    font-size: 0.95rem;
-    font-weight: 700;
-    border-radius: 50px;
-    cursor: pointer;
-    box-shadow: 0 4px 15px rgba(229, 9, 20, 0.4);
-    transition: all 0.2s ease;
+    min-height: 46px;
+    padding: 10px 20px;
+    color: white;
+    background: var(--afro-terracotta);
+    border: 1px solid var(--afro-terracotta);
+    border-radius: 10px;
+    font-weight: 600;
 }
 
 #botao-pesquisa:hover {
-    background-color: #b91c1c;
-    transform: translateY(-2px);
+    background: var(--afro-terracotta-dark);
+    border-color: var(--afro-gold);
 }
 
-.grid-container {
-    display: grid !important;
-    width: 100%;
-    grid-template-columns: repeat(5, 1fr); 
-    gap: 24px; 
-    max-width: 1400px; 
-    margin: 20px auto 40px auto;
-    padding: 0 24px;
+#mensagem-pesquisa {
+    width: min(100% - 24px, 1350px);
+    margin: 0 auto 16px;
+    color: var(--afro-gold-light);
+    text-align: center;
+    font-size: 0.92rem;
+}
+
+/* ---------- 6. Grade do catálogo ---------- */
+
+.grid-container,
+.grid-cards,
+#card-container {
     box-sizing: border-box;
-}
-
-.card {
-    display: flex;
-    flex-direction: column;
-    height: auto;
-    min-height: 100%;
-    overflow: visible;
-    padding: 15px;
-}
-
-.card:hover {
-    transform: translateY(-8px) scale(1.02);
-    border-top-color: #e50914; /* Muda para vermelho vibrante no hover */
-    box-shadow: 0 15px 30px rgba(229, 9, 20, 0.25);
-}
-
-.card .badge {
-    align-self: flex-start;
-    background-color: rgba(202, 138, 4, 0.2);
-    color: #facc15; /* Amarelo vivo */
-    padding: 4px 10px;
-    border-radius: 20px;
-    font-size: 0.7rem;
-    font-weight: 700;
-    text-transform: uppercase;
-    letter-spacing: 0.5px;
-    margin-bottom: 10px;
-    border: 1px solid rgba(250, 204, 21, 0.3);
-}
-
-.card h2, .card .titulo {
-    font-size: 0.98rem;
-    font-weight: 700;
-    color: #ffffff;
-    margin-bottom: 8px;
-    line-height: 1.35;
-    max-height: none !important; 
-    overflow: visible !important;
-    white-space: normal;
-    overflow-wrap: break-word; 
-}
-
-.card img {
     width: 100%;
-    aspect-ratio: 3/4;
-    object-fit: cover;
-    object-position:center;
-    border-radius: 8px;
-    margin: 0 auto 10px auto;
-    display: block;
-}
-
-.card p {
-    font-size: 0.8rem;
-    color: #d1d5db;
-    margin-bottom: 4px;
-}
-
-.card .descricao {
-    font-size: 0.78rem;
-    color: #9ca3af;
-    margin-bottom: 8px;
-    line-height: 1.4;
-    max-height: 3.9em; 
-    overflow: hidden;
-}
-
-.card .detalhes {
-    font-size: 0.75rem;
-    color: #6b7280;
-    border-top: 1px solid #2e2a35;
-    padding-top: 8px;
-    margin-top: 2px;
-}
-
-.card-acoes {
-    margin-top: auto; 
-    display: flex;
-    flex-direction: column;
-    gap: 6px;
-}
-
-.card button {
-    width: 100%;
-    padding: 9px;
-    border: none;
-    border-radius: 8px;
-    font-size: 0.78rem;
-    font-weight: 700;
-    cursor: pointer;
-    letter-spacing: 0.3px;
-    transition: all 0.2s ease-in-out;
-    box-shadow: 0 2px 6px rgba(0, 0, 0, 0.3);
-}
-
-.card button:hover {
-    filter: brightness(1.18);
-    transform: translateY(-1px);
-    box-shadow: 0 4px 12px rgba(0,0,0,0.4);
-}
-
-.card .Saiba-Mais, .card .saiba-mais {
-    text-align: center;
-    margin-top: 6px;
-    font-size: 0.75rem;
-}
-
-.card .Saiba-Mais a, .card .saiba-mais a {
-    color: #facc15;
-    text-decoration: none;
-    font-weight: 700;
-}
-
-.card .Saiba-Mais a:hover, .card .saiba-mais a:hover {
-    color: #e50914;
-}
-
-.ler-catalogo-Livro {
-    background-color: #2563eb; /* Azul Vibrante Educativo */
-    color: #ffffff;
-}
-
-.adicionar-catalogo-Livro {
-    background-color: #ca8a04; /* Dourado/Amarelo Ancestral */
-    color: #ffffff;
-}
-
-.remover-catalogo-Livro {
-    background-color: #dc2626; /* Vermelho Alerta */
-    color: #ffffff;
-}
-
-/* --- BOTÕES PARA FILMES --- */
-.assistir-catalogo-Filme {
-    background-color: #059669; /* Verde Esmeralda NEABI */
-    color: #ffffff;
-}
-
-.adicionar-catalogo-Filme {
-    background-color: #ca8a04; /* Dourado/Amarelo Ancestral */
-    color: #ffffff;
-}
-
-.remover-catalogo-Filme {
-    background-color: #dc2626; /* Vermelho Alerta */
-    color: #ffffff;
-}
-
-/* --- BOTÕES PARA SÉRIES E DOCUMENTÁRIOS --- */
-.assistir-catalogo-Documentario,
-.assistir-catalogo-documentario,
-.assistir-catalogo-Serie-Documentario,
-.assistir-catalogo-serie-documentario {
-    background-color: #0891b2; /* Azul Turquesa / Mídia */
-    color: #ffffff;
-}
-
-.adicionar-catalogo-Documentario,
-.adicionar-catalogo-documentario,
-.adicionar-catalogo-Serie-Documentario,
-.adicionar-catalogo-serie-documentario {
-    background-color: #ca8a04; /* Dourado/Amarelo Ancestral */
-    color: #ffffff;
-}
-
-.remover-catalogo-Documentario,
-.remover-catalogo-documentario,
-.remover-catalogo-Serie-Documentario,
-.remover-catalogo-serie-documentario {
-    background-color: #dc2626; /* Vermelho Alerta */
-    color: #ffffff;
-}
-/* =========================================================
-   6. RODAPÉ ESTILIZADO
-   ========================================================= */
-footer {
-    text-align: center;
-    padding: 35px;
-    background-color: #08070a;
-    color: #9ca3af;
-    border-top: 3px solid #e50914;
-    font-size: 0.9rem;
-    margin-top: 50px;
-}
-
-/* =========================================================
-   AJUSTES FINAIS E RESPONSIVIDADE
-   ========================================================= */
-
-.site-logo-img {
-    display: flex;
-    align-items: center;
-    justify-content: center;
-}
-
-.filter-btn:focus-visible,
-#botao-pesquisa:focus-visible,
-.card button:focus-visible,
-.card a:focus-visible {
-    outline: 2px solid #facc15;
-    outline-offset: 3px;
-}
-
-.card button:active,
-#botao-pesquisa:active {
-    transform: translateY(0);
-}
-
-@media (max-width: 1200px) {
-    .grid-container {
-        grid-template-columns: repeat(4, 1fr);
-    }
-}
-
-@media (max-width: 900px) {
-    .grid-container {
-        grid-template-columns: repeat(3, 1fr);
-        gap: 18px;
-        padding: 0 18px;
-    }
-
-    header {
-        margin-top: 120px;
-    }
-}
-
-@media (max-width: 650px) {
-    .navbar {
-        padding: 10px 12px;
-        gap: 8px;
-    }
-
-    .nav-list {
-        gap: 6px;
-    }
-
-    .filter-btn {
-        font-size: 0.8rem;
-        padding: 5px 10px;
-    }
-
-    header {
-        padding: 30px 16px;
-        margin-top: 125px;
-    }
-
-    header h1 {
-        font-size: 1.8rem;
-    }
-
-    header p {
-        font-size: 0.95rem;
-    }
-
-    .container-pesquisa {
-        flex-direction: column;
-    }
-
-    #pesquisa,
-    #botao-pesquisa {
-        width: 100%;
-        min-height: 46px;
-    }
-
-    .grid-container {
-        grid-template-columns: repeat(2, 1fr);
-        gap: 14px;
-        padding: 0 12px;
-    }
-
-    .card {
-        padding: 11px;
-    }
-}
-
-@media (max-width: 420px) {
-    .grid-container {
-        grid-template-columns: 1fr;
-        max-width: 360px;
-    }
-
-    .card {
-        padding: 14px;
-    }
-}
-
-
-/* ===== CORREÇÕES DO CATÁLOGO ===== */
-
-.navbar {
-    width: 100%;
-    max-width: 100%;
-}
-
-/* Evita que o catálogo ultrapasse a tela */
-.grid-container {
-    display: grid;
-    grid-template-columns: repeat(5, minmax(0, 1fr));
-    width: 100%;
-    max-width: 1400px;
-    margin-inline: auto;
-}
-
-/* Aparência consistente dos cards */
-.card {
+    max-width: none;
     min-width: 0;
-    height: 100%;
-    padding: 15px;
-    background: #1b1921;
-    border: 1px solid #302b38;
-    border-top: 3px solid #ca8a04;
-    border-radius: 12px;
-    box-shadow: 0 5px 16px rgba(0, 0, 0, 0.25);
-    transition: transform 0.2s ease, box-shadow 0.2s ease;
 }
 
-.card img {
-    max-width: 100%;
+.grid-container,
+.grid-cards {
+    display: grid;
+    grid-template-columns:
+        repeat(auto-fit, minmax(min(100%, 190px), 1fr));
+    align-items: stretch;
+    gap: 18px;
+    margin: 0;
+    padding: 0;
 }
 
 #card-container {
-    scroll-margin-top: 180px;
+    scroll-margin-top: 140px;
 }
 
-/* Ajustes para telas menores */
-@media (max-width: 1200px) {
-    .grid-container {
-        grid-template-columns: repeat(4, minmax(0, 1fr));
-    }
+#card-container .card[hidden] {
+    display: none !important;
 }
 
-@media (max-width: 900px) {
-    .grid-container {
-        grid-template-columns: repeat(3, minmax(0, 1fr));
-    }
-}
+/* ---------- 7. Cards ---------- */
 
-@media (max-width: 650px) {
-    .grid-container {
-        grid-template-columns: repeat(2, minmax(0, 1fr));
-    }
-
-    .navbar {
-        position: sticky;
-    }
-}
-
-@media (max-width: 420px) {
-    .grid-container {
-        grid-template-columns: 1fr;
-    }
-}
-
-
-/* ===== INTEGRAÇÃO COM O HTML DO CATÁLOGO ===== */
-
-.navbar {
+.grid-container > .card,
+.grid-cards > .card,
+#card-container > .card {
     width: 100%;
-}
-
-.grid-cards,
-.grid-container {
-    display: grid;
-    grid-template-columns: repeat(5, minmax(0, 1fr));
-    width: 100%;
-    max-width: 1400px;
-    gap: 24px;
-    margin: 20px auto 40px;
-    padding: 0 24px;
+    min-width: 0;
+    max-width: 100%;
 }
 
 .card {
-    min-width: 0;
-    height: 100%;
-    padding: 15px;
-    background: #1b1921;
-    border: 1px solid #302b38;
-    border-top: 3px solid #ca8a04;
-    border-radius: 12px;
-    box-shadow: 0 5px 16px rgba(0, 0, 0, 0.25);
-}
-
-.card-content {
-    min-width: 0;
-}
-
-.card-actions {
     display: flex;
     flex-direction: column;
-    gap: 8px;
-    margin-top: auto;
+    min-width: 0;
+    height: auto;
+    min-height: 0;
+    aspect-ratio: auto;
+    padding: 12px;
+    overflow: visible;
+    color: var(--afro-text);
+    background: linear-gradient(
+        145deg,
+        var(--afro-surface),
+        #1B1722
+    );
+    border: 1px solid var(--afro-border);
+    border-top: 2px solid var(--afro-gold);
+    border-radius: var(--afro-radius);
+    box-shadow: 0 7px 22px rgb(0 0 0 / 20%);
+    transition:
+        transform var(--afro-transition),
+        border-color var(--afro-transition),
+        box-shadow var(--afro-transition);
 }
 
-.card-actions .btn-info {
+.card:hover {
+    transform: translateY(-3px);
+    border-color: var(--afro-tech);
+    box-shadow: 0 12px 28px rgb(0 0 0 / 32%);
+}
+
+/* ---------- 8. Imagens e capas ---------- */
+
+.card img {
     display: block;
-    padding: 9px;
-    text-align: center;
+    flex: 0 0 auto;
+    width: 100%;
+    height: 180px;
+    min-height: 0;
+    margin: 0 0 8px;
+    object-fit: cover;
+    object-position: center;
+    background: #1B1722;
     border-radius: 8px;
-    color: #facc15;
+}
+
+/* ---------- 9. Textos dos cards ---------- */
+
+.card h2,
+.card .titulo {
+    margin: 3px 0 6px;
+    color: var(--afro-text);
+    font-size: 0.95rem;
+    line-height: 1.3;
+    overflow-wrap: anywhere;
+}
+
+.card p {
+    margin: 4px 0;
+    color: var(--afro-muted);
+    font-size: 0.82rem;
+    line-height: 1.4;
+}
+
+.card .descricao {
+    color: var(--afro-muted);
+}
+
+.card .detalhes {
+    border-top-color: var(--afro-border);
+    color: var(--afro-muted);
+}
+
+.card .badge {
+    color: var(--afro-tech-light);
+    background: rgb(32 198 210 / 9%);
+    border: 1px solid rgb(32 198 210 / 25%);
+    border-radius: 7px;
+}
+
+.card .Saiba-Mais a,
+.card .saiba-mais a {
+    color: var(--afro-gold);
+}
+
+/* ---------- 10. Botões dos cards ---------- */
+
+.card .card-actions {
+    display: grid;
+    grid-template-columns: repeat(2, minmax(0, 1fr));
+    flex-direction: column;
+    align-items: stretch;
+    gap: 6px;
+    width: 100%;
+    min-width: 0;
+    margin-top: auto;
+    padding-top: 10px;
+}
+
+.card .card-actions > .btn-info {
+    grid-column: 1 / -1;
+}
+
+.card .card-actions > button {
+    width: 100%;
+    min-width: 0;
+}
+
+/* Estilo comum dos botões */
+.card .card-actions button {
+    display: flex;
+    align-items: center;
+    justify-content: center;
+    flex: 0 0 auto;
+    width: 100%;
+    min-width: 0;
+    max-width: 100%;
+    min-height: 36px;
+    margin: 0;
+    padding: 7px 5px;
+    color: white;
+    border: 1px solid transparent;
+    border-radius: 7px;
+    font-family: inherit;
+    font-size: 0.73rem;
+    font-weight: 600;
+    line-height: 1.2;
+    text-align: center;
+    white-space: normal;
+    overflow-wrap: anywhere;
+}
+
+/* Ler ou Assistir */
+.card .card-actions button[class*="ler-catalogo-"],
+.card .card-actions button[class*="assistir-catalogo-"],
+.card .card-actions button[class*="ouvir-catalogo-"] {
+    width: 100%;
+}
+
+/* Cores por tipo de conteúdo */
+.card .card-actions .ler-catalogo-Livro {
+    background: #78613A;
+}
+
+.card .card-actions .assistir-catalogo-Filme {
+    background: #57427D;
+}
+
+.card .card-actions .assistir-catalogo-Serie {
+    background: #674A87;
+}
+
+.card .card-actions .assistir-catalogo-Documentario,
+.card .card-actions .assistir-catalogo-documentario,
+.card .card-actions .assistir-catalogo-Serie-Documentario,
+.card .card-actions .assistir-catalogo-serie-documentario {
+    background: #286D78;
+}
+
+.card .card-actions .ouvir-catalogo-Musica,
+.card .card-actions .ouvir-catalogo-musica {
+    background: #853c3c;
+}
+
+.card .card-actions .assistir-catalogo-Curta,
+.card .card-actions .assistir-catalogo-curta {
+    background: #8a291c;
+}
+
+/* Adicionar: linha inteira */
+.card .card-actions button.btn-add,
+.card .card-actions button[class*="adicionar-catalogo-"] {
+    display: flex;
+    width: 100%;
+    color: #FFF9EC !important;
+    background: var(--afro-terracotta) !important;
+    border-color: rgb(229 184 75 / 60%) !important;
+}
+
+.card .card-actions button.btn-add:hover,
+.card .card-actions button[class*="adicionar-catalogo-"]:hover {
+    background: var(--afro-terracotta-dark) !important;
+    border-color: var(--afro-gold) !important;
+}
+
+/* Remover e Meus Favoritos na mesma linha */
+.card .card-actions .acoes-secundarias {
+    grid-column: 1 / -1;
+    display: flex;
+    flex-direction: row;
+    flex-wrap: nowrap;
+    align-items: stretch;
+    gap: 6px;
+    width: 100%;
+    min-width: 0;
+}
+
+/* Os dois elementos dividem o espaço igualmente */
+.card .card-actions .acoes-secundarias > button,
+.card .card-actions .acoes-secundarias > a {
+    display: flex;
+    flex: 1 1 0;
+    align-items: center;
+    justify-content: center;
+    width: 0;
+    min-width: 0;
+    max-width: 100%;
+    min-height: 36px;
+    margin: 0;
+    padding: 7px 4px;
+    border-radius: 7px;
+    font-family: inherit;
+    font-size: 0.73rem;
+    font-weight: 600;
+    line-height: 1.2;
+    text-align: center;
     text-decoration: none;
+    white-space: normal;
+    overflow-wrap: anywhere;
+}
+
+/* Remover */
+.card .card-actions .acoes-secundarias button[class*="remover-catalogo-"] {
+    color: white;
+    background: #713642;
+    border: 1px solid #98505D;
+}
+
+.card .card-actions .acoes-secundarias button[class*="remover-catalogo-"]:hover {
+    background: #8D3041;
+    border-color: var(--afro-gold);
+}
+
+/* Meus Favoritos */
+.card .card-actions .acoes-secundarias .btn-favoritos {
+    color: var(--afro-gold-light);
+    background: var(--afro-surface-hover);
+    border: 1px solid var(--afro-gold);
+}
+
+.card .card-actions .acoes-secundarias .btn-favoritos:hover {
+    color: var(--afro-tech-light);
+    background: #292333;
+    border-color: var(--afro-tech);
+}
+
+/* Saiba Mais: linha inteira */
+.card .card-actions .btn-info {
+    display: flex;
+    flex: 0 0 auto;
+    align-items: center;
+    justify-content: center;
+    width: 100%;
+    min-width: 0;
+    max-width: 100%;
+    min-height: 34px;
+    margin: 0;
+    padding: 7px 5px;
+    color: var(--afro-gold);
+    background: rgb(229 184 75 / 7%);
+    border: 1px solid var(--afro-border);
+    border-radius: 7px;
+    font-size: 0.76rem;
+    line-height: 1.2;
+    text-align: center;
+    text-decoration: none;
+    overflow-wrap: anywhere;
+}
+
+.card .card-actions .btn-info:hover {
+    color: var(--afro-tech-light);
+    background: rgb(32 198 210 / 8%);
+    border-color: var(--afro-tech);
+}
+
+.card .Saiba-Mais a:hover,
+.card .saiba-mais a:hover {
+    color: var(--afro-tech-light);
+}
+
+/* Recuperar as cores dos botões Assistir */
+.card .card-actions button[class*="assistir-catalogo-"] {
+    color: #FFFFFF !important;
+    background-color: #577d83 !important;
+    border: 1px solid var(--afro-gold) !important;
+}
+
+/* Efeito ao passar o mouse */
+.card .card-actions button[class*="assistir-catalogo-"]:hover {
+    background-color: #503664 !important;
+    border-color: var(--afro-tech) !important;
+}
+
+/* Recuperar as cores dos botões Remover */
+.card .card-actions button[class*="remover-catalogo-"] {
+    color: #FFFFFF !important;
+    background-color: #963624 !important;
+    border: 1px solid var(--afro-gold) !important;
+}
+
+/* Efeito ao passar o mouse */
+.card .card-actions button[class*="remover-catalogo-"]:hover {
+    background-color: #8D3041 !important;
+    border-color: var(--afro-gold) !important;
+}
+
+/* ---------- 11. Página de detalhes da obra ---------- */
+
+.pagina-obra,
+.tela-cheia-obra {
+    color: var(--afro-text);
+    background:
+        radial-gradient(
+            ellipse at 12% 10%,
+            rgb(32 198 210 / 7%),
+            transparent 36%
+        ),
+        radial-gradient(
+            ellipse at 88% 35%,
+            rgb(100 55 145 / 15%),
+            transparent 40%
+        ),
+        var(--afro-bg);
+}
+
+.pagina-obra .voltar,
+.tela-cheia-obra .voltar {
+    color: var(--afro-gold-light);
+    background: var(--afro-surface);
+    border: 1px solid var(--afro-border);
+    border-radius: 999px;
+}
+
+.pagina-obra .voltar:hover,
+.tela-cheia-obra .voltar:hover {
+    color: var(--afro-tech-light);
+    border-color: var(--afro-tech);
+}
+
+.pagina-obra .obra-apresentacao {
+    max-width: 1150px;
+}
+
+.pagina-obra .obra-apresentacao > .obra-categoria {
+    color: var(--afro-tech-light);
+    background: rgb(32 198 210 / 9%);
+    border: 1px solid rgb(32 198 210 / 30%);
+    border-radius: 8px;
+    letter-spacing: 1px;
+}
+
+.pagina-obra .obra-apresentacao > h1,
+.pagina-obra > h1,
+.tela-cheia-obra > h1 {
+    color: var(--afro-text);
+    letter-spacing: -0.03em;
+}
+
+.pagina-obra .obra-capa-container .capa-obra,
+.pagina-obra > .capa-obra,
+.tela-cheia-obra > .capa-obra {
+    max-width: 100%;
+    border: 1px solid rgb(229 184 75 / 30%);
+    border-radius: 14px;
+    box-shadow: var(--afro-shadow);
+}
+
+.pagina-obra .obra-resumo,
+.pagina-obra .obra-descricao,
+.obra-informacoes .obra-descricao {
+    color: var(--afro-muted);
+}
+
+.pagina-obra .obra-informacoes,
+.obra-informacoes {
+    color: var(--afro-text);
+    background: linear-gradient(
+        145deg,
+        var(--afro-surface),
+        #201A2A
+    );
+    border: 1px solid var(--afro-border);
+    border-top: 3px solid var(--afro-gold);
+    border-radius: 16px;
+    box-shadow: var(--afro-shadow);
+}
+
+.pagina-obra .obra-informacoes > h2,
+.pagina-obra .obra-descricao-secao > h2,
+.obra-informacoes h2 {
+    color: var(--afro-gold);
+}
+
+.pagina-obra .obra-item {
+    color: var(--afro-text);
+    background: rgb(18 17 22 / 55%);
+    border: 1px solid var(--afro-border);
+    border-radius: 10px;
+}
+
+.pagina-obra .obra-rotulo,
+.obra-informacoes p strong {
+    color: var(--afro-tech-light);
+}
+
+.pagina-obra .obra-item p {
+    color: var(--afro-text);
+}
+
+/* ---------- 12. Tela Adicionar obra ---------- */
+
+.pagina-adicionar.card {
+    position: relative;
+    left: 50%;
+    width: min(1400px, calc(100% - 40px));
+    max-width: none;
+    min-height: calc(100vh - 100px);
+    margin: 24px 0;
+    padding: clamp(24px, 4vw, 56px);
+    transform: translateX(-50%);
+    color: var(--afro-text);
+    background: var(--afro-surface);
+    border: 1px solid var(--afro-border);
+    border-top: 3px solid var(--afro-gold);
+    border-radius: 18px;
+    box-shadow: var(--afro-shadow);
+}
+
+.pagina-adicionar > a {
+    display: inline-block;
+    margin-bottom: 24px;
+    color: var(--afro-tech-light);
+    font-weight: 600;
+    text-decoration: none;
+}
+
+.pagina-adicionar > a:hover {
+    color: var(--afro-gold-light);
+    text-decoration: underline;
+}
+
+.pagina-adicionar .catalogo-intro {
+    margin-bottom: 32px;
+}
+
+.pagina-adicionar .catalogo-intro h1 {
+    margin: 0 0 12px;
+    color: var(--afro-gold);
+    font-size: clamp(28px, 3vw, 42px);
+    line-height: 1.2;
+}
+
+.pagina-adicionar .catalogo-intro p {
+    max-width: 760px;
+    color: var(--afro-muted);
+    font-size: 1.05rem;
+    line-height: 1.7;
+}
+
+.pagina-adicionar .formulario-obra {
+    display: grid;
+    grid-template-columns: repeat(2, minmax(0, 1fr));
+    gap: 24px;
+    width: 100%;
+    margin: 0;
+}
+
+.pagina-adicionar .campo-obra {
+    display: flex;
+    flex-direction: column;
+    min-width: 0;
+    gap: 9px;
+}
+
+.pagina-adicionar .campo-obra label {
+    color: var(--afro-gold-light);
+    font-weight: 600;
+}
+
+.pagina-adicionar .campo-obra input,
+.pagina-adicionar .campo-obra select,
+.pagina-adicionar .campo-obra textarea {
+    display: block;
+    width: 100%;
+    min-height: 52px;
+    padding: 13px 15px;
+    color: var(--afro-text);
+    background: #201A2A;
+    border: 1px solid #655775;
+    border-radius: 9px;
+    font: inherit;
+}
+
+.pagina-adicionar .campo-obra input::placeholder,
+.pagina-adicionar .campo-obra textarea::placeholder {
+    color: #B8ADBF;
+    opacity: 1;
+}
+
+.pagina-adicionar .campo-obra input:focus,
+.pagina-adicionar .campo-obra select:focus,
+.pagina-adicionar .campo-obra textarea:focus {
+    outline: none;
+    border-color: var(--afro-tech);
+    box-shadow: 0 0 0 3px rgb(32 198 210 / 12%);
+}
+
+.pagina-adicionar .campo-obra textarea {
+    min-height: 160px;
+    resize: vertical;
+}
+
+.pagina-adicionar .campo-obra:has(textarea) {
+    grid-column: 1 / -1;
+}
+
+.pagina-adicionar .formulario-obra button[type="submit"] {
+    grid-column: 1 / -1;
+    justify-self: start;
+    min-width: 220px;
+    min-height: 52px;
+    padding: 13px 24px;
+    color: white;
+    background: var(--afro-terracotta);
+    border: 1px solid var(--afro-gold);
+    border-radius: 9px;
+    font: inherit;
     font-weight: 700;
 }
 
-.btn-filtro {
-    background: transparent;
-    border: 2px solid transparent;
-    color: #e5e7eb;
-    padding: 6px 14px;
-    border-radius: 20px;
-    cursor: pointer;
+.pagina-adicionar .formulario-obra button[type="submit"]:hover {
+    background: var(--afro-terracotta-dark);
+    border-color: var(--afro-tech);
 }
 
-.btn-filtro:hover,
-.btn-filtro.ativo {
-    background: #e50914;
-    color: #fff;
+/* ---------- 13. Tela Remover obra ---------- */
+
+.pagina-remover.card {
+    position: relative;
+    left: 50%;
+    width: min(1100px, calc(100% - 40px));
+    max-width: none;
+    min-height: 400px;
+    margin: 24px 0;
+    padding: clamp(24px, 4vw, 56px);
+    transform: translateX(-50%);
+    color: var(--afro-text);
+    background: var(--afro-surface);
+    border: 1px solid var(--afro-border);
+    border-top: 3px solid var(--afro-terracotta);
+    border-radius: 18px;
+    box-shadow: var(--afro-shadow);
 }
 
-@media (max-width: 1200px) {
-    .grid-cards,
-    .grid-container {
-        grid-template-columns: repeat(4, minmax(0, 1fr));
-    }
+.pagina-remover h1 {
+    margin: 0 0 24px;
+    color: var(--afro-gold);
+    font-size: clamp(28px, 3vw, 42px);
 }
 
-@media (max-width: 900px) {
-    .grid-cards,
-    .grid-container {
+.pagina-remover p {
+    color: var(--afro-muted);
+    font-size: 1.05rem;
+    line-height: 1.7;
+}
+
+.pagina-remover h2 {
+    margin: 24px 0;
+    padding: 20px;
+    overflow-wrap: anywhere;
+    color: var(--afro-gold-light);
+    background: #201A2A;
+    border: 1px solid var(--afro-border);
+    border-radius: 10px;
+    font-size: clamp(21px, 2.5vw, 30px);
+}
+
+.pagina-remover form {
+    display: flex;
+    flex-wrap: wrap;
+    align-items: center;
+    gap: 16px;
+    margin-top: 28px;
+}
+
+.pagina-remover .btn-remover-obra {
+    min-height: 50px;
+    padding: 12px 24px;
+    color: white;
+    background: var(--afro-terracotta);
+    border: 1px solid var(--afro-gold);
+    border-radius: 9px;
+    font: inherit;
+    font-weight: 700;
+}
+
+.pagina-remover .btn-remover-obra:hover {
+    background: var(--afro-terracotta-dark);
+}
+
+.pagina-remover form a {
+    display: inline-block;
+    padding: 12px 16px;
+    color: var(--afro-tech-light);
+    text-decoration: none;
+}
+
+.pagina-remover form a:hover {
+    color: var(--afro-gold-light);
+    text-decoration: underline;
+}
+
+/* ---------- 14. Rodapé ---------- */
+
+footer {
+    color: var(--afro-muted);
+    background: #0D0B12;
+    border-top: 1px solid rgb(229 184 75 / 30%);
+}
+
+/* ---------- 15. Responsividade ---------- */
+
+@media (max-width: 1000px) {
+    .grid-container,
+    .grid-cards {
         grid-template-columns: repeat(3, minmax(0, 1fr));
+        gap: 14px;
+        padding-left: 0;
+        padding-right: 0;
+    }
+
+    .card {
+        padding: 10px;
     }
 }
 
 @media (max-width: 650px) {
-    .grid-cards,
-    .grid-container {
+    .menu-categorias-catalogo {
+        width: 100%;
+    }
+
+    .grid-container,
+    .grid-cards {
         grid-template-columns: repeat(2, minmax(0, 1fr));
-        gap: 14px;
-        padding: 0 12px;
+        gap: 10px;
+        padding-left: 0;
+        padding-right: 0;
+    }
+
+    .card {
+        padding: 8px;
+        border-radius: 10px;
+    }
+
+    .card img {
+        height: 150px;
+        margin-bottom: 5px;
+        border-radius: 6px;
+    }
+
+    .card h2,
+    .card .titulo {
+        font-size: 0.78rem;
+        line-height: 1.25;
+    }
+
+    .card p {
+        font-size: 0.7rem;
+        line-height: 1.3;
+    }
+
+    .card .card-actions {
+        gap: 5px;
+        padding-top: 5px;
+    }
+
+    .card .card-actions button {
+        min-height: 32px;
+        padding: 6px 4px;
+        font-size: 0.68rem;
+    }
+
+    .card .card-actions .acoes-secundarias > button,
+    .card .card-actions .acoes-secundarias > a {
+        min-height: 32px;
+        padding: 6px 3px;
+        font-size: 0.64rem;
+    }
+
+    .card .card-actions .btn-info {
+        min-height: 29px;
+        padding: 5px;
+        font-size: 0.68rem;
+    }
+
+    .container-pesquisa {
+        gap: 8px;
+    }
+
+    .pagina-obra .obra-informacoes {
+        padding: 18px 12px;
+    }
+
+    .pagina-adicionar.card,
+    .pagina-remover.card {
+        width: calc(100% - 24px);
+        min-height: auto;
+        margin: 12px 0;
+        padding: 22px 16px;
+        border-radius: 12px;
+    }
+
+    .pagina-adicionar .formulario-obra {
+        grid-template-columns: minmax(0, 1fr);
+        gap: 18px;
+    }
+
+    .pagina-adicionar .campo-obra:has(textarea) {
+        grid-column: 1 / -1;
+    }
+
+    .pagina-adicionar .formulario-obra button[type="submit"] {
+        grid-column: 1 / -1;
+        width: 100%;
+        min-width: 0;
+    }
+}
+
+/* ---------- 16. Movimento reduzido ---------- */
+
+@media (prefers-reduced-motion: reduce) {
+    *,
+    *::before,
+    *::after {
+        scroll-behavior: auto !important;
+        animation-duration: 0.01ms !important;
+        animation-iteration-count: 1 !important;
+        transition-duration: 0.01ms !important;
+    }
+}
+
+
+/* =========================================================
+   17. PÁGINA ACESSAR OBRA
+   Layout único para todas as categorias
+   ========================================================= */
+
+.pagina-obra {
+    width: min(1200px, calc(100% - 40px));
+    min-height: calc(100vh - 120px);
+    margin: 30px auto;
+    padding: clamp(20px, 4vw, 45px);
+    color: var(--afro-text);
+    background: linear-gradient(
+        145deg,
+        var(--afro-surface),
+        #1B1722
+    );
+    border: 1px solid var(--afro-border);
+    border-top: 3px solid var(--afro-gold);
+    border-radius: 18px;
+    box-shadow: var(--afro-shadow);
+}
+
+/* Botão voltar */
+
+.obra-voltar {
+    display: inline-block;
+    margin-bottom: 28px;
+    padding: 10px 18px;
+    color: var(--afro-gold-light);
+    background: #201A2A;
+    border: 1px solid var(--afro-border);
+    border-radius: 8px;
+    text-decoration: none;
+}
+
+.obra-voltar:hover {
+    color: var(--afro-tech-light);
+    border-color: var(--afro-tech);
+}
+
+/* Apresentação principal */
+
+.obra-hero {
+    display: grid;
+    grid-template-columns: minmax(220px, 340px) minmax(0, 1fr);
+    gap: clamp(25px, 5vw, 55px);
+    align-items: start;
+}
+
+/* Capa */
+
+.obra-capa {
+    width: 100%;
+    min-width: 0;
+}
+
+.obra-imagem {
+    display: block;
+    width: 100%;
+    max-height: 480px;
+    object-fit: contain;
+    object-position: center;
+    background: #17131E;
+    border: 1px solid rgb(229 184 75 / 35%);
+    border-radius: 12px;
+    box-shadow: var(--afro-shadow);
+}
+
+.obra-sem-imagem {
+    display: flex;
+    flex-direction: column;
+    align-items: center;
+    justify-content: center;
+    min-height: 320px;
+    padding: 20px;
+    color: var(--afro-muted);
+    background: #201A2A;
+    border: 1px dashed var(--afro-border);
+    border-radius: 12px;
+    text-align: center;
+}
+
+.obra-sem-imagem span {
+    margin-bottom: 10px;
+    color: var(--afro-gold);
+    font-size: 1.3rem;
+    font-weight: 700;
+}
+
+/* Informações principais */
+
+.obra-conteudo {
+    min-width: 0;
+}
+
+.obra-etiqueta {
+    display: inline-block;
+    padding: 7px 13px;
+    color: var(--afro-tech-light);
+    background: rgb(32 198 210 / 9%);
+    border: 1px solid rgb(32 198 210 / 30%);
+    border-radius: 8px;
+    font-size: 0.85rem;
+    font-weight: 700;
+}
+
+.obra-conteudo h1 {
+    margin: 18px 0;
+    color: var(--afro-gold-light);
+    font-size: clamp(2rem, 4vw, 3rem);
+    line-height: 1.2;
+    overflow-wrap: anywhere;
+}
+
+.obra-destaque {
+    margin: 20px 0;
+    color: var(--afro-text);
+    font-size: 1.1rem;
+}
+
+.obra-destaque span {
+    display: block;
+    margin-bottom: 4px;
+    color: var(--afro-tech-light);
+    font-size: 0.9rem;
+    font-weight: 700;
+}
+
+.obra-genero,
+.obra-tipo {
+    color: var(--afro-muted);
+}
+
+.obra-genero strong,
+.obra-tipo strong {
+    color: var(--afro-tech-light);
+}
+
+/* Descrição */
+
+.obra-sinopse {
+    margin-top: 30px;
+    padding: 22px;
+    background: rgb(18 17 22 / 55%);
+    border: 1px solid var(--afro-border);
+    border-left: 3px solid var(--afro-terracotta);
+    border-radius: 10px;
+}
+
+.obra-sinopse h2,
+.obra-ficha h2 {
+    margin-top: 0;
+    color: var(--afro-gold);
+}
+
+.obra-sinopse p {
+    color: var(--afro-muted);
+    line-height: 1.8;
+    overflow-wrap: anywhere;
+}
+
+/* Ficha técnica */
+
+.obra-ficha {
+    margin-top: 45px;
+    padding-top: 28px;
+    border-top: 1px solid var(--afro-border);
+}
+
+.obra-grade {
+    display: grid;
+    grid-template-columns: repeat(3, minmax(0, 1fr));
+    gap: 15px;
+}
+
+.obra-dado {
+    min-width: 0;
+    padding: 18px;
+    background: #201A2A;
+    border: 1px solid var(--afro-border);
+    border-radius: 10px;
+}
+
+.obra-dado span {
+    color: var(--afro-tech-light);
+    font-size: 0.85rem;
+    font-weight: 700;
+}
+
+.obra-dado p {
+    margin-bottom: 0;
+    color: var(--afro-text);
+    overflow-wrap: anywhere;
+}
+
+/* Responsividade */
+
+@media (max-width: 700px) {
+
+    .pagina-obra {
+        width: calc(100% - 24px);
+        margin: 15px auto;
+        padding: 20px 15px;
+    }
+
+    .obra-hero {
+        grid-template-columns: minmax(0, 1fr);
+    }
+
+    .obra-capa {
+        max-width: 300px;
+        margin: 0 auto;
+    }
+
+    .obra-grade {
+        grid-template-columns: repeat(2, minmax(0, 1fr));
     }
 }
 
 @media (max-width: 420px) {
-    .grid-cards,
-    .grid-container {
-        grid-template-columns: 1fr;
-        max-width: 360px;
+
+    .obra-grade {
+        grid-template-columns: minmax(0, 1fr);
     }
 }
 
+/* =========================================
+   AJUSTES DO CATÁLOGO
+========================================= */
 
-/* Menu suspenso de categorias */
-.menu-categorias {
-    position: relative;
-    display: inline-block;
-    z-index: 1000;
-}
-
-.opcoes-categorias {
-    display: none;
-    position: absolute;
-    top: 100%;
-    left: 0;
-    min-width: 200px;
-    background-color: #27130C;
-    border: 1px solid #E5A23B;
-    border-radius: 8px;
-    padding: 8px;
-    box-sizing: border-box;
-    flex-direction: column;
-    gap: 6px;
-    box-shadow: 0 8px 20px rgba(0, 0, 0, 0.4);
-    z-index: 1001;
-}
-
-.menu-categorias.aberto .opcoes-categorias {
-    display: flex;
-}
-
-.opcoes-categorias .btn-filtro {
-    display: block;
-    width: 100%;
-    text-align: left;
-    margin: 0;
-}
-
-/* Evita que o menu seja cortado */
-.menu-categorias,
-.catalogo-header,
 .catalogo-intro {
-    overflow: visible;
+    width: min(1100px, calc(100% - 32px));
+    margin: 36px auto 22px;
+    padding: 0 12px;
+    text-align: center;
 }
 
-.menu-categorias {
-    position: relative;
-    display: inline-block;
-    overflow: visible;
-    z-index: 1000;
+.container-pesquisa {
+    display: grid;
+    gap: 12px;
+    width: min(1100px, calc(100% - 32px));
+    margin: 24px auto 30px;
+    color: var(--afro-text);
 }
 
-.opcoes-categorias {
-    display: none;
-    position: absolute;
-    top: 100%;
-    left: 0;
-    min-width: 200px;
-    padding: 8px;
-    flex-direction: column;
-    gap: 6px;
-    background: #27130C;
-    border: 1px solid #E5A23B;
-    border-radius: 8px;
-    z-index: 1001;
+.pesquisa-linha {
+    display: grid;
+    grid-template-columns: minmax(0, 1fr) auto;
+    gap: 10px;
+    width: 100%;
 }
 
-.menu-categorias.aberto .opcoes-categorias {
+.filtro-item {
     display: flex;
+    flex-wrap: wrap;
+    align-items: center;
+    gap: 12px;
 }
 
-.opcoes-categorias .btn-filtro {
+.menu-categorias-catalogo {
+    width: min(100%, 320px);
+}
+
+.lista-categorias-catalogo button {
     display: block;
     width: 100%;
+    padding: 11px 13px;
+    color: var(--afro-text);
+    background: transparent;
+    border: 0;
+    border-radius: 8px;
     text-align: left;
-    margin: 0;
+    cursor: pointer;
+}
+
+.lista-categorias-catalogo button:hover {
+    color: var(--afro-gold-light);
+    background: var(--afro-surface-hover);
+}
+
+/* Botão Adicionar ocupa uma linha inteira */
+
+.card .card-actions button.btn-add,
+.card .card-actions button[class*="adicionar-catalogo-"] {
+    grid-column: 1 / -1;
+}
+
+/* Mantém os botões secundários juntos */
+
+.card .card-actions .acoes-secundarias {
+    grid-column: 1 / -1;
+}
+
+/* Ajuste da pesquisa em telas pequenas */
+
+@media (max-width: 650px) {
+    .pesquisa-linha {
+        grid-template-columns: minmax(0, 1fr);
+    }
+
+    .pesquisa-linha button {
+        width: 100%;
+    }
+
+    .filtro-item {
+        align-items: stretch;
+        flex-direction: column;
+    }
+
+    .menu-categorias-catalogo {
+        width: 100%;
+    }
 }

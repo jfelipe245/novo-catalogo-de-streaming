@@ -17,13 +17,23 @@
 
     {% if session.get('usuario_id') %}
     <nav class="navbar">
-        
-        <ul class="nav-list">
-            <li><a href="{{ url_for('catalogo') }}">Catálogo</a></li>
-            <li><a href="{{ url_for('meus_favoritos') }}">Meus Favoritos</a></li>
-            <li><a href="{{ url_for('saiba_mais') }}">Saiba Mais</a></li>
-            <li><a href="{{ url_for('logout') }}">Sair</a></li>
-        </ul>
+    <ul class="nav-list">
+    <li><a href="{{ url_for('catalogo') }}">Catálogo</a></li>
+
+    <li><a href="{{ url_for('meus_favoritos') }}">
+        Meus Favoritos
+    </a></li>
+
+    <li><a href="{{ url_for('adicionar') }}">
+        Adicionar Livro
+    </a></li>
+
+    <li><a href="{{ url_for('saiba_mais') }}">
+        Saiba Mais
+    </a></li>
+
+    <li><a href="{{ url_for('logout') }}">Sair</a></li>
+</ul>
     </nav>
     {% endif %}
 
@@ -40,7 +50,7 @@
     </footer>
 
     {% block js %}
-    <script src="{{ url_for('static', filename='js/base.js') }}"></script>
+        <script src="{{ url_for('static', filename='js/base.js') }}"></script>
     {% endblock js %}
 
 </body>

@@ -1,0 +1,77 @@
+
+{% extends "base.html" %}
+
+{% block title %}
+Remover obra | AfroEdu Stream
+{% endblock title %}
+
+{% block css %}
+<link rel="stylesheet" href="{{ url_for('static', filename='css/catalogo.css') }}">
+{% endblock css %}
+
+{% block conteudo %}
+
+<section class="pagina-remover card">
+
+    <h1>Remover obra</h1>
+
+    {% if mensagem %}
+        <p role="alert">{{ mensagem }}</p>
+    {% endif %}
+
+    {% if obra_id and categoria and titulo %}
+
+        <p>
+            Você selecionou a seguinte obra para remoção temporária:
+        </p>
+
+        <h2>{{ titulo }}</h2>
+
+        <p>
+            Categoria: {{ categoria }}
+        </p>
+
+        <p>
+            A obra será ocultada temporariamente do catálogo.
+            Ela não será excluída do banco de dados.
+        </p>
+
+        <form action="{{ url_for('remover') }}" method="POST">
+
+            <input type="hidden" name="titulo" value="{{ titulo }}">
+            <input type="hidden" name="categoria" value="{{ categoria }}">
+            <input type="hidden" name="obra_id" value="{{ obra_id }}">
+
+            <button
+                type="submit"
+                class="btn-remover-obra"
+                onclick="return confirm('Tem certeza de que deseja ocultar esta obra temporariamente?');">
+                Confirmar remoção
+            </button>
+
+            <a href="{{ url_for('catalogo') }}">
+                Cancelar e voltar ao catálogo
+            </a>
+
+        </form>
+
+    {% else %}
+
+        <p>
+            Nenhuma obra foi selecionada. Volte ao catálogo e escolha
+            a obra que deseja remover temporariamente.
+        </p>
+
+        <a href="{{ url_for('catalogo') }}">
+            Voltar ao catálogo
+        </a>
+
+    {% endif %}
+
+</section>
+
+{% endblock conteudo %}
+
+{% block js %}
+<script src="{{ url_for('static', filename='js/catalogo.js') }}"></script>
+{% endblock js %}

@@ -5,7 +5,8 @@ from flask_migrate import Migrate
 app = Flask(__name__)
 app.secret_key = 'AfroEdu_RaizesDosSaberes_Conexao_2026!'
 
-app.config['SQLALCHEMY_DATABASE_URI'] = (r'sqlite:///D:/meu github/meus projetos/catalogo de streaming/login.db')
+
+app.config['SQLALCHEMY_DATABASE_URI'] = 'sqlite:///D:/meu github/meus projetos/catalogo de streaming/instance/login.db'
 app.config['SQLALCHEMY_TRACK_MODIFICATIONS'] = False
 
 db = SQLAlchemy(app)
@@ -99,7 +100,7 @@ class Curta_Metragem(db.Model):
     ano_lancamento = db.Column(db.Integer, nullable=False)
 
 
-class Musica_de_protesto(db.Model):
+class Musica(db.Model):
     __tablename__ = 'Musica_de_protesto'
 
     id = db.Column(db.Integer, primary_key=True)
@@ -111,6 +112,32 @@ class Musica_de_protesto(db.Model):
     descricao = db.Column(db.Text, nullable=False)
     ano_lancamento = db.Column(db.Integer, nullable=False)
 
+
+# CLASSE PRINCIPAL DE OBRAS
+class Obra(db.Model):
+
+    __tablename__ = "Obras"
+
+    id = db.Column(db.Integer, primary_key=True)
+
+    titulo = db.Column(db.String(200), nullable=False)
+    genero = db.Column(db.String(100))
+    tipo = db.Column(db.String(50))
+
+    autor = db.Column(db.String(150))
+    diretor = db.Column(db.String(150))
+    artista = db.Column(db.String(150))
+    album = db.Column(db.String(150))
+
+    ano_publicacao = db.Column(db.Integer)
+    ano_lancamento = db.Column(db.Integer)
+
+    numero_paginas = db.Column(db.Integer)
+    duracao = db.Column(db.String(50))
+    temporadas = db.Column(db.Integer)
+
+    descricao = db.Column(db.Text)
+    imagem = db.Column(db.String(255))
 
 class Favorito(db.Model):
     __tablename__ = 'Favoritos'
@@ -256,32 +283,27 @@ def cadastrar_usuarios():
 # CATÁLOGO PRINCIPAL
 # ==========================================
 
-
-
-@app.route('/catalogo')
+@app.route("/catalogo")
 def catalogo():
-    favoritos = []
 
-    if 'usuario_id' in session:
-        favoritos = Favorito.query.filter_by(
-            usuario_id=session['usuario_id']
-        ).all()
+    livros = Obra.query.filter_by(tipo="livro").all()
+    filmes = Obra.query.filter_by(tipo="filme").all()
+    series = Obra.query.filter_by(tipo="série").all()
+    documentarios = Obra.query.filter_by(tipo="documentário").all()
+    musicas = Obra.query.filter_by(tipo="música").all()
+    curtas = Obra.query.filter_by(tipo="curta").all()
 
     return render_template(
-        'catalogo.html',
-        nome=session.get('usuario_nome'),
-        favoritos=favoritos,
-        dados_favoritos=[
-            {'id': f.id, 'titulo': f.titulo}
-            for f in favoritos
-        ],
-        livros=Livros.query.all(),
-        filmes=Filmes.query.all(),
-        series=Series.query.all(),
-        documentarios=Documentarios.query.all(),
-        musicas=Musica_de_protesto.query.all(),
-        curtas=Curta_Metragem.query.all()
+        "catalogo.html",
+        livros=livros,
+        filmes=filmes,
+        series=series,
+        documentarios=documentarios,
+        musicas=musicas,
+        curtas=curtas
     )
+
+
 
 # ==========================================
 # PÁGINAS DAS CATEGORIAS
@@ -290,9 +312,18 @@ def catalogo():
 @app.route('/livros')
 def livros():
     obras = Livros.query.order_by(Livros.id.desc()).all()
+    
+    for livro in obras:
+        print(
+            livro.titulo or '',
+            livro.autor or '',
+            livro.descricao or '',
+            livro.ano_publicacao or '',
+            livro.ano_lancamento or ''  
+            )
 
     return render_template(
-        'livros.html',
+        'tipos/livros.html',
         obras=obras,
         categoria='livros'
     )
@@ -303,7 +334,7 @@ def filmes():
     obras = Filmes.query.order_by(Filmes.id.desc()).all()
 
     return render_template(
-        'filmes.html',
+        'tipos/filmes.html',
         obras=obras,
         categoria='filmes'
     )
@@ -314,7 +345,7 @@ def series():
     obras = Series.query.order_by(Series.id.desc()).all()
 
     return render_template(
-        'series.html',
+        'tipos/series.html',
         obras=obras,
         categoria='series'
     )
@@ -322,12 +353,12 @@ def series():
 
 @app.route('/musica')
 def musica():
-    obras = Musica_de_protesto.query.order_by(
-        Musica_de_protesto.id.desc()
+    obras = Musica.query.order_by(
+        Musica.id.desc()
     ).all()
 
     return render_template(
-        'musica.html',
+        'tipos/musicas.html',
         obras=obras,
         categoria='musica'
     )
@@ -340,7 +371,7 @@ def documentarios():
     ).all()
 
     return render_template(
-        'documentarios.html',
+        'tipos/documentarios.html',
         obras=obras,
         categoria='documentarios'
     )
@@ -360,34 +391,30 @@ def curtas():
 
 
 # ==========================================
-# FAVORITOS
-# ==========================================
-
-# ==========================================
-# FAVORITOS
-# ==========================================
-
-
-# ==========================================
-# FAVORITOS
+# ROTA MEUS FAVORITOS
 # ==========================================
 
 @app.route('/meus_favoritos')
 def meus_favoritos():
-    if 'usuario_id' not in session:
-        return redirect(url_for('login'))
 
-    favoritos = Favorito.query.filter_by(
-        usuario_id=session['usuario_id']
-    ).order_by(Favorito.id.desc()).all()
+    favoritos = []
+
+    if 'usuario_id' in session:
+        favoritos = Favorito.query.filter_by(
+            usuario_id=session['usuario_id']
+        ).order_by(Favorito.id.desc()).all()
 
     return render_template(
-        'meus_favoritos.html',
+        'funcoes/meus_favoritos.html',
         favoritos=favoritos
     )
+#===========================================
+# rota adicionar
+#===========================================
 
 @app.route('/adicionar_favoritos', methods=['POST'])
 def adicionar_favoritos():
+
     if 'usuario_id' not in session:
         return redirect(url_for('login'))
 
@@ -412,53 +439,183 @@ def adicionar_favoritos():
             genero=genero
         )
 
-        try:
-            db.session.add(favorito)
-            db.session.commit()
-        except Exception:
-            db.session.rollback()
-            app.logger.exception('Erro ao adicionar favorito')
-            return redirect(url_for('catalogo'))
+        db.session.add(favorito)
+        db.session.commit()
 
     return redirect(url_for('catalogo'))
+# ==========================================
+# ROTA ACESSAR OBRA
+# ==========================================
 
 
-@app.route('/remover_favoritos', methods=['POST'])
-def remover_favoritos():
+@app.route('/acessar_obra')
+def acessar_obra():
+
+    campos = [
+        'titulo',
+        'imagem',
+        'autor',
+        'diretor',
+        'artista',
+        'categoria',
+        'genero',
+        'descricao',
+        'ano_lancamento',
+        'ano_publicacao',
+        'paginas',
+        'tipo'
+    ]
+
+    dados = {}
+
+    for campo in campos:
+        valor = request.args.get(campo, '')
+        valor = (valor or '').strip()
+    
+        if valor.lower() in ['none', 'null', 'undefined']:
+            valor = ''
+
+        dados[campo] = valor
+
+    return render_template(
+        'funcoes/acessar_obra.html',
+        **dados
+    )
+
+
+# ==========================================
+# rota deletar FAVORITOS
+# ==========================================
+
+@app.route('/deletar_favorito', methods=['POST'])
+def deletar_favorito():
     if 'usuario_id' not in session:
         return redirect(url_for('login'))
 
-    favorito_id = request.form.get('id', type=int)
+    favorito_id = request.form.get(
+        'favorito_id', request.form.get('id'), type=int
+    )
+
+    destino = (
+        'catalogo'
+        if request.form.get('origem') == 'catalogo'
+        else 'meus_favoritos'
+    )
 
     if favorito_id is None:
-        favorito_id = request.form.get('favorito_id', type=int)
-
-    if favorito_id is None:
-        return redirect(url_for('meus_favoritos'))
+        return redirect(url_for(destino))
 
     favorito = Favorito.query.filter_by(
         id=favorito_id,
         usuario_id=session['usuario_id']
     ).first()
 
-    if favorito:
-        try:
-            db.session.delete(favorito)
-            db.session.commit()
-        except Exception:
-            db.session.rollback()
-            app.logger.exception('Erro ao remover favorito')
+    if favorito is not None:
+        db.session.delete(favorito)
+        db.session.commit()
 
-    return redirect(url_for('meus_favoritos'))
+    return redirect(url_for(destino))
+
+
+def obras_visiveis(modelo, categoria):
+    obras = modelo.query.all()
+    ocultas = session.get('obras_ocultas', {})
+
+    ids_ocultos = set(
+        ocultas.get(categoria, [])
+    )
+
+    return [
+        obra for obra in obras
+        if obra.id not in ids_ocultos
+    ]
 
 # ==========================================
-# SAIBA MAIS
+# rota REMOVER OBRA TEMPORARIAMENTE DO CATÁLOGO
+# ==========================================
+
+
+@app.route('/remover', methods=['GET', 'POST'])
+def remover():
+    if request.method == 'POST':
+        categoria_recebida = request.form.get(
+            'categoria', ''
+        ).strip().lower()
+
+        obra_id = request.form.get(
+            'obra_id',
+            request.form.get('id', '')
+        ).strip()
+
+        mapa_categorias = {
+            'livro': 'livros',
+            'livros': 'livros',
+            'filme': 'filmes',
+            'filmes': 'filmes',
+            'serie': 'series',
+            'series': 'series',
+            'documentario': 'documentarios',
+            'documentarios': 'documentarios',
+            'musica': 'musicas',
+            'musicas': 'musicas',
+            'curta': 'curtas',
+            'curtas': 'curtas'
+        }
+
+        categoria = mapa_categorias.get(categoria_recebida)
+
+        if not categoria or not obra_id.isdigit():
+            return render_template(
+                'remover.html',
+                mensagem='Não foi possível identificar a obra.',
+                titulo=request.form.get('titulo', ''),
+                categoria=categoria_recebida,
+                obra_id=obra_id
+            )
+
+        obras_ocultas = dict(
+            session.get('obras_ocultas', {})
+        )
+
+        ids_categoria = list(
+            obras_ocultas.get(categoria, [])
+        )
+
+        if int(obra_id) not in ids_categoria:
+            ids_categoria.append(int(obra_id))
+
+        obras_ocultas[categoria] = ids_categoria
+        session['obras_ocultas'] = obras_ocultas
+
+        return redirect(url_for('catalogo'))
+
+    return render_template(
+        'funcoes/remover.html',
+        titulo=request.args.get('titulo', ''),
+        categoria=request.args.get('categoria', ''),
+        obra_id=request.args.get('obra_id', '')
+    )
+
+#============================================
+# rota deletar                                     #
+#============================================
+@app.route('/deletar', methods=['GET'])
+def deletar():
+    return render_template(
+        'remover.html',
+        titulo=request.args.get('titulo', ''),
+        categoria=request.args.get('categoria', ''),
+        obra_id=request.args.get('obra_id', '')
+    )
+
+# ==========================================
+# rota SAIBA MAIS
 # ==========================================
 
 @app.route('/saibamais')
 def saiba_mais():
     return render_template(
-        'Saiba-Mais.html',
+        'funcoes/Saiba-Mais.html',
         titulo=request.args.get('titulo', 'Obra'),
         categoria=request.args.get('categoria', ''),
         genero=request.args.get('genero', ''),
@@ -467,28 +624,8 @@ def saiba_mais():
         descricao=request.args.get('descricao', '')
     )
 
-
 # ==========================================
-# PÁGINA DA OBRA
-# ==========================================
-
-@app.route('/obra')
-def obra():
-    return render_template(
-        'acessar_obra.html',
-        titulo=request.args.get('titulo', 'Obra'),
-        autor=request.args.get('autor', ''),
-        descricao=request.args.get('descricao', ''),
-        categoria=request.args.get('categoria', ''),
-        genero=request.args.get('genero', ''),
-        imagem=request.args.get('imagem', ''),
-        arquivo=request.args.get('arquivo', ''),
-        detalhes=request.args.get('detalhes', '')
-    )
-
-
-# ==========================================
-# SAIR
+# rota SAIR
 # ==========================================
 
 @app.route('/logout')

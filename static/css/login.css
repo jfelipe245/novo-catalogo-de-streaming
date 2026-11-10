@@ -1,5 +1,27 @@
 
-/* ===== TELA DE ENTRADA ===== */
+/* ==========================================
+   AFROEDU STREAM — TELA DE LOGIN
+   Identidade visual: marrom, dourado e creme
+   ========================================== */
+
+   :root {
+    --login-fundo: #21140F;
+    --login-card: #352219;
+    --login-campo: #493126;
+    --login-dourado: #F0B94E;
+    --login-dourado-claro: #FFD078;
+    --login-creme: #FFF4E3;
+    --login-texto-secundario: #E6D3BD;
+    --login-borda: #896342;
+    --login-erro-fundo: #503326;
+    --login-erro-borda: #A87943;
+    --login-sucesso-fundo: #203522;
+    --login-sucesso-borda: #416D48;
+    --login-raio: 12px;
+    --login-transicao: 0.22s ease;
+}
+
+/* ===== BASE DA TELA ===== */
 
 .login-container {
     min-height: 80vh;
@@ -7,333 +29,76 @@
     justify-content: center;
     align-items: center;
     padding: 40px 20px;
-    background: #110B08;
     box-sizing: border-box;
+    background:
+        radial-gradient(
+            circle at top,
+            rgba(240, 185, 78, 0.09),
+            transparent 55%
+        ),
+        var(--login-fundo);
 }
+
+/* ===== CARTÃO PRINCIPAL ===== */
 
 .login-card {
     width: 100%;
-    max-width: 430px;
-    padding: 35px;
-    background: #1B100B;
-    border: 1px solid #6C4B30;
-    border-radius: 20px;
-    box-shadow: 0 12px 35px rgba(0, 0, 0, 0.35);
+    max-width: 480px;
+    padding: 36px;
     box-sizing: border-box;
+    background: var(--login-card);
+    border: 1px solid var(--login-borda);
+    border-radius: 20px;
+    box-shadow: 0 18px 45px rgba(0, 0, 0, 0.3);
 }
 
+/* ===== TÍTULO ===== */
+
 .login-titulo {
-    text-align: center;
     margin-bottom: 30px;
+    text-align: center;
 }
 
 .texto-destaque {
-    color: #E5A23B;
+    display: inline-block;
+    color: var(--login-dourado);
     font-size: 0.75rem;
     font-weight: 700;
     letter-spacing: 2px;
+    text-transform: uppercase;
 }
 
 .login-titulo h1 {
-    color: #F5E8D3;
-    font-family: 'Sora', sans-serif;
-    font-size: 2rem;
     margin: 14px 0 10px;
-}
-
-.login-titulo h1 span {
-    color: #E5A23B;
-}
-
-.login-titulo p {
-    color: #D8C5AE;
-    font-size: 0.95rem;
-    line-height: 1.6;
-}
-
-.login-card .campo {
-    display: flex;
-    flex-direction: column;
-    gap: 8px;
-    margin-bottom: 22px;
-}
-
-.login-card .campo label {
-    color: #F5E8D3;
-    font-weight: 600;
-    font-size: 0.9rem;
-}
-
-.login-card .campo input {
-    width: 100%;
-    min-width: 0;
-    padding: 13px 14px;
-    background: #27130C;
-    color: #F5E8D3;
-    border: 1px solid #75563B;
-    border-radius: 9px;
-    outline: none;
-    box-sizing: border-box;
-    font-size: 0.95rem;
-}
-
-.login-card .campo input::placeholder {
-    color: #BBA894;
-}
-
-.login-card .campo input:focus {
-    border-color: #E5A23B;
-    box-shadow: 0 0 0 3px rgba(229, 162, 59, 0.15);
-}
-
-.senha-container {
-    display: flex;
-    align-items: center;
-    gap: 8px;
-    padding-right: 10px;
-    background: #27130C;
-    border: 1px solid #75563B;
-    border-radius: 9px;
-}
-
-.senha-container:focus-within {
-    border-color: #E5A23B;
-    box-shadow: 0 0 0 3px rgba(229, 162, 59, 0.15);
-}
-
-.login-card .senha-container input {
-    border: none;
-    box-shadow: none;
-    background: transparent;
-}
-
-.btn-olho {
-    padding: 6px;
-    background: transparent;
-    color: #E5A23B;
-    border: none;
-    cursor: pointer;
-    font-size: 0.8rem;
-    font-weight: 600;
-}
-
-.btn-entrar {
-    display: flex;
-    justify-content: center;
-    align-items: center;
-    gap: 10px;
-    width: 100%;
-    padding: 15px;
-    margin-top: 10px;
-    background: #E5A23B;
-    color: #24140B;
-    border: none;
-    border-radius: 9px;
-    font-size: 1rem;
-    font-weight: 700;
-    cursor: pointer;
-    transition: background 0.2s, transform 0.2s;
-}
-
-.btn-entrar:hover {
-    background: #F2B957;
-    transform: translateY(-1px);
-}
-
-.mensagem-erro,
-.mensagem {
-    padding: 12px;
-    border-radius: 8px;
-    line-height: 1.5;
+    color: var(--login-creme);
+    font-family: 'Sora', sans-serif;
+    font-size: clamp(1.7rem, 4vw, 2.1rem);
+    line-height: 1.25;
     overflow-wrap: anywhere;
 }
 
-.mensagem-erro {
-    color: #F3C15D;
-    background: #352016;
-    border: 1px solid #80512B;
-}
-
-.mensagem {
-    color: #F5E8D3;
-    background: #203522;
-    border: 1px solid #416D48;
-}
-
-.separador {
-    display: flex;
-    align-items: center;
-    gap: 12px;
-    margin: 28px 0 20px;
-    color: #BBA894;
-    font-size: 0.7rem;
-    letter-spacing: 1.5px;
-}
-
-.separador::before,
-.separador::after {
-    content: "";
-    flex: 1;
-    height: 1px;
-    background: #6C4B30;
-}
-
-.registrar-usuario {
-    text-align: center;
-}
-
-.registrar-usuario p {
-    color: #D8C5AE;
-    font-size: 0.9rem;
-    margin-bottom: 12px;
-}
-
-.btn-cadastrar {
-    display: inline-block;
-    color: #E5A23B;
-    font-weight: 700;
-    text-decoration: none;
-    padding: 10px;
-}
-
-.btn-cadastrar:hover {
-    color: #F5E8D3;
-    text-decoration: underline;
-}
-
-.login-rodape {
-    display: flex;
-    justify-content: center;
-    align-items: center;
-    gap: 8px;
-    margin-top: 28px;
-    color: #BBA894;
-    font-size: 0.75rem;
-    text-align: center;
-}
-
-.ponto-decorativo {
-    width: 7px;
-    height: 7px;
-    background: #E5A23B;
-    border-radius: 50%;
-}
-
-@media (max-width: 480px) {
-    .login-container {
-        padding: 25px 14px;
-    }
-
-    .login-card {
-        padding: 25px 20px;
-    }
-
-    .login-titulo h1 {
-        font-size: 1.7rem;
-    }
-}
-
-
-/* ===== AJUSTE: LOGIN MAIS CLARO ===== */
-
-.login-container {
-    background: #21140F;
-}
-
-.login-card {
-    background: #352219;
-    border-color: #896342;
-    box-shadow: 0 12px 35px rgba(0, 0, 0, 0.22);
-}
-
-.login-titulo h1 {
-    color: #FFF4E3;
+.login-titulo h1 span {
+    color: var(--login-dourado);
 }
 
 .login-titulo p {
-    color: #E6D3BD;
+    margin: 0;
+    color: var(--login-texto-secundario);
+    font-size: 0.95rem;
+    line-height: 1.7;
 }
 
-.login-card .campo label {
-    color: #FFF0DC;
-}
-
-.login-card .campo input {
-    background: #493126;
-    color: #FFF4E3;
-    border-color: #9B7958;
-}
-
-.login-card .campo input::placeholder {
-    color: #D3BDA6;
-}
-
-.senha-container {
-    background: #493126;
-    border-color: #9B7958;
-}
-
-.senha-container:focus-within {
-    border-color: #F0B94E;
-    box-shadow: 0 0 0 3px rgba(240, 185, 78, 0.18);
-}
-
-.login-card .campo input:focus {
-    border-color: #F0B94E;
-    box-shadow: 0 0 0 3px rgba(240, 185, 78, 0.18);
-}
-
-.btn-entrar {
-    background: #F0B94E;
-    color: #352219;
-}
-
-.btn-entrar:hover {
-    background: #FFD078;
-}
-
-.separador {
-    color: #D3BDA6;
-}
-
-.separador::before,
-.separador::after {
-    background: #896342;
-}
-
-.registrar-usuario p {
-    color: #E6D3BD;
-}
-
-.btn-cadastrar {
-    color: #FFD078;
-}
-
-.btn-cadastrar:hover {
-    color: #FFF4E3;
-}
-
-.login-rodape {
-    color: #D3BDA6;
-}
-
-.mensagem-erro {
-    color: #FFE0A3;
-    background: #503326;
-    border-color: #A87943;
-}
-
-
-/* ===== CAMPOS LADO A LADO NO LOGIN ===== */
+/* ===== FORMULÁRIO ===== */
 
 #login-form {
     display: grid;
-    grid-template-columns: 1fr 1fr;
+    grid-template-columns: minmax(0, 1fr) minmax(0, 1fr);
     column-gap: 16px;
     row-gap: 18px;
 }
 
-/* Título e botão ocupam a largura toda */
+/* Mantém os elementos principais em largura total. */
+
 #login-form h1,
 #login-form > p,
 #login-form .campo_email,
@@ -342,31 +107,287 @@
     grid-column: 1 / -1;
 }
 
-/* Campos com espaçamento organizado */
+/* ===== CAMPOS ===== */
+
+.login-card .campo,
 #login-form .campo_email,
 #login-form .campo-senha {
     display: flex;
     flex-direction: column;
     gap: 8px;
     min-width: 0;
+    margin-bottom: 4px;
 }
 
+.login-card .campo label,
+#login-form .campo_email label,
+#login-form .campo-senha label {
+    color: var(--login-creme);
+    font-size: 0.9rem;
+    font-weight: 600;
+}
+
+.login-card .campo input,
+#login-form .campo_email input,
+#login-form .campo-senha input,
 #login-form input {
     width: 100%;
+    min-width: 0;
+    padding: 14px;
     box-sizing: border-box;
+    background: var(--login-campo);
+    color: var(--login-creme);
+    border: 1px solid var(--login-borda);
+    border-radius: 9px;
+    outline: none;
+    font: inherit;
+    font-size: 0.95rem;
+    transition:
+        border-color var(--login-transicao),
+        box-shadow var(--login-transicao);
 }
 
-/* Cadastro e rodapé abaixo do formulário */
-.login-card > .separador,
-.login-card > .registrar-usuario,
-.login-card > .login-rodape {
+.login-card .campo input::placeholder,
+#login-form input::placeholder {
+    color: #D3BDA6;
+    opacity: 1;
+}
+
+.login-card .campo input:focus,
+#login-form input:focus {
+    border-color: var(--login-dourado);
+    box-shadow: 0 0 0 3px rgba(240, 185, 78, 0.18);
+}
+
+/* ===== CAMPO DE SENHA ===== */
+
+.senha-container {
+    display: flex;
+    align-items: center;
+    gap: 8px;
+    min-width: 0;
+    padding-right: 10px;
+    background: var(--login-campo);
+    border: 1px solid var(--login-borda);
+    border-radius: 9px;
+    transition:
+        border-color var(--login-transicao),
+        box-shadow var(--login-transicao);
+}
+
+.senha-container:focus-within {
+    border-color: var(--login-dourado);
+    box-shadow: 0 0 0 3px rgba(240, 185, 78, 0.18);
+}
+
+.login-card .senha-container input,
+.senha-container input {
+    flex: 1;
+    min-width: 0;
+    background: transparent;
+    border: none;
+    box-shadow: none;
+}
+
+.login-card .senha-container input:focus,
+.senha-container input:focus {
+    border: none;
+    box-shadow: none;
+}
+
+.btn-olho {
+    flex-shrink: 0;
+    padding: 8px;
+    background: transparent;
+    color: var(--login-dourado);
+    border: none;
+    border-radius: 6px;
+    font-size: 0.8rem;
+    font-weight: 700;
+    cursor: pointer;
+    transition:
+        color var(--login-transicao),
+        background var(--login-transicao);
+}
+
+.btn-olho:hover {
+    color: var(--login-creme);
+    background: rgba(240, 185, 78, 0.1);
+}
+
+.btn-olho:focus-visible {
+    outline: 2px solid var(--login-dourado);
+    outline-offset: 3px;
+}
+
+/* ===== BOTÃO ENTRAR ===== */
+
+.btn-entrar,
+#login-form #btn-entrar {
+    display: flex;
+    justify-content: center;
+    align-items: center;
+    gap: 10px;
     width: 100%;
+    min-height: 48px;
+    padding: 14px 18px;
+    margin-top: 8px;
+    box-sizing: border-box;
+    background: var(--login-dourado);
+    color: #352219;
+    border: 1px solid transparent;
+    border-radius: 9px;
+    font: inherit;
+    font-size: 1rem;
+    font-weight: 700;
+    text-align: center;
+    cursor: pointer;
+    transition:
+        background var(--login-transicao),
+        transform var(--login-transicao),
+        box-shadow var(--login-transicao);
 }
 
-/* No celular, volta para uma coluna */
-@media (max-width: 480px) {
+.btn-entrar:hover,
+#login-form #btn-entrar:hover {
+    background: var(--login-dourado-claro);
+    box-shadow: 0 6px 18px rgba(240, 185, 78, 0.16);
+    transform: translateY(-2px);
+}
+
+.btn-entrar:active,
+#login-form #btn-entrar:active {
+    transform: translateY(0);
+}
+
+.btn-entrar:focus-visible,
+#login-form #btn-entrar:focus-visible {
+    outline: 2px solid var(--login-creme);
+    outline-offset: 3px;
+}
+
+/* ===== MENSAGENS ===== */
+
+.mensagem-erro,
+.mensagem {
+    padding: 13px 14px;
+    border-radius: 9px;
+    line-height: 1.6;
+    overflow-wrap: anywhere;
+    font-size: 0.9rem;
+}
+
+.mensagem-erro {
+    color: #FFE0A3;
+    background: var(--login-erro-fundo);
+    border: 1px solid var(--login-erro-borda);
+}
+
+.mensagem {
+    color: var(--login-creme);
+    background: var(--login-sucesso-fundo);
+    border: 1px solid var(--login-sucesso-borda);
+}
+
+/* ===== SEPARADOR ===== */
+
+.separador {
+    display: flex;
+    align-items: center;
+    gap: 12px;
+    width: 100%;
+    margin: 28px 0 20px;
+    color: var(--login-texto-secundario);
+    font-size: 0.7rem;
+    letter-spacing: 1.5px;
+    text-align: center;
+}
+
+.separador::before,
+.separador::after {
+    content: "";
+    flex: 1;
+    height: 1px;
+    background: var(--login-borda);
+}
+
+/* ===== CADASTRO ===== */
+
+.registrar-usuario {
+    width: 100%;
+    text-align: center;
+}
+
+.registrar-usuario p {
+    margin: 0 0 12px;
+    color: var(--login-texto-secundario);
+    font-size: 0.9rem;
+    line-height: 1.6;
+}
+
+.btn-cadastrar {
+    display: inline-block;
+    padding: 10px 14px;
+    color: var(--login-dourado-claro);
+    border-radius: 7px;
+    font-weight: 700;
+    text-decoration: none;
+    transition:
+        color var(--login-transicao),
+        background var(--login-transicao);
+}
+
+.btn-cadastrar:hover {
+    color: var(--login-creme);
+    background: rgba(240, 185, 78, 0.08);
+    text-decoration: underline;
+}
+
+.btn-cadastrar:focus-visible {
+    outline: 2px solid var(--login-dourado);
+    outline-offset: 3px;
+}
+
+/* ===== RODAPÉ DO CARTÃO ===== */
+
+.login-rodape {
+    display: flex;
+    justify-content: center;
+    align-items: center;
+    flex-wrap: wrap;
+    gap: 8px;
+    margin-top: 28px;
+    color: var(--login-texto-secundario);
+    font-size: 0.75rem;
+    line-height: 1.6;
+    text-align: center;
+}
+
+.ponto-decorativo {
+    flex-shrink: 0;
+    width: 7px;
+    height: 7px;
+    background: var(--login-dourado);
+    border-radius: 50%;
+}
+
+/* ===== RESPONSIVIDADE ===== */
+
+@media (max-width: 600px) {
+    .login-container {
+        min-height: 75vh;
+        padding: 28px 16px;
+    }
+
+    .login-card {
+        max-width: 460px;
+        padding: 28px 22px;
+        border-radius: 16px;
+    }
+
     #login-form {
-        grid-template-columns: 1fr;
+        grid-template-columns: minmax(0, 1fr);
+        row-gap: 16px;
     }
 
     #login-form h1,
@@ -375,5 +396,220 @@
     #login-form .campo-senha,
     #login-form #btn-entrar {
         grid-column: 1;
+    }
+}
+
+@media (max-width: 360px) {
+    .login-container {
+        padding: 20px 10px;
+    }
+
+    .login-card {
+        padding: 24px 16px;
+    }
+
+    .login-titulo h1 {
+        font-size: 1.6rem;
+    }
+
+    .login-card .campo input,
+    #login-form input {
+        padding: 12px;
+    }
+}
+
+/* ===== ACESSIBILIDADE ===== */
+
+@media (prefers-reduced-motion: reduce) {
+    .btn-entrar,
+    #login-form #btn-entrar,
+    .btn-cadastrar,
+    .btn-olho,
+    .login-card .campo input,
+    #login-form input {
+        transition: none;
+    }
+
+    .btn-entrar:hover,
+    #login-form #btn-entrar:hover {
+        transform: none;
+    }
+}
+
+
+/* ==========================================
+   AFROEDU STREAM — ACABAMENTO VISUAL DO LOGIN
+   ========================================== */
+
+/* Fundo com iluminação suave */
+.login-container {
+    position: relative;
+    isolation: isolate;
+    background:
+        radial-gradient(
+            ellipse at 50% 15%,
+            rgba(240, 185, 78, 0.13),
+            transparent 48%
+        ),
+        radial-gradient(
+            ellipse at 90% 90%,
+            rgba(137, 99, 66, 0.12),
+            transparent 45%
+        ),
+        var(--login-fundo);
+}
+
+/* Cartão com mais profundidade */
+.login-card {
+    position: relative;
+    overflow: hidden;
+    border-color: rgba(240, 185, 78, 0.42);
+    background: linear-gradient(
+        145deg,
+        rgba(59, 41, 34, 0.98),
+        rgba(43, 29, 25, 0.98)
+    );
+    box-shadow:
+        0 24px 60px rgba(0, 0, 0, 0.34),
+        0 0 35px rgba(240, 185, 78, 0.055);
+    transition:
+        border-color 0.25s ease,
+        box-shadow 0.25s ease;
+}
+
+.login-card:hover {
+    border-color: rgba(240, 185, 78, 0.65);
+    box-shadow:
+        0 28px 65px rgba(0, 0, 0, 0.38),
+        0 0 42px rgba(240, 185, 78, 0.08);
+}
+
+/* Detalhe dourado no topo do cartão */
+.login-card::before {
+    content: "";
+    position: absolute;
+    top: 0;
+    left: 12%;
+    width: 76%;
+    height: 2px;
+    background: linear-gradient(
+        90deg,
+        transparent,
+        var(--login-dourado),
+        transparent
+    );
+}
+
+/* Título mais destacado */
+.login-titulo h1 {
+    letter-spacing: -0.7px;
+}
+
+.texto-destaque {
+    padding: 7px 12px;
+    background: rgba(240, 185, 78, 0.09);
+    border: 1px solid rgba(240, 185, 78, 0.22);
+    border-radius: 30px;
+}
+
+/* Campos com transição suave */
+.login-card .campo input,
+#login-form input {
+    min-height: 48px;
+    border-color: rgba(137, 99, 66, 0.9);
+    transition:
+        background 0.22s ease,
+        border-color 0.22s ease,
+        box-shadow 0.22s ease;
+}
+
+.login-card .campo input:hover,
+#login-form input:hover {
+    border-color: var(--login-dourado);
+}
+
+.login-card .campo input:focus,
+#login-form input:focus {
+    background: #52382B;
+    border-color: var(--login-dourado-claro);
+    box-shadow: 0 0 0 4px rgba(240, 185, 78, 0.13);
+}
+
+/* Botão principal com destaque */
+.btn-entrar,
+#login-form #btn-entrar {
+    min-height: 50px;
+    margin-top: 12px;
+    background: linear-gradient(
+        135deg,
+        #F0B94E,
+        #FFD078
+    );
+    color: #291A11;
+    box-shadow: 0 7px 18px rgba(240, 185, 78, 0.12);
+    letter-spacing: 0.2px;
+}
+
+.btn-entrar:hover,
+#login-form #btn-entrar:hover {
+    background: linear-gradient(
+        135deg,
+        #FFD078,
+        #FFE1A1
+    );
+    box-shadow: 0 10px 24px rgba(240, 185, 78, 0.2);
+    transform: translateY(-2px);
+}
+
+/* Link de cadastro */
+.btn-cadastrar {
+    border: 1px solid transparent;
+    transition:
+        color 0.22s ease,
+        background 0.22s ease,
+        border-color 0.22s ease;
+}
+
+.btn-cadastrar:hover {
+    color: var(--login-dourado-claro);
+    background: rgba(240, 185, 78, 0.07);
+    border-color: rgba(240, 185, 78, 0.2);
+    text-decoration: none;
+}
+
+/* Mensagens mais legíveis */
+.mensagem-erro,
+.mensagem {
+    margin-bottom: 12px;
+    font-size: 0.9rem;
+}
+
+/* Ajustes para telas pequenas */
+@media (max-width: 480px) {
+    .login-card {
+        padding: 28px 20px;
+        border-radius: 16px;
+    }
+
+    .login-titulo {
+        margin-bottom: 24px;
+    }
+}
+
+/* Respeita a preferência por menos animações */
+@media (prefers-reduced-motion: reduce) {
+    .login-card,
+    .login-card .campo input,
+    #login-form input,
+    .btn-entrar,
+    #login-form #btn-entrar,
+    .btn-cadastrar {
+        transition: none;
+    }
+
+    .login-card:hover,
+    .btn-entrar:hover,
+    #login-form #btn-entrar:hover {
+        transform: none;
     }
 }
