@@ -1,102 +1,165 @@
+
 {% extends "base.html" %}
 
-{% block title %}
-Adicionar obra | AfroEdu Stream
-{% endblock title %}
+{% block title %}Adicionar obra - AfroEdu Stream{% endblock %}
 
 {% block css %}
-    {{ super() }}
-    <link rel="stylesheet" href="{{ url_for('static', filename='css/catalogo.css') }}">
+<link rel="stylesheet" href="{{ url_for('static', filename='css/catalogo.css') }}">
 {% endblock css %}
 
 {% block conteudo %}
 
-<section class="pagina-adicionar card">
+<main class="pagina-adicionar">
 
-    <a href="{{ url_for('catalogo') }}">
-        ← Voltar ao catálogo
-    </a>
-
-    <header class="catalogo-intro">
-        <h1>Adicionar uma obra</h1>
-        <p>
-            Organize os conteúdos educativos e culturais
-            do AfroEdu Stream.
-        </p>
+    <header class="adicionar-cabecalho">
+        <span>AFROEDU STREAM</span>
+        <h1>Adicionar obra</h1>
+        <p>Cadastre livros, filmes, séries, documentários e outros conteúdos.</p>
     </header>
 
-    {% if error %}
-        <p class="mensagem-erro">{{ error }}</p>
+    {% if mensagem %}
+        <p class="mensagem-adicionar">{{ mensagem }}</p>
     {% endif %}
 
-    {% if sucesso %}
-        <p class="mensagem-sucesso">{{ sucesso }}</p>
-    {% endif %}
+    <form action="{{ url_for('adicionar') }}" method="POST" class="form-adicionar">
 
-    <form class="formulario-obra"
-          action="{{ url_for('adicionar') }}"
-          method="POST">
+        <fieldset>
+            <legend>Informações principais</legend>
 
-        <div class="campo-obra">
-            <label for="titulo">Título da obra</label>
-            <input type="text" id="titulo" name="titulo"
-                   maxlength="100" required>
+            <div class="campos-adicionar">
+
+                <div class="campo-adicionar campo-completo">
+                    <label for="titulo">Título da obra *</label>
+                    <input type="text" id="titulo" name="titulo"
+                           placeholder="Digite o título" required>
+                </div>
+
+                <div class="campo-adicionar">
+                    <label for="tipo">Categoria *</label>
+                    <select id="tipo" name="tipo" required>
+                        <option value="">Selecione uma categoria</option>
+                        <option value="livro">Livro</option>
+                        <option value="filme">Filme</option>
+                        <option value="serie">Série</option>
+                        <option value="documentario">Documentário</option>
+                        <option value="curta">Curta-metragem</option>
+                        <option value="musica">Música de protesto</option>
+                    </select>
+                </div>
+
+                <div class="campo-adicionar">
+                    <label for="genero">Gênero</label>
+                    <input type="text" id="genero" name="genero"
+                           placeholder="Ex.: Educação, drama...">
+                </div>
+
+            </div>
+        </fieldset>
+
+        <fieldset>
+            <legend>Autoria e produção</legend>
+
+            <div class="campos-adicionar">
+
+                <div class="campo-adicionar">
+                    <label for="autor">Autor</label>
+                    <input type="text" id="autor" name="autor"
+                           placeholder="Nome do autor">
+                </div>
+
+                <div class="campo-adicionar">
+                    <label for="diretor">Diretor</label>
+                    <input type="text" id="diretor" name="diretor"
+                           placeholder="Nome do diretor">
+                </div>
+
+                <div class="campo-adicionar">
+                    <label for="artista">Artista</label>
+                    <input type="text" id="artista" name="artista"
+                           placeholder="Nome do artista">
+                </div>
+
+                <div class="campo-adicionar">
+                    <label for="album">Álbum</label>
+                    <input type="text" id="album" name="album"
+                           placeholder="Nome do álbum">
+                </div>
+
+            </div>
+        </fieldset>
+
+        <fieldset>
+            <legend>Datas e características</legend>
+
+            <div class="campos-adicionar">
+
+                <div class="campo-adicionar">
+                    <label for="ano_publicacao">Ano de publicação</label>
+                    <input type="number" id="ano_publicacao"
+                           name="ano_publicacao" min="1800" max="2100">
+                </div>
+
+                <div class="campo-adicionar">
+                    <label for="ano_lancamento">Ano de lançamento</label>
+                    <input type="number" id="ano_lancamento"
+                           name="ano_lancamento" min="1800" max="2100">
+                </div>
+
+                <div class="campo-adicionar">
+                    <label for="numero_paginas">Número de páginas</label>
+                    <input type="number" id="numero_paginas"
+                           name="numero_paginas" min="1">
+                </div>
+
+                <div class="campo-adicionar">
+                    <label for="duracao">Duração</label>
+                    <input type="text" id="duracao" name="duracao"
+                           placeholder="Ex.: 1h 30min">
+                </div>
+
+                <div class="campo-adicionar">
+                    <label for="temporadas">Temporadas</label>
+                    <input type="number" id="temporadas"
+                           name="temporadas" min="1">
+                </div>
+
+            </div>
+        </fieldset>
+
+        <fieldset>
+            <legend>Imagem e descrição</legend>
+
+            <div class="campos-adicionar">
+
+                <div class="campo-adicionar campo-completo">
+                    <label for="imagem">Caminho da imagem</label>
+                    <input type="text" id="imagem" name="imagem"
+                           placeholder="css/image/img/tipos/livros/capa.jpg">
+                    <small>Informe o caminho relativo à pasta static.</small>
+                </div>
+
+                <div class="campo-adicionar campo-completo">
+                    <label for="descricao">Descrição da obra</label>
+                    <textarea id="descricao" name="descricao"
+                              rows="5"
+                              placeholder="Escreva uma descrição sobre a obra..."></textarea>
+                </div>
+
+            </div>
+        </fieldset>
+
+        <div class="botoes-adicionar">
+            <button type="submit" class="btn-cadastrar-obra">
+                Cadastrar obra
+            </button>
+
+            <a href="{{ url_for('catalogo') }}" class="btn-voltar-obra">
+                Voltar ao catálogo
+            </a>
         </div>
-
-        <div class="campo-obra">
-            <label for="categoria">Categoria</label>
-            <select id="categoria" name="categoria" required>
-                <option value="">Selecione uma categoria</option>
-                <option value="livro">Livro</option>
-                <option value="filme">Filme</option>
-                <option value="serie">Série</option>
-                <option value="documentario">Documentário</option>
-                <option value="curta">Curta-metragem</option>
-                <option value="musica">Música de protesto</option>
-            </select>
-        </div>
-
-        <div class="campo-obra">
-            <label for="genero">Gênero ou tema</label>
-            <input type="text" id="genero" name="genero"
-                   maxlength="50" required>
-        </div>
-
-        <div class="campo-obra">
-            <label for="responsavel">Autor, diretor ou artista</label>
-            <input type="text" id="responsavel" name="responsavel"
-                   maxlength="100" required>
-        </div>
-
-        <div class="campo-obra">
-            <label for="ano">Ano de publicação ou lançamento</label>
-            <input type="number" id="ano" name="ano"
-                   min="1800" max="2100" required>
-        </div>
-
-        <div class="campo-obra">
-            <label for="imagem">Caminho da imagem</label>
-            <input type="text" id="imagem" name="imagem"
-                   maxlength="200" required
-                   placeholder="Ex.: img/tipos/livros/capa.jpg">
-        </div>
-
-        <div class="campo-obra">
-            <label for="descricao">Descrição da obra</label>
-            <textarea id="descricao" name="descricao"
-                      rows="5" maxlength="5000" required></textarea>
-        </div>
-
-        <button type="submit">
-            Adicionar obra
-        </button>
 
     </form>
 
-</section>
+</main>
 
 {% endblock conteudo %}
-
-{% block js %}
-<script src="{{ url_for('static', filename='js/catalogo.js') }}"></script>
-{% endblock js %}

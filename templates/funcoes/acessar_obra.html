@@ -21,8 +21,15 @@
 {% set autor = autor|default('', true)|string|trim %}
 {% set diretor = diretor|default('', true)|string|trim %}
 {% set artista = artista|default('', true)|string|trim %}
+{% set album = album|default('', true)|string|trim %}
 {% set ano_publicacao = ano_publicacao|default('', true)|string|trim %}
 {% set ano_lancamento = ano_lancamento|default('', true)|string|trim %}
+{% set numero_paginas = numero_paginas|default('', true)|string|trim %}
+{% set duracao = duracao|default('', true)|string|trim %}
+{% set temporadas = temporadas|default('', true)|string|trim %}
+
+{% set eh_livro = categoria|lower in ['livro', 'livros'] %}
+{% set eh_musica = categoria|lower in ['musica', 'música'] %}
 
 {% if imagem %}
     {% if imagem.startswith('http://') or imagem.startswith('https://') or imagem.startswith('/static/') %}
@@ -32,11 +39,22 @@
     {% else %}
         {% set imagem_url = url_for('static', filename=imagem) %}
     {% endif %}
+{% else %}
+    {% set imagem_url = '' %}
+{% endif %}
+
+{% if eh_livro %}
+    {% set responsavel = autor %}
+    {% set nome_responsavel = 'Autor' %}
+{% elif eh_musica %}
+    {% set responsavel = artista or autor %}
+    {% set nome_responsavel = 'Artista' %}
+{% else %}
+    {% set responsavel = diretor %}
+    {% set nome_responsavel = 'Diretor' %}
 {% endif %}
 
 <main class="detalhes-pagina">
-
-
 
     <a class="voltar-catalogo" href="{{ url_for('catalogo') }}">
         ← Voltar ao catálogo
@@ -44,7 +62,6 @@
 
     <section class="container-detalhes">
 
-        <!-- CAPA DA OBRA -->
         <div class="capa-container">
 
             <div class="moldura-capa">
@@ -53,7 +70,8 @@
                     <img
                         id="detalhe-img"
                         src="{{ imagem_url }}"
-                        alt="Capa de {{ titulo or 'obra' }}">
+                        alt="Capa de {{ titulo }}"
+                    >
                 {% else %}
                     <div class="obra-sem-imagem">
                         Imagem não disponível
@@ -66,102 +84,120 @@
                 Obra selecionada no catálogo
             </span>
 
-        </div>
+            <!-- FICHA TÉCNICA ABAIXO DA IMAGEM -->
 
-
-        {% set eh_livro = categoria|lower in ['livro', 'livros'] %}
-
-        {% set imagem_url = '' %}
-
-        
-        <div class="info-container">
-
-            <span id="detalhe-badge" class="badge">
-                {{ categoria or 'Não informada' }}
-            </span>
-
-            <h1 id="detalhe-titulo">
-                {{ titulo or 'Título não informado' }}
-            </h1>
-
-            {% if eh_livro %}
-            {% set responsavel = autor %}
-            {% set nome_responsavel = 'Autor' %}
-            {% elif categoria|lower == 'musica' %}
-            {% set responsavel = artista|default('', true) %}
-            {% set nome_responsavel = 'Artista' %}
-            {% else %}
-            {% set responsavel = diretor|default('', true) %}
-            {% set nome_responsavel = 'Diretor' %}
-            {% endif %}
-
-        <p class="autor-diretor">
-            <strong>{{ nome_responsavel }}:</strong>
-            <span id="detalhe-autor">
-                {{ responsavel or 'Não informado' }}
-            </span>
-        </p>
-
-            <!-- DESCRIÇÃO -->
-            <section class="secao-detalhe">
-
-                <h2>Descrição da obra</h2>
-
-                <p id="detalhe-sinopse">
-                    {{ descricao or 'Descrição não cadastrada.' }}
-                </p>
-
-            </section>
-
-            <!-- FICHA TÉCNICA -->
             <section class="secao-detalhe">
 
                 <h2>Ficha técnica</h2>
 
                 <dl class="lista-ficha">
 
+                    {% if titulo %}
                     <div>
                         <dt>Título</dt>
-                        <dd>{{ titulo or 'Não informado' }}</dd>
+                        <dd>{{ titulo }}</dd>
                     </div>
+                    {% endif %}
 
-                    <div>
-                        <dt>{{ nome_responsavel }}</dt>
-                        <dd>{{ responsavel or 'Não informado' }}</dd>
-                    </div>
-
+                    {% if categoria %}
                     <div>
                         <dt>Categoria</dt>
-                        <dd>{{ categoria or 'Não informada' }}</dd>
+                        <dd>{{ categoria }}</dd>
                     </div>
+                    {% endif %}
 
+                    {% if tipo %}
                     <div>
                         <dt>Tipo</dt>
-                        <dd>{{ tipo or 'Não informado' }}</dd>
+                        <dd>{{ tipo }}</dd>
                     </div>
+                    {% endif %}
 
+                    {% if responsavel %}
+                    <div>
+                        <dt>{{ nome_responsavel }}</dt>
+                        <dd>{{ responsavel }}</dd>
+                    </div>
+                    {% endif %}
+
+                    {% if genero %}
                     <div>
                         <dt>Gênero</dt>
-                        <dd>{{ genero or 'Não informado' }}</dd>
+                        <dd>{{ genero }}</dd>
                     </div>
+                    {% endif %}
 
+                    {% if album %}
+                    <div>
+                        <dt>Álbum</dt>
+                        <dd>{{ album }}</dd>
+                    </div>
+                    {% endif %}
+
+                    {% if ano_publicacao and ano_publicacao != '0' %}
                     <div>
                         <dt>Ano de publicação</dt>
-                        <dd>
-                            {{ ano_publicacao if ano_publicacao and ano_publicacao != '0' else 'Não informado' }}
-                        </dd>
+                        <dd>{{ ano_publicacao }}</dd>
                     </div>
+                    {% endif %}
 
+                    {% if ano_lancamento and ano_lancamento != '0' %}
                     <div>
                         <dt>Ano de lançamento</dt>
-                        <dd>
-                            {{ ano_lancamento if ano_lancamento and ano_lancamento != '0' else 'Não informado' }}
-                        </dd>
+                        <dd>{{ ano_lancamento }}</dd>
                     </div>
+                    {% endif %}
+
+                    {% if numero_paginas and numero_paginas != '0' %}
+                    <div>
+                        <dt>Número de páginas</dt>
+                        <dd>{{ numero_paginas }}</dd>
+                    </div>
+                    {% endif %}
+
+                    {% if duracao %}
+                    <div>
+                        <dt>Duração</dt>
+                        <dd>{{ duracao }}</dd>
+                    </div>
+                    {% endif %}
+
+                    {% if temporadas and temporadas != '0' %}
+                    <div>
+                        <dt>Temporadas</dt>
+                        <dd>{{ temporadas }}</dd>
+                    </div>
+                    {% endif %}
 
                 </dl>
 
             </section>
+
+        </div>
+
+        <div class="info-container">
+
+            {% if categoria %}
+                <span id="detalhe-badge" class="badge">
+                    {{ categoria }}
+                </span>
+            {% endif %}
+
+            <h1 id="detalhe-titulo">{{ titulo }}</h1>
+
+            {% if responsavel %}
+                <p class="autor-diretor">
+                    <strong>{{ nome_responsavel }}:</strong>
+                    {{ responsavel }}
+                </p>
+            {% endif %}
+
+            {% if descricao %}
+                <section class="secao-detalhe">
+                    <h2>Descrição da obra</h2>
+                    <p id="detalhe-sinopse">{{ descricao }}</p>
+                </section>
+            {% endif %}
 
         </div>
 

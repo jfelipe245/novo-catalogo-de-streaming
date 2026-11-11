@@ -1,3 +1,4 @@
+
 {% extends "base.html" %}
 
 {% block title %}Meus Favoritos | AfroEdu Stream{% endblock %}
@@ -20,32 +21,65 @@
 
 <main class="grid-container" id="container-favoritos">
 
-    {% for favorito in favoritos %}
+    {% for item in favoritos %}
+
     <article class="card">
+
+        {% if item.obra and item.obra.imagem %}
+            <img
+                class="card-img"
+                src="{{ url_for('static', filename=item.obra.imagem) }}"
+                alt="Capa de {{ item.favorito.titulo }}"
+            >
+        {% else %}
+            <div class="obra-sem-imagem">
+                Imagem não disponível
+            </div>
+        {% endif %}
+
         <div class="card-content">
-            <h2 class="titulo">{{ favorito.titulo }}</h2>
-            <p class="genero-badge">{{ favorito.categoria }}</p>
-            <p>{{ favorito.genero }}</p>
+
+            <h2 class="titulo">
+                {{ item.favorito.titulo }}
+            </h2>
+
+            <p class="genero-badge">
+                {{ item.favorito.categoria }}
+            </p>
+
+            <p>{{ item.favorito.genero }}</p>
+
+            {% if item.obra %}
+                <a
+                    href="{{ url_for('acessar_obra', obra_id=item.obra.id) }}"
+                    class="btn-ver-obra"
+                >
+                    Ver detalhes
+                </a>
+            {% endif %}
+
         </div>
 
-        <form
-    action="{{ url_for('meus_favoritos') }}"
-    method="POST">
-    <input
-        type="hidden"
-        name="favorito_id"
-        value="{{ favorito.id }}">
+        <form action="{{ url_for('deletar_favorito') }}" method="POST">
+            <input
+                type="hidden"
+                name="favorito_id"
+                value="{{ item.favorito.id }}"
+            >
 
-    <button type="submit" class="btn-remover-obra">
-        Remover dos favoritos
-    </button>
-</form>
+            <button type="submit" class="btn-remover-obra">
+                Remover dos favoritos
+            </button>
+        </form>
 
     </article>
+
     {% else %}
+
     <p class="mensagem-catalogo-vazio">
         Você ainda não adicionou obras aos favoritos.
     </p>
+
     {% endfor %}
 
 </main>
@@ -53,5 +87,5 @@
 {% endblock conteudo %}
 
 {% block js %}
-    <script src="{{ url_for('static', filename='js/meus-favoritos.js') }}"></script>
+<script src="{{ url_for('static', filename='js/meus-favoritos.js') }}"></script>
 {% endblock js %}

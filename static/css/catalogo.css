@@ -1399,3 +1399,475 @@ footer {
         width: 100%;
     }
 }
+
+
+/* =========================================
+   18. CORREÇÃO DOS CARDS E BOTÕES
+========================================= */
+
+/* Grade uniforme do catálogo */
+#card-container,
+.grid-container,
+.grid-cards {
+    display: grid;
+    grid-template-columns: repeat(auto-fill, minmax(230px, 1fr));
+    align-items: stretch;
+    gap: 22px;
+    width: 100%;
+    max-width: 1400px;
+    margin: 0 auto;
+    padding: 20px;
+}
+
+/* Cards com dimensões uniformes */
+#card-container > .card,
+.grid-container > .card,
+.grid-cards > .card {
+    display: flex;
+    flex-direction: column;
+    width: 100%;
+    min-width: 0;
+    min-height: 100%;
+    padding: 14px;
+    background: linear-gradient(145deg, #292333, #1B1722);
+    border: 1px solid #494052;
+    border-top: 3px solid #E5B84B;
+    border-radius: 14px;
+}
+
+/* Capas com tamanho uniforme */
+.card img {
+    width: 100%;
+    height: 230px;
+    object-fit: contain;
+    object-position: center;
+    background: #201A2A;
+    border-radius: 9px;
+}
+
+/* Conteúdo do card */
+.card-content {
+    flex: 1;
+    min-width: 0;
+}
+
+.card .titulo {
+    color: #F5F0E8;
+    font-size: 1rem;
+    line-height: 1.4;
+    overflow-wrap: anywhere;
+}
+
+/* Organização dos botões */
+.card .card-actions {
+    display: flex;
+    flex-direction: column;
+    gap: 10px;
+    width: 100%;
+    margin-top: auto;
+    padding-top: 14px;
+}
+
+/* Botões principais */
+.card .card-actions button,
+.card .card-actions a {
+    display: flex;
+    align-items: center;
+    justify-content: center;
+    min-height: 40px;
+    padding: 9px 10px;
+    border: 1px solid transparent;
+    border-radius: 8px;
+    color: #FFFFFF;
+    font-size: 0.78rem;
+    font-weight: 700;
+    text-align: center;
+    text-decoration: none;
+    overflow-wrap: anywhere;
+    cursor: pointer;
+}
+
+/* Ler livro */
+.card .card-actions .ler-catalogo-Livro {
+    background: #78613A !important;
+    border-color: #E5B84B !important;
+}
+
+/* Assistir e ouvir */
+.card .card-actions button[class*="assistir-catalogo-"],
+.card .card-actions button[class*="ouvir-catalogo-"] {
+    background: #57427D !important;
+    border-color: #A58AC7 !important;
+}
+
+/* Adicionar obra: link ou botão */
+.card .card-actions .btn-add {
+    width: 100%;
+    color: #FFFFFF !important;
+    background: #C74732 !important;
+    border: 1px solid #E5B84B !important;
+}
+
+.card .card-actions .btn-add:hover {
+    background: #963624 !important;
+}
+
+/* Área dos botões secundários */
+.card .card-actions .acoes-secundarias {
+    display: grid;
+    grid-template-columns: repeat(2, minmax(0, 1fr));
+    gap: 8px;
+    width: 100%;
+}
+
+/* Adicionar ocupa toda a primeira linha */
+.card .card-actions .acoes-secundarias > .btn-add {
+    grid-column: 1 / -1;
+}
+
+/* Formulário de remover */
+.card .card-actions .acoes-secundarias form {
+    display: flex;
+    min-width: 0;
+    margin: 0;
+}
+
+.card .card-actions .acoes-secundarias form button {
+    width: 100%;
+    color: #FFFFFF !important;
+    background: #963624 !important;
+    border: 1px solid #C74732 !important;
+}
+
+/* Meus Favoritos */
+.card .card-actions .acoes-secundarias .btn-favoritos {
+    width: 100%;
+    color: #F4D98A !important;
+    background: #382B46 !important;
+    border: 1px solid #E5B84B !important;
+}
+
+/* Saiba Mais */
+.card .card-actions .btn-info {
+    width: 100%;
+    color: #F4D98A !important;
+    background: #292333 !important;
+    border: 1px solid #E5B84B !important;
+}
+
+/* Efeitos dos botões */
+.card .card-actions button:hover,
+.card .card-actions a:hover {
+    filter: brightness(1.15);
+    transform: translateY(-2px);
+}
+
+/* Botões desativados */
+.card .card-actions button:disabled {
+    opacity: 0.6;
+    cursor: not-allowed;
+    transform: none;
+}
+
+/* Telas menores */
+@media (max-width: 650px) {
+    #card-container,
+    .grid-container,
+    .grid-cards {
+        grid-template-columns: repeat(2, minmax(0, 1fr));
+        gap: 12px;
+        padding: 10px;
+    }
+
+    .card img {
+        height: 170px;
+    }
+
+    .card {
+        padding: 9px;
+    }
+
+    .card .card-actions button,
+    .card .card-actions a {
+        font-size: 0.68rem;
+        padding: 7px 5px;
+    }
+}
+
+@media (max-width: 360px) {
+    #card-container,
+    .grid-container,
+    .grid-cards {
+        grid-template-columns: minmax(0, 1fr);
+    }
+}
+
+/* Grade 2x2 dos botões */
+.card .card-actions {
+    display: flex !important;
+    flex-direction: column !important;
+    align-items: center !important;
+    gap: 8px !important;
+}
+
+/* Grade única */
+.card .card-actions .acoes-principais,
+.card .card-actions .acoes-secundarias {
+    display: grid !important;
+    grid-template-columns: repeat(2, 130px) !important;
+    justify-content: center !important;
+    gap: 8px !important;
+    width: 100% !important;
+}
+
+/* Padronização dos botões */
+.card .card-actions .acoes-principais > *,
+.card .card-actions .acoes-secundarias > * {
+    width: 100% !important;
+    min-width: 0 !important;
+    min-height: 38px !important;
+    margin: 0 !important;
+    box-sizing: border-box !important;
+}
+
+/* Formulário de remoção */
+.card .acoes-secundarias form {
+    display: flex !important;
+}
+
+.card .acoes-secundarias form button {
+    width: 100% !important;
+}
+
+/* Texto centralizado */
+.card .acoes-principais button,
+.card .acoes-principais a,
+.card .acoes-secundarias button,
+.card .acoes-secundarias a {
+    display: flex !important;
+    justify-content: center !important;
+    align-items: center !important;
+    text-align: center !important;
+    padding: 6px !important;
+    white-space: normal !important;
+    overflow-wrap: anywhere !important;
+}
+
+/* Botão Ler menor */
+.card .acoes-principais .ler-catalogo-Livro {
+    width: 75% !important;
+    justify-self: center !important;
+}
+
+/* Saiba Mais */
+.card .card-actions > .btn-info {
+    width: 80% !important;
+    margin: 0 auto !important;
+}
+
+/* Quatro botões com o mesmo tamanho */
+.card .card-actions .acoes-principais,
+.card .card-actions .acoes-secundarias {
+    display: grid !important;
+    grid-template-columns: repeat(2, 130px) !important;
+    grid-auto-rows: minmax(42px, auto) !important;
+    justify-content: center !important;
+    align-items: stretch !important;
+    gap: 8px !important;
+}
+
+/* Mesmo tamanho para todos */
+.card .card-actions .acoes-principais > *,
+.card .card-actions .acoes-secundarias > a,
+.card .card-actions .acoes-secundarias > form {
+    width: 130px !important;
+    min-width: 130px !important;
+    height: 42px !important;
+    min-height: 42px !important;
+    margin: 0 !important;
+    box-sizing: border-box !important;
+}
+
+/* Botão Ler sem redução */
+.card .acoes-principais .ler-catalogo-Livro {
+    width: 130px !important;
+    height: 42px !important;
+    justify-self: stretch !important;
+}
+
+/* Botão Remover */
+.card .acoes-secundarias form {
+    display: flex !important;
+}
+
+.card .acoes-secundarias form button {
+    width: 100% !important;
+    height: 42px !important;
+}
+
+
+/* =====================================
+   FORMULÁRIO ADICIONAR OBRA
+===================================== */
+
+.pagina-adicionar {
+    width: min(900px, 94%);
+    margin: 35px auto;
+    padding: 28px;
+    background: var(--afro-surface);
+    border: 1px solid var(--afro-border);
+    border-radius: 16px;
+    box-sizing: border-box;
+}
+
+.adicionar-cabecalho {
+    text-align: center;
+    margin-bottom: 28px;
+}
+
+.adicionar-cabecalho span {
+    color: var(--afro-gold);
+    font-size: 12px;
+    letter-spacing: 3px;
+}
+
+.adicionar-cabecalho h1 {
+    color: var(--afro-gold-light);
+    margin: 10px 0;
+}
+
+.adicionar-cabecalho p {
+    color: var(--afro-muted);
+}
+
+.form-adicionar fieldset {
+    border: 1px solid var(--afro-border);
+    border-radius: 12px;
+    padding: 20px;
+    margin-bottom: 22px;
+    min-width: 0;
+}
+
+.form-adicionar legend {
+    color: var(--afro-gold);
+    font-weight: bold;
+    padding: 0 10px;
+}
+
+.campos-adicionar {
+    display: grid;
+    grid-template-columns: repeat(2, minmax(0, 1fr));
+    gap: 18px;
+}
+
+.campo-adicionar {
+    display: flex;
+    flex-direction: column;
+    gap: 8px;
+    min-width: 0;
+}
+
+.campo-completo {
+    grid-column: 1 / -1;
+}
+
+.campo-adicionar label {
+    color: var(--afro-text);
+    font-weight: 600;
+}
+
+.campo-adicionar input,
+.campo-adicionar select,
+.campo-adicionar textarea {
+    width: 100%;
+    box-sizing: border-box;
+    padding: 12px;
+    background: var(--afro-bg);
+    color: var(--afro-text);
+    border: 1px solid var(--afro-border);
+    border-radius: 8px;
+    font: inherit;
+}
+
+.campo-adicionar input:focus,
+.campo-adicionar select:focus,
+.campo-adicionar textarea:focus {
+    outline: 2px solid var(--afro-gold);
+    border-color: var(--afro-gold);
+}
+
+.campo-adicionar textarea {
+    resize: vertical;
+}
+
+.campo-adicionar small {
+    color: var(--afro-muted);
+}
+
+.mensagem-adicionar {
+    padding: 12px;
+    text-align: center;
+    color: var(--afro-gold-light);
+    background: var(--afro-bg);
+    border-radius: 8px;
+}
+
+.botoes-adicionar {
+    display: flex;
+    justify-content: center;
+    align-items: center;
+    gap: 15px;
+    margin-top: 25px;
+    flex-wrap: wrap;
+}
+
+.btn-cadastrar-obra,
+.btn-voltar-obra {
+    min-width: 180px;
+    padding: 12px 20px;
+    border-radius: 8px;
+    text-align: center;
+    font-weight: bold;
+    text-decoration: none;
+    cursor: pointer;
+    box-sizing: border-box;
+}
+
+.btn-cadastrar-obra {
+    background: var(--afro-gold);
+    color: var(--afro-bg);
+    border: none;
+}
+
+.btn-voltar-obra {
+    background: var(--afro-terracotta);
+    color: white;
+}
+
+.btn-cadastrar-obra:hover,
+.btn-voltar-obra:hover {
+    filter: brightness(1.12);
+}
+
+@media (max-width: 600px) {
+    .pagina-adicionar {
+        padding: 16px;
+    }
+
+    .campos-adicionar {
+        grid-template-columns: 1fr;
+    }
+
+    .campo-completo {
+        grid-column: auto;
+    }
+
+    .botoes-adicionar {
+        flex-direction: column;
+    }
+
+    .btn-cadastrar-obra,
+    .btn-voltar-obra {
+        width: 100%;
+    }
+}
