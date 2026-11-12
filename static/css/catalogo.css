@@ -1871,3 +1871,64 @@ footer {
         width: 100%;
     }
 }
+
+
+/* =========================================
+   19. AJUSTE FINAL: BOTÕES DENTRO DOS CARDS
+========================================= */
+
+/* Impede que a área dos botões ultrapasse o card */
+.card .card-actions {
+    width: 100% !important;
+    max-width: 100% !important;
+    min-width: 0 !important;
+    box-sizing: border-box !important;
+    align-items: stretch !important;
+}
+
+/* Colunas flexíveis, sem largura fixa de 130px */
+.card .card-actions .acoes-principais,
+.card .card-actions .acoes-secundarias {
+    display: grid !important;
+    grid-template-columns: repeat(2, minmax(0, 1fr)) !important;
+    width: 100% !important;
+    max-width: 100% !important;
+    min-width: 0 !important;
+    justify-content: stretch !important;
+    box-sizing: border-box !important;
+}
+
+/* Impede que botões e formulários ultrapassem as colunas */
+.card .card-actions .acoes-principais > *,
+.card .card-actions .acoes-secundarias > *,
+.card .card-actions .acoes-secundarias form {
+    width: 100% !important;
+    min-width: 0 !important;
+    max-width: 100% !important;
+    margin: 0 !important;
+    box-sizing: border-box !important;
+}
+
+/* Botões dentro dos formulários */
+.card .card-actions .acoes-secundarias form button {
+    width: 100% !important;
+    min-width: 0 !important;
+    max-width: 100% !important;
+    box-sizing: border-box !important;
+}
+
+/* Evita que o botão de leitura fique maior que sua coluna */
+.card .card-actions .acoes-principais .ler-catalogo-Livro {
+    width: 100% !important;
+    min-width: 0 !important;
+    max-width: 100% !important;
+    justify-self: stretch !important;
+}
+
+/* Mantém o Saiba Mais dentro do card */
+.card .card-actions > .btn-info {
+    width: 100% !important;
+    max-width: 100% !important;
+    box-sizing: border-box !important;
+    margin: 0 !important;
+}

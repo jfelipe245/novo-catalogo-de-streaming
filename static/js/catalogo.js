@@ -203,32 +203,16 @@ function abrirDetalhesDaObra(card) {
     }
 
     const obraId = card.dataset.id;
-    const categoria = normalizarTexto(obterCategoria(card));
 
-    if (!obraId || !categoria) {
-        alert("Não foi possível identificar o ID ou a categoria da obra.");
-        return;
-    }
-
-    const categoriasValidas = [
-        "livro",
-        "filme",
-        "serie",
-        "documentario",
-        "curta",
-        "musica"
-    ];
-
-    if (!categoriasValidas.includes(categoria)) {
-        alert("A categoria desta obra não é reconhecida.");
+    if (!obraId) {
+        alert("Não foi possível identificar esta obra.");
         return;
     }
 
     const url = new URL(destino, window.location.origin);
 
-    // O Flask consulta os dados diretamente no banco.
+    // Busca os dados da obra diretamente no banco de dados.
     url.searchParams.set("obra_id", obraId);
-    url.searchParams.set("categoria", categoria);
 
     window.location.href = url.toString();
 }

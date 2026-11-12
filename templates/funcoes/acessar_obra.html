@@ -28,7 +28,7 @@
 {% set duracao = duracao|default('', true)|string|trim %}
 {% set temporadas = temporadas|default('', true)|string|trim %}
 
-{% set eh_livro = categoria|lower in ['livro', 'livros'] %}
+{% set eh_livro = categoria|lower in ['livro', 'livros'] or tipo|lower in ['livro', 'livros'] %}
 {% set eh_musica = categoria|lower in ['musica', 'música'] %}
 
 {% if imagem %}
@@ -106,13 +106,7 @@
                     </div>
                     {% endif %}
 
-                    {% if tipo %}
-                    <div>
-                        <dt>Tipo</dt>
-                        <dd>{{ tipo }}</dd>
-                    </div>
-                    {% endif %}
-
+                
                     {% if responsavel %}
                     <div>
                         <dt>{{ nome_responsavel }}</dt>
