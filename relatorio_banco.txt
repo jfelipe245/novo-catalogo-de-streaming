@@ -1,0 +1,5 @@
+
+==========================================================================================
+TOTAL DE TABELAS: 0
+TOTAL DE REGISTROS: 0
+CONSULTA SOMENTE DE LEITURA.
