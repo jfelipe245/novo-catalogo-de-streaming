@@ -115,20 +115,23 @@ class Musica(db.Model):
 
 
 # CLASSE PRINCIPAL DE OBRAS
+
 class Obra(db.Model):
 
     __tablename__ = 'Obras'
 
     id = db.Column(db.Integer, primary_key=True)
-
     titulo = db.Column(db.String(200), nullable=False)
+
+    categoria = db.Column(db.String(50), nullable=True)
     genero = db.Column(db.String(100))
     tipo = db.Column(db.String(50))
 
+    subtitulo = db.Column(db.String(255), nullable=True)
     autor = db.Column(db.String(150))
-    editora = db.Column(db.String(150))
+    editora = db.Column(db.String(150), nullable=True)
     edicao = db.Column(db.String(50))
-    isbn = db.Column(db.String(20))
+    isbn = db.Column(db.String(20), nullable=True)
 
     diretor = db.Column(db.String(150))
     artista = db.Column(db.String(150))
@@ -337,25 +340,25 @@ def catalogo():
         ~Obra.id.in_(obras_ocultas)
     ).order_by(Obra.id.desc()).all()
 
-    livros = [o for o in obras if o.tipo == 'livro']
-    filmes = [o for o in obras if o.tipo == 'filme']
+    livros = [o for o in obras if o.categoria == 'livro']
+    filmes = [o for o in obras if o.categoria == 'filme']
 
     series = [
         o for o in obras
-        if o.tipo in ['serie', 'série']
+        if o.categoria in ['serie', 'série']
     ]
 
     documentarios = [
         o for o in obras
-        if o.tipo in ['documentario', 'documentário']
+        if o.categoria in ['documentario', 'documentário']
     ]
 
     musicas = [
         o for o in obras
-        if o.tipo in ['musica', 'música']
+        if o.categoria in ['musica', 'música']
     ]
 
-    curtas = [o for o in obras if o.tipo == 'curta']
+    curtas = [o for o in obras if o.categoria == 'curta']
 
     favoritos = []
 
@@ -384,7 +387,7 @@ def catalogo():
 def livros():
 
     obras = Obra.query.filter_by(
-        tipo="livro"
+        categoria="livro"
     ).order_by(Obra.id.desc()).all()
 
     return render_template(
@@ -397,7 +400,7 @@ def livros():
 @app.route('/filmes')
 def filmes():
     obras = Obra.query.filter_by(
-        tipo="filme"
+        categoria="filme"
     ).order_by(Obra.id.desc()).all()
 
     return render_template(
@@ -410,13 +413,26 @@ def filmes():
 @app.route('/series')
 def series():
     obras = Obra.query.filter(
-        Obra.tipo.in_(['serie', 'série'])
+        Obra.categoria.in_(['serie', 'série'])
     ).order_by(Obra.id.desc()).all()
 
     return render_template(
         'tipos/series.html',
         obras=obras,
         categoria='series'
+    )
+
+
+@app.route('/documentarios')
+def documentarios():
+    obras = Obra.query.filter(
+        Obra.categoria.in_(['documentario', 'documentário'])
+    ).order_by(Obra.id.desc()).all()
+
+    return render_template(
+        'tipos/documentarios.html',
+        obras=obras,
+        categoria='documentarios'
     )
 
 
@@ -432,18 +448,6 @@ def musica():
         categoria='musica'
     )
 
-
-@app.route('/documentarios')
-def documentarios():
-    obras = Obra.query.filter(
-        Obra.tipo.in_(['documentario', 'documentário'])
-    ).order_by(Obra.id.desc()).all()
-
-    return render_template(
-        'tipos/documentarios.html',
-        obras=obras,
-        categoria='documentarios'
-    )
 
 @app.route('/curtas')
 def curtas():
@@ -549,10 +553,7 @@ def acessar_obra():
     else:
         dados = {
             'titulo': request.args.get('titulo', ''),
-            'categoria': request.args.get(
-                'categoria',
-                request.args.get('tipo', '')
-            ),
+            'categoria': request.args.get('categoria',request.args.get('tipo', '')),
             'tipo': request.args.get('tipo', ''),
             'imagem': request.args.get('imagem', ''),
             'genero': request.args.get('genero', ''),
@@ -603,6 +604,7 @@ def adicionar():
 
             obra = Obra(
                 titulo=titulo,
+                categoria=tipo,
                 tipo=tipo,
                 genero=request.form.get('genero', '').strip() or None,
                 imagem=request.form.get('imagem', '').strip() or None,

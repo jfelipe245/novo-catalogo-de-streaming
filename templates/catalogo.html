@@ -198,100 +198,86 @@
 <!-- ========================================================= -->
 
 <section class="secao-categoria">
-
     <h2 class="secao-livros" data-heading-category="livro">
         Livros
     </h2>
 
-    <div class="grid-cards">
+<div class="grid-cards">
+{% for livro in livros %}
+<article
+    class="card"
+    data-category="livro"
+    data-id="{{ livro.id }}"
+    data-titulo="{{ livro.titulo or '' }}"
+    data-imagem="{{ livro.imagem or '' }}"
+    data-genero="{{ livro.genero or '' }}"
+    data-autor="{{ livro.autor or '' }}"
+    data-descricao="{{ livro.descricao or '' }}"
+    data-ano-publicacao="{{ livro.ano_publicacao or '' }}"
+    data-ano-lancamento="{{ livro.ano_lancamento or '' }}"
+    data-tipo="{{ livro.tipo or '' }}"
+>
+{% if livro.imagem %}
+<img
+    src="{{ url_for('static', filename=livro.imagem) }}"
+    alt="Capa de {{ livro.titulo }}"
+    loading="lazy"
+>
+{% endif %}
 
-        {% for livro in livros %}
+{{ informacoes_bibliograficas(livro, 'livro') }}
 
-        <article
-            class="card"
-            data-category="livro"
-            data-id="{{ livro.id }}"
-            data-titulo="{{ livro.titulo or '' }}"
-            data-imagem="{{ livro.imagem or '' }}"
-            data-genero="{{ livro.genero or '' }}"
-            data-autor="{{ livro.autor or '' }}"
-            data-descricao="{{ livro.descricao or '' }}"
-            data-ano-publicacao="{{ livro.ano_publicacao or '' }}"
-            data-ano-lancamento="{{ livro.ano_lancamento or '' }}"
-            data-tipo="{{ livro.tipo or '' }}"
-        >
 
-            {% if livro.imagem %}
-            <img
-                src="{{ url_for('static', filename=livro.imagem) }}"
-                alt="Capa de {{ livro.titulo }}"
-                loading="lazy"
-            >
-            {% endif %}
+<div class="card-actions">
 
-            {{ informacoes_bibliograficas(livro, 'livro') }}
+    <!-- 1. Acessar obra -->
+    <a
+        href="{{ url_for('acessar_obra', id=livro.id) }}"
+        class="btn-acao"
+    >
+        ler este Livro
+    </a>
 
-            <div class="card-actions">
+    <!-- 2. Meus Favoritos -->
+    <a
+        href="{{ url_for('meus_favoritos') }}"
+        class="btn-acao btn-favoritos"
+    >
+        ♥ Meus Favoritos
+    </a>
 
-                <div class="acoes-principais">
+    <!-- 3. Remover do catálogo -->
+    <form action="{{ url_for('remover') }}" method="POST">
+        <input type="hidden" name="obra_id" value="{{ livro.id }}">
+        <input type="hidden" name="categoria" value="livro">
 
-                    <a
-                        href="{{ url_for('acessar_obra', id=livro.id) }}"
-                        class="btn-acao"
-                    >
-                        Acessar obra
-                    </a>
+        <button type="submit" class="btn-acao">
+            Remover do catálogo
+        </button>
+    </form>
 
-                    <a
-                        href="{{ url_for('adicionar', tipo='livro') }}"
-                        class="btn-acao btn-add"
-                    >
-                        + Adicionar livro
-                    </a>
+    <!-- 4. Adicionar livro -->
+    <a
+        href="{{ url_for('adicionar', tipo='livro') }}"
+        class="btn-acao btn-add"
+    >
+        + Adicionar livro
+    </a>
 
-                </div>
+    <!-- 5. Saiba Mais -->
+    <a
+        href="{{ url_for('saiba_mais', id=livro.id) }}"
+        class="btn-acao btn-info"
+    >
+        Saiba Mais
+    </a>
 
-                <div class="acoes-secundarias">
-
-                    <a
-                        href="{{ url_for('meus_favoritos') }}"
-                        class="btn-acao btn-favoritos"
-                    >
-                        ♥ Meus Favoritos
-                    </a>
-
-                    <form action="{{ url_for('remover') }}" method="POST">
-                        <input type="hidden" name="obra_id" value="{{ livro.id }}">
-                        <input type="hidden" name="categoria" value="livro">
-
-                        <button type="submit" class="btn-acao">
-                            Remover do catálogo
-                        </button>
-                    </form>
-
-                </div>
-
-                <a
-                    href="{{ url_for('acessar_obra', id=livro.id) }}"
-                    class="btn-acao"
-                >
-                    Saiba Mais
-                </a>
-
-            </div>
-
-        </article>
-
-        {% endfor %}
-
-    </div>
-
+</div>
+</article>
+{% endfor %}
+</div>
 </section>
 
-
-<!-- ========================================================= -->
-<!-- FILMES -->
-<!-- ========================================================= -->
 
 <section class="secao-categoria">
 
@@ -335,7 +321,7 @@
                         href="{{ url_for('acessar_obra', id=filme.id) }}"
                         class="btn-acao"
                     >
-                        Acessar obra
+                        assistir este filme
                     </a>
 
                     <a
@@ -348,14 +334,6 @@
                 </div>
 
                 <div class="acoes-secundarias">
-
-                    <button
-                        type="button"
-                        class="btn-acao assistir-catalogo-Filme"
-                    >
-                        Assistir
-                    </button>
-
                     <a
                         href="{{ url_for('meus_favoritos') }}"
                         class="btn-acao btn-favoritos"
@@ -375,7 +353,7 @@
                 </div>
 
                 <a
-                    href="{{ url_for('acessar_obra', id=filme.id) }}"
+                    href="{{ url_for('saiba_mais', id=filme.id) }}"
                     class="btn-acao"
                 >
                     Saiba Mais
@@ -391,10 +369,6 @@
 
 </section>
 
-
-<!-- ========================================================= -->
-<!-- SÉRIES -->
-<!-- ========================================================= -->
 
 <section class="secao-categoria">
 
@@ -438,7 +412,7 @@
                         href="{{ url_for('acessar_obra', id=serie.id) }}"
                         class="btn-acao"
                     >
-                        Acessar obra
+                        Assistir esta série
                     </a>
 
                     <a
@@ -451,13 +425,6 @@
                 </div>
 
                 <div class="acoes-secundarias">
-
-                    <button
-                        type="button"
-                        class="btn-acao assistir-catalogo-Serie"
-                    >
-                        Assistir esta série
-                    </button>
 
                     <a
                         href="{{ url_for('meus_favoritos') }}"
@@ -478,7 +445,7 @@
                 </div>
 
                 <a
-                    href="{{ url_for('acessar_obra', id=serie.id) }}"
+                    href="{{ url_for('saiba_mais', id=serie.id) }}"
                     class="btn-acao"
                 >
                     Saiba Mais
@@ -492,12 +459,8 @@
 
     </div>
 
-</section>
+</section> 
 
-
-<!-- ========================================================= -->
-<!-- DOCUMENTÁRIOS -->
-<!-- ========================================================= -->
 
 <section class="secao-categoria">
 
@@ -541,7 +504,7 @@
                         href="{{ url_for('acessar_obra', id=documentario.id) }}"
                         class="btn-acao"
                     >
-                        Acessar obra
+                        Assistir este documentário
                     </a>
 
                     <a
@@ -554,13 +517,6 @@
                 </div>
 
                 <div class="acoes-secundarias">
-
-                    <button
-                        type="button"
-                        class="btn-acao assistir-catalogo-documentario"
-                    >
-                        Assistir documentário
-                    </button>
 
                     <a
                         href="{{ url_for('meus_favoritos') }}"
@@ -581,10 +537,10 @@
                 </div>
 
                 <a
-                    href="{{ url_for('acessar_obra', id=documentario.id) }}"
+                    href="{{ url_for('saiba_mais', id=documentario.id) }}"
                     class="btn-acao"
                 >
-                    Saiba Mais
+                    Saiba mais
                 </a>
 
             </div>
@@ -596,11 +552,6 @@
     </div>
 
 </section>
-
-
-<!-- ========================================================= -->
-<!-- MÚSICAS DE PROTESTO -->
-<!-- ========================================================= -->
 
 <section class="secao-categoria">
 
@@ -644,7 +595,7 @@
                         href="{{ url_for('acessar_obra', id=musica.id) }}"
                         class="btn-acao"
                     >
-                        Acessar obra
+                        ouvir esta música
                     </a>
 
                     <a
@@ -658,15 +609,7 @@
 
                 <div class="acoes-secundarias">
 
-                    <button
-                        type="button"
-                        class="btn-acao assistir-catalogo-musica"
-                    >
-                        Ouvir esta música
-                    </button>
-
-                    <a
-                        href="{{ url_for('meus_favoritos') }}"
+                    <a href="{{ url_for('meus_favoritos') }}"
                         class="btn-acao btn-favoritos"
                     >
                         ♥ Meus Favoritos
@@ -684,7 +627,7 @@
                 </div>
 
                 <a
-                    href="{{ url_for('acessar_obra', id=musica.id) }}"
+                    href="{{ url_for('saiba_mais', id=musica.id) }}"
                     class="btn-acao"
                 >
                     Saiba Mais
@@ -700,19 +643,12 @@
 
 </section>
 
-
-<!-- ========================================================= -->
-<!-- CURTAS-METRAGENS -->
-<!-- ========================================================= -->
-
 <section class="secao-categoria">
-
     <h2 class="secao-curtas" data-heading-category="curta">
         Curtas-metragens
     </h2>
 
     <div class="grid-cards">
-
         {% for curta in curtas %}
 
         <article
@@ -743,66 +679,36 @@
 
                 <div class="acoes-principais">
 
-                    <a
-                        href="{{ url_for('acessar_obra', id=curta.id) }}"
-                        class="btn-acao"
-                    >
-                        Acessar obra
+                     <a href="{{ url_for('acessar_obra', id=curta.id) }}" class="btn-acao btn-favoritos">
+                        Assistir este curta
                     </a>
 
-                    <a
-                        href="{{ url_for('adicionar', tipo='curta') }}"
-                        class="btn-acao btn-add"
-                    >
+                    <a href="{{ url_for('adicionar', tipo='curta') }}" class="btn-acao btn-add">
                         + Adicionar curta
                     </a>
 
                 </div>
 
                 <div class="acoes-secundarias">
-
-                    <button
-                        type="button"
-                        class="btn-acao assistir-catalogo-curta"
-                    >
-                        Assistir este curta
-                    </button>
-
-                    <a
-                        href="{{ url_for('meus_favoritos') }}"
-                        class="btn-acao btn-favoritos"
-                    >
+                    <a href="{{ url_for('meus_favoritos') }}" class="btn-acao btn-favoritos">
                         ♥ Meus Favoritos
                     </a>
 
-                    <form action="{{ url_for('remover') }}" method="POST">
-                        <input type="hidden" name="obra_id" value="{{ curta.id }}">
-                        <input type="hidden" name="categoria" value="curta">
+                    <form action="{{ url_for('remover') }}" method="POST"> <input type="hidden" name="obra_id" value="{{ curta.id }}"> <input type="hidden" name="categoria" value="curta">
 
                         <button type="submit" class="btn-acao">
-                            Remover do catálogo
-                        </button>
+                            Remover do catálogo </button>
                     </form>
-
                 </div>
 
-                <a
-                    href="{{ url_for('acessar_obra', id=curta.id) }}"
-                    class="btn-acao"
-                >
+                <a href="{{ url_for('saiba_mais', id=curta.id) }}" class="btn-acao">
                     Saiba Mais
                 </a>
-
             </div>
-
         </article>
-
         {% endfor %}
-
     </div>
-
 </section>
-
 </main>
 
 
