@@ -2,10 +2,12 @@ from flask import Flask, render_template, request, redirect, url_for, session
 from flask_sqlalchemy import SQLAlchemy
 from flask_migrate import Migrate
 
-app = Flask(__name__)
-app.secret_key = 'AfroEdu_RaizesDosSaberes_Conexao_2026!'
+app = Flask(__name__, instance_relative_config=True)
+
+app.config['SECRET_KEY'] = 'jao2020'
 
 app.config['SQLALCHEMY_DATABASE_URI'] = 'sqlite:///afroedu_streaming.db'
+
 app.config['SQLALCHEMY_TRACK_MODIFICATIONS'] = False
 
 db = SQLAlchemy(app)
@@ -113,17 +115,24 @@ class Musica(db.Model):
 
 
 # CLASSE PRINCIPAL DE OBRAS
+
 class Obra(db.Model):
 
-    __tablename__ = "Obras"
+    __tablename__ = 'Obras'
 
     id = db.Column(db.Integer, primary_key=True)
-
     titulo = db.Column(db.String(200), nullable=False)
+
+    categoria = db.Column(db.String(50), nullable=True)
     genero = db.Column(db.String(100))
     tipo = db.Column(db.String(50))
 
+    subtitulo = db.Column(db.String(255), nullable=True)
     autor = db.Column(db.String(150))
+    editora = db.Column(db.String(150), nullable=True)
+    edicao = db.Column(db.String(50))
+    isbn = db.Column(db.String(20), nullable=True)
+
     diretor = db.Column(db.String(150))
     artista = db.Column(db.String(150))
     album = db.Column(db.String(150))
@@ -138,23 +147,65 @@ class Obra(db.Model):
     descricao = db.Column(db.Text)
     imagem = db.Column(db.String(255))
 
+    favoritos = db.relationship(
+        'Favorito',
+        back_populates='obra',
+        cascade='all, delete-orphan'
+    )
+
+    informacoes = db.relationship(
+        'SaibaMais',
+        back_populates='obra',
+        cascade='all, delete-orphan'
+    )
+
+
+# ==========================================
+# MODELO DE FAVORITOS
+# ==========================================
+
 class Favorito(db.Model):
+
     __tablename__ = 'Favoritos'
 
     id = db.Column(db.Integer, primary_key=True)
-    usuario_id = db.Column(db.Integer, db.ForeignKey('Usuarios.id'), nullable=False)
-    titulo = db.Column(db.String(100), nullable=False)
-    categoria = db.Column(db.String(50), nullable=False)
-    genero = db.Column(db.String(50), nullable=False)
 
+    usuario_id = db.Column(
+        db.Integer,
+        db.ForeignKey('Usuarios.id'),
+        nullable=False
+    )
 
-class saiba_mais(db.Model):
+    obra_id = db.Column(
+        db.Integer,
+        db.ForeignKey('Obras.id'),
+        nullable=False
+    )
+
+    obra = db.relationship(
+        'Obra',
+        back_populates='favoritos'
+    )
+
+class SaibaMais(db.Model):
+
     __tablename__ = 'Saiba_Mais'
 
     id = db.Column(db.Integer, primary_key=True)
-    titulo = db.Column(db.String(100), nullable=False)
+
+    obra_id = db.Column(
+        db.Integer,
+        db.ForeignKey('Obras.id'),
+        nullable=False
+    )
+
+    titulo = db.Column(db.String(150), nullable=False)
     descricao = db.Column(db.Text, nullable=False)
 
+    obra = db.relationship(
+        'Obra',
+        back_populates='informacoes'
+    )
 
 # ==========================================
 # INÍCIO E LOGIN
@@ -278,19 +329,36 @@ def cadastrar_usuario():
 # ==========================================
 # CATÁLOGO PRINCIPAL
 # ==========================================
+
 @app.route('/catalogo')
 def catalogo():
 
-    # Busca todas as obras cadastradas no banco.
-    obras = Obra.query.order_by(Obra.id.desc()).all()
+    # Recupera as obras ocultadas nesta sessão.
+    obras_ocultas = session.get('obras_ocultas', [])
 
-    # Separa as obras por categoria.
-    livros = [obra for obra in obras if obra.tipo == 'livro']
-    filmes = [obra for obra in obras if obra.tipo == 'filme']
-    series = [obra for obra in obras if obra.tipo == 'serie']
-    documentarios = [obra for obra in obras if obra.tipo == 'documentario']
-    musicas = [obra for obra in obras if obra.tipo == 'musica']
-    curtas = [obra for obra in obras if obra.tipo == 'curta']
+    obras = Obra.query.filter(
+        ~Obra.id.in_(obras_ocultas)
+    ).order_by(Obra.id.desc()).all()
+
+    livros = [o for o in obras if o.categoria == 'livro']
+    filmes = [o for o in obras if o.categoria == 'filme']
+
+    series = [
+        o for o in obras
+        if o.categoria in ['serie', 'série']
+    ]
+
+    documentarios = [
+        o for o in obras
+        if o.categoria in ['documentario', 'documentário']
+    ]
+
+    musicas = [
+        o for o in obras
+        if o.categoria in ['musica', 'música']
+    ]
+
+    curtas = [o for o in obras if o.categoria == 'curta']
 
     favoritos = []
 
@@ -308,7 +376,8 @@ def catalogo():
         documentarios=documentarios,
         musicas=musicas,
         curtas=curtas,
-        favoritos=favoritos
+        favoritos=favoritos,
+        nome=session.get('usuario_nome', 'Visitante')
     )
 
 # ==========================================
@@ -318,7 +387,7 @@ def catalogo():
 def livros():
 
     obras = Obra.query.filter_by(
-        tipo="livro"
+        categoria="livro"
     ).order_by(Obra.id.desc()).all()
 
     return render_template(
@@ -331,7 +400,7 @@ def livros():
 @app.route('/filmes')
 def filmes():
     obras = Obra.query.filter_by(
-        tipo="filme"
+        categoria="filme"
     ).order_by(Obra.id.desc()).all()
 
     return render_template(
@@ -343,8 +412,8 @@ def filmes():
 
 @app.route('/series')
 def series():
-    obras = Obra.query.filter_by(
-        tipo="série"
+    obras = Obra.query.filter(
+        Obra.categoria.in_(['serie', 'série'])
     ).order_by(Obra.id.desc()).all()
 
     return render_template(
@@ -354,29 +423,29 @@ def series():
     )
 
 
-@app.route('/musica')
-def musica():
-    obras = Obra.query.filter_by(
-        tipo="música"
-    ).order_by(Obra.id.desc()).all()
-
-    return render_template(
-        'tipos/musicas.html',
-        obras=obras,
-        categoria='musica'
-    )
-
-
 @app.route('/documentarios')
 def documentarios():
-    obras = Obra.query.filter_by(
-        tipo="documentário"
+    obras = Obra.query.filter(
+        Obra.categoria.in_(['documentario', 'documentário'])
     ).order_by(Obra.id.desc()).all()
 
     return render_template(
         'tipos/documentarios.html',
         obras=obras,
         categoria='documentarios'
+    )
+
+
+@app.route('/musica')
+def musica():
+    obras = Obra.query.filter(
+        Obra.tipo.in_(['musica', 'música'])
+    ).order_by(Obra.id.desc()).all()
+
+    return render_template(
+        'tipos/musicas.html',
+        obras=obras,
+        categoria='musica'
     )
 
 
@@ -400,23 +469,17 @@ def curtas():
 
 @app.route('/meus_favoritos')
 def meus_favoritos():
-    favoritos = Favorito.query.filter_by().order_by(Favorito.id.desc()).all()
 
-    obras_favoritas = []
+    if 'usuario_id' not in session:
+        return redirect(url_for('login'))
 
-    for favorito in favoritos:
-        obra = Obra.query.filter_by(
-            titulo=favorito.titulo
-        ).first()
-
-        obras_favoritas.append({
-            'favorito': favorito,
-            'obra': obra
-        })
+    favoritos = Favorito.query.filter_by(
+        usuario_id=session['usuario_id']
+    ).order_by(Favorito.id.desc()).all()
 
     return render_template(
         'funcoes/meus_favoritos.html',
-        favoritos=obras_favoritas
+        favoritos=favoritos
     )
 
 #===========================================
@@ -426,25 +489,28 @@ def meus_favoritos():
 @app.route('/adicionar_favoritos', methods=['POST'])
 def adicionar_favoritos():
 
-    titulo = request.form.get('titulo', '').strip()
-    categoria = request.form.get('categoria', '').strip()
-    genero = request.form.get('genero', '').strip()
+    if 'usuario_id' not in session:
+        return redirect(url_for('login'))
 
-    if not titulo or not categoria:
+    obra_id = request.form.get('obra_id', type=int)
+
+    if not obra_id:
+        return redirect(url_for('catalogo'))
+
+    obra = db.session.get(Obra, obra_id)
+
+    if obra is None:
         return redirect(url_for('catalogo'))
 
     existente = Favorito.query.filter_by(
         usuario_id=session['usuario_id'],
-        titulo=titulo,
-        categoria=categoria
+        obra_id=obra_id
     ).first()
 
-    if not existente:
+    if existente is None:
         favorito = Favorito(
             usuario_id=session['usuario_id'],
-            titulo=titulo,
-            categoria=categoria,
-            genero=genero
+            obra_id=obra_id
         )
 
         db.session.add(favorito)
@@ -487,10 +553,7 @@ def acessar_obra():
     else:
         dados = {
             'titulo': request.args.get('titulo', ''),
-            'categoria': request.args.get(
-                'categoria',
-                request.args.get('tipo', '')
-            ),
+            'categoria': request.args.get('categoria',request.args.get('tipo', '')),
             'tipo': request.args.get('tipo', ''),
             'imagem': request.args.get('imagem', ''),
             'genero': request.args.get('genero', ''),
@@ -517,18 +580,15 @@ def acessar_obra():
 
 @app.route('/adicionar', methods=['GET', 'POST'])
 def adicionar():
-    tipo_selecionado = request.args.get('tipo', '')
+
     if request.method == 'POST':
+
         titulo = request.form.get('titulo', '').strip()
         tipo = request.form.get('tipo', '').strip()
 
         tipos_permitidos = [
-            'livro',
-            'filme',
-            'serie',
-            'documentario',
-            'curta',
-            'musica'
+            'livro', 'filme', 'serie',
+            'documentario', 'curta', 'musica'
         ]
 
         if not titulo or tipo not in tipos_permitidos:
@@ -538,13 +598,13 @@ def adicionar():
             )
 
         try:
-            ano_publicacao = request.form.get('ano_publicacao')
-            ano_lancamento = request.form.get('ano_lancamento')
-            numero_paginas = request.form.get('numero_paginas')
-            temporadas = request.form.get('temporadas')
+            def numero(campo):
+                valor = request.form.get(campo, '').strip()
+                return int(valor) if valor else None
 
             obra = Obra(
                 titulo=titulo,
+                categoria=tipo,
                 tipo=tipo,
                 genero=request.form.get('genero', '').strip() or None,
                 imagem=request.form.get('imagem', '').strip() or None,
@@ -553,11 +613,11 @@ def adicionar():
                 diretor=request.form.get('diretor', '').strip() or None,
                 artista=request.form.get('artista', '').strip() or None,
                 album=request.form.get('album', '').strip() or None,
-                ano_publicacao=int(ano_publicacao) if ano_publicacao else None,
-                ano_lancamento=int(ano_lancamento) if ano_lancamento else None,
-                numero_paginas=int(numero_paginas) if numero_paginas else None,
+                ano_publicacao=numero('ano_publicacao'),
+                ano_lancamento=numero('ano_lancamento'),
+                numero_paginas=numero('numero_paginas'),
                 duracao=request.form.get('duracao', '').strip() or None,
-                temporadas=int(temporadas) if temporadas else None
+                temporadas=numero('temporadas')
             )
 
             db.session.add(obra)
@@ -569,17 +629,19 @@ def adicionar():
             db.session.rollback()
             return render_template(
                 'funcoes/adicionar.html',
-                mensagem='Confira os campos numéricos e tente novamente.'
+                mensagem='Confira os campos numéricos.'
             )
 
         except Exception:
             db.session.rollback()
+            app.logger.exception('Erro ao cadastrar obra')
+
             return render_template(
                 'funcoes/adicionar.html',
-                mensagem='Não foi possível cadastrar a obra.'
+                mensagem='Erro ao cadastrar obra. Consulte o terminal.'
             )
-    
-    return render_template('funcoes/adicionar.html', tipo_selecionado=tipo_selecionado)
+
+    return render_template('funcoes/adicionar.html')
 
 # ==========================================
 # rota deletar FAVORITOS

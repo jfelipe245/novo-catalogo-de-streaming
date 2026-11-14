@@ -1,33 +1,35 @@
 
 /* =========================================================
-   AFROEDU STREAM
-   Identidade visual: preto digital, roxo, dourado,
-   ciano e terracota
-   Catálogo, detalhes, adicionar e remover obras
+   AFROEDU STREAM — CATÁLOGO
+   CSS baseado no catalogo.html
    ========================================================= */
 
-/* ---------- 1. Variáveis e configuração geral ---------- */
+/* -------------------- VARIÁVEIS -------------------- */
 
 :root {
-    --afro-bg: #121116;
-    --afro-surface: #292333;
-    --afro-surface-hover: #382B46;
-    --afro-border: #494052;
+    --fundo: #110B08;
+    --fundo-secundario: #1B100C;
+    --card: #3D2117;
+    --card-hover: #4A291D;
+    --input: #27130C;
 
-    --afro-gold: #E5B84B;
-    --afro-gold-light: #F4D98A;
-    --afro-tech: #20C6D2;
-    --afro-tech-light: #83E8EB;
-    --afro-terracotta: #C74732;
-    --afro-terracotta-dark: #963624;
+    --dourado: #E5A23B;
+    --dourado-hover: #F3B957;
+    --turquesa: #1E829B;
+    --terracota: #C83B1E;
+    --creme: #F5E8D3;
 
-    --afro-text: #F5F0E8;
-    --afro-muted: #CEC6D5;
+    --texto: #F5E8D3;
+    --texto-secundario: #D2BDA4;
+    --borda: rgba(229, 162, 59, 0.25);
 
-    --afro-radius: 14px;
-    --afro-shadow: 0 10px 30px rgb(0 0 0 / 28%);
-    --afro-transition: 0.22s ease;
+    --sombra: 0 8px 24px rgba(0, 0, 0, 0.35);
+    --transicao: 0.3s ease;
+
+    --raio: 14px;
 }
+
+/* -------------------- CONFIGURAÇÕES GERAIS -------------------- */
 
 * {
     box-sizing: border-box;
@@ -35,1900 +37,687 @@
 
 html {
     scroll-behavior: smooth;
-    scroll-padding-top: 120px;
 }
 
 body {
-    color: var(--afro-text);
-    background:
-        radial-gradient(
-            ellipse at 8% 10%,
-            rgb(32 198 210 / 7%),
-            transparent 34%
-        ),
-        radial-gradient(
-            ellipse at 90% 35%,
-            rgb(100 55 145 / 15%),
-            transparent 40%
-        ),
-        var(--afro-bg);
+    margin: 0;
+    min-height: 100vh;
+    background: var(--fundo);
+    color: var(--texto);
+    font-family: "Plus Jakarta Sans", Arial, sans-serif;
     line-height: 1.6;
 }
 
-::selection {
-    color: var(--afro-bg);
-    background: var(--afro-gold);
-}
-
-img {
-    max-width: 100%;
-}
-
-a,
 button,
 input,
-select,
-textarea {
-    transition:
-        color var(--afro-transition),
-        background-color var(--afro-transition),
-        border-color var(--afro-transition),
-        box-shadow var(--afro-transition);
+select {
+    font: inherit;
+}
+
+button,
+a {
+    -webkit-tap-highlight-color: transparent;
+}
+
+a {
+    color: inherit;
+    text-decoration: none;
 }
 
 button {
-    font: inherit;
     cursor: pointer;
 }
 
-button:disabled {
-    opacity: 0.6;
-    cursor: not-allowed;
+/* -------------------- APRESENTAÇÃO -------------------- */
+
+.catalogo-intro {
+    width: min(1200px, 92%);
+    margin: 45px auto 35px;
+    padding: 55px 30px;
+    text-align: center;
+
+    background:
+        radial-gradient(
+            ellipse at top,
+            rgba(229, 162, 59, 0.15),
+            transparent 70%
+        ),
+        var(--fundo-secundario);
+
+    border: 1px solid var(--borda);
+    border-radius: 22px;
+    box-shadow: var(--sombra);
 }
 
-:focus-visible {
-    outline: 2px solid var(--afro-tech);
-    outline-offset: 3px;
+.catalogo-intro strong {
+    display: inline-block;
+    margin-bottom: 12px;
+    color: var(--dourado);
+    font-size: 0.9rem;
+    letter-spacing: 4px;
 }
 
-/* ---------- 2. Menu principal ---------- */
-
-.navbar {
-    background: rgb(18 17 22 / 96%);
-    border-bottom: 1px solid rgb(229 184 75 / 35%);
-    box-shadow: 0 8px 28px rgb(0 0 0 / 25%);
-    backdrop-filter: blur(14px);
-    -webkit-backdrop-filter: blur(14px);
+.catalogo-intro h1 {
+    margin: 0 0 15px;
+    color: var(--creme);
+    font-family: "Sora", sans-serif;
+    font-size: clamp(2rem, 5vw, 3.2rem);
+    font-weight: 800;
 }
 
-.site-logo {
-    border: 2px solid var(--afro-gold);
-    box-shadow: 0 0 0 4px rgb(229 184 75 / 9%);
+.catalogo-intro p {
+    max-width: 750px;
+    margin: auto;
+    color: var(--texto-secundario);
+    font-size: 1.05rem;
 }
 
-.filter-btn,
-.btn-filtro {
-    color: var(--afro-muted);
-    border-radius: 999px;
+/* -------------------- PESQUISA -------------------- */
+
+.container-pesquisa {
+    position: relative;
+    z-index: 10;
+
+    width: min(1100px, 92%);
+    margin: 0 auto 55px;
+    padding: 25px;
+
+    background: var(--fundo-secundario);
+    border: 1px solid var(--borda);
+    border-radius: var(--raio);
+    box-shadow: var(--sombra);
 }
 
-.filter-btn:hover,
-.btn-filtro:hover {
-    color: var(--afro-tech-light);
-    background: rgb(32 198 210 / 10%);
-    border-color: var(--afro-tech);
+.container-pesquisa label {
+    display: block;
+    margin-bottom: 10px;
+    color: var(--dourado);
+    font-weight: 700;
 }
 
-.filter-btn.active,
-.btn-filtro.ativo {
-    color: #17131E;
-    background: var(--afro-gold);
-    border-color: var(--afro-gold);
+.pesquisa-linha {
+    display: flex;
+    gap: 12px;
 }
 
-/* ---------- 3. Menus de categorias ---------- */
+.pesquisa-linha input {
+    flex: 1;
+    min-width: 0;
+    padding: 15px 18px;
 
-.opcoes-categorias,
-.lista-categorias-catalogo {
-    color: var(--afro-text);
-    background: var(--afro-surface);
-    border: 1px solid var(--afro-border);
-    border-radius: 12px;
-    box-shadow: var(--afro-shadow);
-}
+    background: var(--input);
+    color: var(--creme);
 
-.opcoes-categorias {
-    padding: 10px;
-}
-
-.opcoes-categorias .btn-filtro {
+    border: 1px solid var(--borda);
     border-radius: 9px;
+    outline: none;
+
+    transition: var(--transicao);
+}
+
+.pesquisa-linha input::placeholder {
+    color: #A99580;
+}
+
+.pesquisa-linha input:focus {
+    border-color: var(--dourado);
+    box-shadow: 0 0 0 3px rgba(229, 162, 59, 0.13);
+}
+
+#botao-pesquisa {
+    padding: 13px 25px;
+
+    background: var(--dourado);
+    color: var(--fundo);
+
+    border: none;
+    border-radius: 9px;
+    font-weight: 800;
+
+    transition: var(--transicao);
+}
+
+#botao-pesquisa:hover {
+    background: var(--dourado-hover);
+    transform: translateY(-2px);
+}
+
+/* -------------------- FILTRO DE CATEGORIAS -------------------- */
+
+.filtro-item {
+    position: relative;
+    width: min(350px, 100%);
+    margin-top: 22px;
 }
 
 .menu-categorias-catalogo {
     position: relative;
-    z-index: 20;
-    width: min(100%, 320px);
-    margin: 20px 0 28px;
+    width: 100%;
 }
 
 .botao-menu-categorias {
     display: flex;
     align-items: center;
     justify-content: space-between;
-    gap: 12px;
+
     width: 100%;
-    padding: 14px 16px;
-    color: var(--afro-text);
-    background: var(--afro-surface);
-    border: 1px solid var(--afro-tech);
-    border-radius: 12px;
-    font-size: 1rem;
-    font-weight: 600;
+    padding: 13px 16px;
+
+    background: var(--input);
+    color: var(--creme);
+
+    border: 1px solid var(--borda);
+    border-radius: 9px;
+
+    transition: var(--transicao);
 }
 
-.botao-menu-categorias:hover {
-    background: var(--afro-surface-hover);
-    border-color: var(--afro-gold);
-}
-
-.seta-categorias {
-    margin-left: auto;
-    color: var(--afro-gold);
-    font-size: 22px;
-}
-
-.botao-menu-categorias[aria-expanded="true"] .seta-categorias {
-    transform: rotate(180deg);
+.botao-menu-categorias:hover,
+.botao-menu-categorias[aria-expanded="true"] {
+    border-color: var(--dourado);
 }
 
 .lista-categorias-catalogo {
     position: absolute;
     top: calc(100% + 8px);
     left: 0;
-    z-index: 30;
+    z-index: 100;
+
     width: 100%;
     padding: 8px;
+
+    background: #24140E;
+    border: 1px solid var(--borda);
+    border-radius: 10px;
+    box-shadow: var(--sombra);
 }
 
 .lista-categorias-catalogo[hidden] {
     display: none !important;
 }
 
-.item-categoria-menu {
+.lista-categorias-catalogo button {
     display: block;
+    width: 100%;
     padding: 11px 13px;
-    margin: 3px 0;
-    color: var(--afro-text);
-    text-decoration: none;
-    border-radius: 8px;
+
+    background: transparent;
+    color: var(--creme);
+
+    border: none;
+    border-radius: 7px;
+    text-align: left;
+
+    transition: var(--transicao);
 }
 
-.item-categoria-menu:hover,
-.item-categoria-menu.ativo {
-    color: var(--afro-gold-light);
-    background: var(--afro-surface-hover);
+.lista-categorias-catalogo button:hover {
+    background: var(--card);
+    color: var(--dourado);
 }
 
-.item-categoria-menu.ativo {
-    border-left: 3px solid var(--afro-terracotta);
-}
+/* -------------------- CATÁLOGO E CATEGORIAS -------------------- */
 
-/* ---------- 4. Cabeçalho do catálogo ---------- */
-
-header {
-    max-width: 1100px;
-}
-
-header strong {
-    color: var(--afro-gold);
-    letter-spacing: 1.5px;
-}
-
-header h1,
-.secao-livros > h1 {
-    color: var(--afro-text);
-    letter-spacing: -0.035em;
-}
-
-header h1 {
-    font-size: clamp(2rem, 4vw, 3.4rem);
-    line-height: 1.2;
-}
-
-header p {
-    max-width: 720px;
-    margin-right: auto;
-    margin-left: auto;
-    color: var(--afro-muted);
-}
-
-/* ---------- 5. Pesquisa e filtros ---------- */
-
-.container-pesquisa {
-    align-items: stretch;
-}
-
-#pesquisa,
-#filtro-categoria,
-#filtro-genero {
-    width: 100%;
-    min-height: 46px;
-    padding: 11px 14px;
-    color: var(--afro-text);
-    background: var(--afro-surface);
-    border: 1px solid var(--afro-border);
-    border-radius: 10px;
-}
-
-#pesquisa::placeholder {
-    color: #B8ADBF;
-    opacity: 1;
-}
-
-#pesquisa:focus,
-#filtro-categoria:focus,
-#filtro-genero:focus {
-    outline: none;
-    border-color: var(--afro-tech);
-    box-shadow: 0 0 0 3px rgb(32 198 210 / 12%);
-}
-
-#filtro-categoria option,
-#filtro-genero option,
-.pagina-adicionar select option {
-    color: var(--afro-text);
-    background: var(--afro-surface);
-}
-
-#botao-pesquisa {
-    min-height: 46px;
-    padding: 10px 20px;
-    color: white;
-    background: var(--afro-terracotta);
-    border: 1px solid var(--afro-terracotta);
-    border-radius: 10px;
-    font-weight: 600;
-}
-
-#botao-pesquisa:hover {
-    background: var(--afro-terracotta-dark);
-    border-color: var(--afro-gold);
-}
-
-#mensagem-pesquisa {
-    width: min(100% - 24px, 1350px);
-    margin: 0 auto 16px;
-    color: var(--afro-gold-light);
-    text-align: center;
-    font-size: 0.92rem;
-}
-
-/* ---------- 6. Grade do catálogo ---------- */
-
-.grid-container,
-.grid-cards,
 #card-container {
-    box-sizing: border-box;
-    width: 100%;
-    max-width: none;
-    min-width: 0;
+    width: min(1400px, 94%);
+    margin: 0 auto 70px;
 }
 
-.grid-container,
+.secao-categoria {
+    margin-bottom: 65px;
+}
+
+.secao-categoria h2 {
+    position: relative;
+    margin: 0 0 28px;
+    padding: 0 0 13px;
+
+    color: var(--dourado);
+    font-family: "Sora", sans-serif;
+    font-size: clamp(1.5rem, 3vw, 2.1rem);
+    font-weight: 800;
+
+    border-bottom: 1px solid var(--borda);
+}
+
+.secao-categoria h2::after {
+    content: "";
+    position: absolute;
+    bottom: -1px;
+    left: 0;
+
+    width: 90px;
+    height: 3px;
+
+    background: var(--dourado);
+    border-radius: 5px;
+}
+
+/* -------------------- GRADE DOS CARDS -------------------- */
+
 .grid-cards {
     display: grid;
-    grid-template-columns:
-        repeat(auto-fit, minmax(min(100%, 190px), 1fr));
+    grid-template-columns: repeat(2, minmax(0, 1fr));
+    gap: 25px;
     align-items: stretch;
-    gap: 18px;
-    margin: 0;
-    padding: 0;
 }
-
-#card-container {
-    scroll-margin-top: 140px;
-}
-
-#card-container .card[hidden] {
-    display: none !important;
-}
-
-/* ---------- 7. Cards ---------- */
-
-.grid-container > .card,
-.grid-cards > .card,
-#card-container > .card {
-    width: 100%;
-    min-width: 0;
-    max-width: 100%;
-}
+/* -------------------- CARD -------------------- */
 
 .card {
     display: flex;
     flex-direction: column;
     min-width: 0;
-    height: auto;
-    min-height: 0;
-    aspect-ratio: auto;
-    padding: 12px;
-    overflow: visible;
-    color: var(--afro-text);
-    background: linear-gradient(
-        145deg,
-        var(--afro-surface),
-        #1B1722
-    );
-    border: 1px solid var(--afro-border);
-    border-top: 2px solid var(--afro-gold);
-    border-radius: var(--afro-radius);
-    box-shadow: 0 7px 22px rgb(0 0 0 / 20%);
+    overflow: hidden;
+
+    background: var(--card);
+    border: 1px solid var(--borda);
+    border-radius: var(--raio);
+
+    box-shadow: var(--sombra);
+
     transition:
-        transform var(--afro-transition),
-        border-color var(--afro-transition),
-        box-shadow var(--afro-transition);
+        transform var(--transicao),
+        border-color var(--transicao),
+        box-shadow var(--transicao);
 }
 
 .card:hover {
-    transform: translateY(-3px);
-    border-color: var(--afro-tech);
-    box-shadow: 0 12px 28px rgb(0 0 0 / 32%);
+    transform: translateY(-6px);
+    background: var(--card-hover);
+    border-color: var(--dourado);
+    box-shadow: 0 15px 30px rgba(0, 0, 0, 0.45);
 }
 
-/* ---------- 8. Imagens e capas ---------- */
+/* -------------------- IMAGENS -------------------- */
 
-.card img {
+.card > img {
     display: block;
-    flex: 0 0 auto;
     width: 100%;
-    height: 180px;
-    min-height: 0;
-    margin: 0 0 8px;
+    height: 310px;
+
     object-fit: cover;
     object-position: center;
-    background: #1B1722;
-    border-radius: 8px;
+
+    background: var(--input);
+    border-bottom: 2px solid var(--dourado);
 }
 
-/* ---------- 9. Textos dos cards ---------- */
+/* -------------------- CONTEÚDO DO CARD -------------------- */
 
-.card h2,
-.card .titulo {
-    margin: 3px 0 6px;
-    color: var(--afro-text);
-    font-size: 0.95rem;
-    line-height: 1.3;
-    overflow-wrap: anywhere;
-}
-
-.card p {
-    margin: 4px 0;
-    color: var(--afro-muted);
-    font-size: 0.82rem;
-    line-height: 1.4;
-}
-
-.card .descricao {
-    color: var(--afro-muted);
-}
-
-.card .detalhes {
-    border-top-color: var(--afro-border);
-    color: var(--afro-muted);
-}
-
-.card .badge {
-    color: var(--afro-tech-light);
-    background: rgb(32 198 210 / 9%);
-    border: 1px solid rgb(32 198 210 / 25%);
-    border-radius: 7px;
-}
-
-.card .Saiba-Mais a,
-.card .saiba-mais a {
-    color: var(--afro-gold);
-}
-
-/* ---------- 10. Botões dos cards ---------- */
-
-.card .card-actions {
-    display: grid;
-    grid-template-columns: repeat(2, minmax(0, 1fr));
+.card-content {
+    display: flex;
     flex-direction: column;
-    align-items: stretch;
-    gap: 6px;
-    width: 100%;
-    min-width: 0;
-    margin-top: auto;
-    padding-top: 10px;
+    flex: 1;
+
+    padding: 20px;
 }
 
-.card .card-actions > .btn-info {
-    grid-column: 1 / -1;
-}
-
-.card .card-actions > button {
-    width: 100%;
-    min-width: 0;
-}
-
-/* Estilo comum dos botões */
-.card .card-actions button {
-    display: flex;
+.genero-badge {
+    display: inline-flex;
+    align-self: flex-start;
     align-items: center;
-    justify-content: center;
-    flex: 0 0 auto;
-    width: 100%;
-    min-width: 0;
-    max-width: 100%;
-    min-height: 36px;
-    margin: 0;
-    padding: 7px 5px;
-    color: white;
-    border: 1px solid transparent;
-    border-radius: 7px;
-    font-family: inherit;
-    font-size: 0.73rem;
-    font-weight: 600;
-    line-height: 1.2;
-    text-align: center;
-    white-space: normal;
-    overflow-wrap: anywhere;
+
+    margin-bottom: 12px;
+    padding: 6px 12px;
+
+    background: rgba(229, 162, 59, 0.15);
+    color: var(--dourado);
+
+    border: 1px solid var(--borda);
+    border-radius: 30px;
+
+    font-size: 0.75rem;
+    font-weight: 800;
+    letter-spacing: 0.4px;
 }
 
-/* Ler ou Assistir */
-.card .card-actions button[class*="ler-catalogo-"],
-.card .card-actions button[class*="assistir-catalogo-"],
-.card .card-actions button[class*="ouvir-catalogo-"] {
-    width: 100%;
-}
-
-/* Cores por tipo de conteúdo */
-.card .card-actions .ler-catalogo-Livro {
-    background: #78613A;
-}
-
-.card .card-actions .assistir-catalogo-Filme {
-    background: #57427D;
-}
-
-.card .card-actions .assistir-catalogo-Serie {
-    background: #674A87;
-}
-
-.card .card-actions .assistir-catalogo-Documentario,
-.card .card-actions .assistir-catalogo-documentario,
-.card .card-actions .assistir-catalogo-Serie-Documentario,
-.card .card-actions .assistir-catalogo-serie-documentario {
-    background: #286D78;
-}
-
-.card .card-actions .ouvir-catalogo-Musica,
-.card .card-actions .ouvir-catalogo-musica {
-    background: #853c3c;
-}
-
-.card .card-actions .assistir-catalogo-Curta,
-.card .card-actions .assistir-catalogo-curta {
-    background: #8a291c;
-}
-
-/* Adicionar: linha inteira */
-.card .card-actions button.btn-add,
-.card .card-actions button[class*="adicionar-catalogo-"] {
-    display: flex;
-    width: 100%;
-    color: #FFF9EC !important;
-    background: var(--afro-terracotta) !important;
-    border-color: rgb(229 184 75 / 60%) !important;
-}
-
-.card .card-actions button.btn-add:hover,
-.card .card-actions button[class*="adicionar-catalogo-"]:hover {
-    background: var(--afro-terracotta-dark) !important;
-    border-color: var(--afro-gold) !important;
-}
-
-/* Remover e Meus Favoritos na mesma linha */
-.card .card-actions .acoes-secundarias {
-    grid-column: 1 / -1;
-    display: flex;
-    flex-direction: row;
-    flex-wrap: nowrap;
-    align-items: stretch;
-    gap: 6px;
-    width: 100%;
-    min-width: 0;
-}
-
-/* Os dois elementos dividem o espaço igualmente */
-.card .card-actions .acoes-secundarias > button,
-.card .card-actions .acoes-secundarias > a {
-    display: flex;
-    flex: 1 1 0;
-    align-items: center;
-    justify-content: center;
-    width: 0;
-    min-width: 0;
-    max-width: 100%;
-    min-height: 36px;
-    margin: 0;
-    padding: 7px 4px;
-    border-radius: 7px;
-    font-family: inherit;
-    font-size: 0.73rem;
-    font-weight: 600;
-    line-height: 1.2;
-    text-align: center;
-    text-decoration: none;
-    white-space: normal;
-    overflow-wrap: anywhere;
-}
-
-/* Remover */
-.card .card-actions .acoes-secundarias button[class*="remover-catalogo-"] {
-    color: white;
-    background: #713642;
-    border: 1px solid #98505D;
-}
-
-.card .card-actions .acoes-secundarias button[class*="remover-catalogo-"]:hover {
-    background: #8D3041;
-    border-color: var(--afro-gold);
-}
-
-/* Meus Favoritos */
-.card .card-actions .acoes-secundarias .btn-favoritos {
-    color: var(--afro-gold-light);
-    background: var(--afro-surface-hover);
-    border: 1px solid var(--afro-gold);
-}
-
-.card .card-actions .acoes-secundarias .btn-favoritos:hover {
-    color: var(--afro-tech-light);
-    background: #292333;
-    border-color: var(--afro-tech);
-}
-
-/* Saiba Mais: linha inteira */
-.card .card-actions .btn-info {
-    display: flex;
-    flex: 0 0 auto;
-    align-items: center;
-    justify-content: center;
-    width: 100%;
-    min-width: 0;
-    max-width: 100%;
-    min-height: 34px;
-    margin: 0;
-    padding: 7px 5px;
-    color: var(--afro-gold);
-    background: rgb(229 184 75 / 7%);
-    border: 1px solid var(--afro-border);
-    border-radius: 7px;
-    font-size: 0.76rem;
-    line-height: 1.2;
-    text-align: center;
-    text-decoration: none;
-    overflow-wrap: anywhere;
-}
-
-.card .card-actions .btn-info:hover {
-    color: var(--afro-tech-light);
-    background: rgb(32 198 210 / 8%);
-    border-color: var(--afro-tech);
-}
-
-.card .Saiba-Mais a:hover,
-.card .saiba-mais a:hover {
-    color: var(--afro-tech-light);
-}
-
-/* Recuperar as cores dos botões Assistir */
-.card .card-actions button[class*="assistir-catalogo-"] {
-    color: #FFFFFF !important;
-    background-color: #577d83 !important;
-    border: 1px solid var(--afro-gold) !important;
-}
-
-/* Efeito ao passar o mouse */
-.card .card-actions button[class*="assistir-catalogo-"]:hover {
-    background-color: #503664 !important;
-    border-color: var(--afro-tech) !important;
-}
-
-/* Recuperar as cores dos botões Remover */
-.card .card-actions button[class*="remover-catalogo-"] {
-    color: #FFFFFF !important;
-    background-color: #963624 !important;
-    border: 1px solid var(--afro-gold) !important;
-}
-
-/* Efeito ao passar o mouse */
-.card .card-actions button[class*="remover-catalogo-"]:hover {
-    background-color: #8D3041 !important;
-    border-color: var(--afro-gold) !important;
-}
-
-/* ---------- 11. Página de detalhes da obra ---------- */
-
-.pagina-obra,
-.tela-cheia-obra {
-    color: var(--afro-text);
-    background:
-        radial-gradient(
-            ellipse at 12% 10%,
-            rgb(32 198 210 / 7%),
-            transparent 36%
-        ),
-        radial-gradient(
-            ellipse at 88% 35%,
-            rgb(100 55 145 / 15%),
-            transparent 40%
-        ),
-        var(--afro-bg);
-}
-
-.pagina-obra .voltar,
-.tela-cheia-obra .voltar {
-    color: var(--afro-gold-light);
-    background: var(--afro-surface);
-    border: 1px solid var(--afro-border);
-    border-radius: 999px;
-}
-
-.pagina-obra .voltar:hover,
-.tela-cheia-obra .voltar:hover {
-    color: var(--afro-tech-light);
-    border-color: var(--afro-tech);
-}
-
-.pagina-obra .obra-apresentacao {
-    max-width: 1150px;
-}
-
-.pagina-obra .obra-apresentacao > .obra-categoria {
-    color: var(--afro-tech-light);
-    background: rgb(32 198 210 / 9%);
-    border: 1px solid rgb(32 198 210 / 30%);
-    border-radius: 8px;
-    letter-spacing: 1px;
-}
-
-.pagina-obra .obra-apresentacao > h1,
-.pagina-obra > h1,
-.tela-cheia-obra > h1 {
-    color: var(--afro-text);
-    letter-spacing: -0.03em;
-}
-
-.pagina-obra .obra-capa-container .capa-obra,
-.pagina-obra > .capa-obra,
-.tela-cheia-obra > .capa-obra {
-    max-width: 100%;
-    border: 1px solid rgb(229 184 75 / 30%);
-    border-radius: 14px;
-    box-shadow: var(--afro-shadow);
-}
-
-.pagina-obra .obra-resumo,
-.pagina-obra .obra-descricao,
-.obra-informacoes .obra-descricao {
-    color: var(--afro-muted);
-}
-
-.pagina-obra .obra-informacoes,
-.obra-informacoes {
-    color: var(--afro-text);
-    background: linear-gradient(
-        145deg,
-        var(--afro-surface),
-        #201A2A
-    );
-    border: 1px solid var(--afro-border);
-    border-top: 3px solid var(--afro-gold);
-    border-radius: 16px;
-    box-shadow: var(--afro-shadow);
-}
-
-.pagina-obra .obra-informacoes > h2,
-.pagina-obra .obra-descricao-secao > h2,
-.obra-informacoes h2 {
-    color: var(--afro-gold);
-}
-
-.pagina-obra .obra-item {
-    color: var(--afro-text);
-    background: rgb(18 17 22 / 55%);
-    border: 1px solid var(--afro-border);
-    border-radius: 10px;
-}
-
-.pagina-obra .obra-rotulo,
-.obra-informacoes p strong {
-    color: var(--afro-tech-light);
-}
-
-.pagina-obra .obra-item p {
-    color: var(--afro-text);
-}
-
-/* ---------- 12. Tela Adicionar obra ---------- */
-
-.pagina-adicionar.card {
-    position: relative;
-    left: 50%;
-    width: min(1400px, calc(100% - 40px));
-    max-width: none;
-    min-height: calc(100vh - 100px);
-    margin: 24px 0;
-    padding: clamp(24px, 4vw, 56px);
-    transform: translateX(-50%);
-    color: var(--afro-text);
-    background: var(--afro-surface);
-    border: 1px solid var(--afro-border);
-    border-top: 3px solid var(--afro-gold);
-    border-radius: 18px;
-    box-shadow: var(--afro-shadow);
-}
-
-.pagina-adicionar > a {
-    display: inline-block;
-    margin-bottom: 24px;
-    color: var(--afro-tech-light);
-    font-weight: 600;
-    text-decoration: none;
-}
-
-.pagina-adicionar > a:hover {
-    color: var(--afro-gold-light);
-    text-decoration: underline;
-}
-
-.pagina-adicionar .catalogo-intro {
-    margin-bottom: 32px;
-}
-
-.pagina-adicionar .catalogo-intro h1 {
+.card-content .titulo {
     margin: 0 0 12px;
-    color: var(--afro-gold);
-    font-size: clamp(28px, 3vw, 42px);
-    line-height: 1.2;
+
+    color: var(--creme);
+    font-family: "Sora", sans-serif;
+    font-size: 1.12rem;
+    font-weight: 800;
+    line-height: 1.4;
+
+    overflow-wrap: anywhere;
 }
 
-.pagina-adicionar .catalogo-intro p {
-    max-width: 760px;
-    color: var(--afro-muted);
-    font-size: 1.05rem;
-    line-height: 1.7;
+.card-content .genero,
+.card-content .autor,
+.card-content .detalhes {
+    margin: 5px 0;
+    color: var(--texto-secundario);
+    font-size: 0.87rem;
+    overflow-wrap: anywhere;
 }
 
-.pagina-adicionar .formulario-obra {
-    display: grid;
-    grid-template-columns: repeat(2, minmax(0, 1fr));
-    gap: 24px;
-    width: 100%;
-    margin: 0;
+.card-content .autor {
+    color: var(--dourado-hover);
+    font-weight: 700;
 }
 
-.pagina-adicionar .campo-obra {
+.card-content .descricao {
+    display: -webkit-box;
+    overflow: hidden;
+
+    margin: 13px 0 0;
+    color: var(--texto-secundario);
+
+    font-size: 0.85rem;
+    line-height: 1.65;
+
+    -webkit-box-orient: vertical;
+    -webkit-line-clamp: 5;
+}
+
+/* -------------------- BOTÕES DOS CARDS -------------------- */
+
+.card-actions {
     display: flex;
     flex-direction: column;
-    min-width: 0;
+    gap: 10px;
+
+    margin-top: auto;
+    padding: 0 20px 20px;
+}
+
+.acoes-principais,
+.acoes-secundarias {
+    display: flex;
+    flex-direction: column;
     gap: 9px;
 }
 
-.pagina-adicionar .campo-obra label {
-    color: var(--afro-gold-light);
-    font-weight: 600;
+.btn-acao {
+    display: flex;
+    align-items: center;
+    justify-content: center;
+
+    width: 100%;
+    min-height: 43px;
+    padding: 10px 13px;
+
+    background: var(--turquesa);
+    color: #FFFFFF;
+
+    border: none;
+    border-radius: 8px;
+
+    font-size: 0.82rem;
+    font-weight: 800;
+    text-align: center;
+
+    cursor: pointer;
+    transition: var(--transicao);
 }
 
-.pagina-adicionar .campo-obra input,
-.pagina-adicionar .campo-obra select,
-.pagina-adicionar .campo-obra textarea {
+.btn-acao:hover {
+    filter: brightness(1.15);
+    transform: translateY(-2px);
+}
+
+.btn-add {
+    background: var(--dourado);
+    color: var(--fundo);
+}
+
+.btn-add:hover {
+    background: var(--dourado-hover);
+}
+
+.btn-favoritos {
+    background: #7A3028;
+    color: #FFFFFF;
+}
+
+.btn-favoritos:hover {
+    background: #963D32;
+}
+
+.btn-info {
+    background: #70502B;
+    color: var(--creme);
+}
+
+.btn-info:hover {
+    background: #8A6538;
+}
+
+/* Formulários dentro dos cards */
+
+.card-actions form {
     display: block;
     width: 100%;
-    min-height: 52px;
-    padding: 13px 15px;
-    color: var(--afro-text);
-    background: #201A2A;
-    border: 1px solid #655775;
-    border-radius: 9px;
-    font: inherit;
+    margin: 0;
 }
 
-.pagina-adicionar .campo-obra input::placeholder,
-.pagina-adicionar .campo-obra textarea::placeholder {
-    color: #B8ADBF;
-    opacity: 1;
+.card-actions form button {
+    background: var(--terracota);
+    color: #FFFFFF;
 }
 
-.pagina-adicionar .campo-obra input:focus,
-.pagina-adicionar .campo-obra select:focus,
-.pagina-adicionar .campo-obra textarea:focus {
-    outline: none;
-    border-color: var(--afro-tech);
-    box-shadow: 0 0 0 3px rgb(32 198 210 / 12%);
+.card-actions form button:hover {
+    background: #E04A2C;
 }
 
-.pagina-adicionar .campo-obra textarea {
-    min-height: 160px;
-    resize: vertical;
-}
+/* -------------------- RESPONSIVIDADE -------------------- */
 
-.pagina-adicionar .campo-obra:has(textarea) {
-    grid-column: 1 / -1;
-}
+@media (max-width: 900px) {
 
-.pagina-adicionar .formulario-obra button[type="submit"] {
-    grid-column: 1 / -1;
-    justify-self: start;
-    min-width: 220px;
-    min-height: 52px;
-    padding: 13px 24px;
-    color: white;
-    background: var(--afro-terracotta);
-    border: 1px solid var(--afro-gold);
-    border-radius: 9px;
-    font: inherit;
-    font-weight: 700;
-}
+    .catalogo-intro {
+        padding: 42px 25px;
+    }
 
-.pagina-adicionar .formulario-obra button[type="submit"]:hover {
-    background: var(--afro-terracotta-dark);
-    border-color: var(--afro-tech);
-}
-
-/* ---------- 13. Tela Remover obra ---------- */
-
-.pagina-remover.card {
-    position: relative;
-    left: 50%;
-    width: min(1100px, calc(100% - 40px));
-    max-width: none;
-    min-height: 400px;
-    margin: 24px 0;
-    padding: clamp(24px, 4vw, 56px);
-    transform: translateX(-50%);
-    color: var(--afro-text);
-    background: var(--afro-surface);
-    border: 1px solid var(--afro-border);
-    border-top: 3px solid var(--afro-terracotta);
-    border-radius: 18px;
-    box-shadow: var(--afro-shadow);
-}
-
-.pagina-remover h1 {
-    margin: 0 0 24px;
-    color: var(--afro-gold);
-    font-size: clamp(28px, 3vw, 42px);
-}
-
-.pagina-remover p {
-    color: var(--afro-muted);
-    font-size: 1.05rem;
-    line-height: 1.7;
-}
-
-.pagina-remover h2 {
-    margin: 24px 0;
-    padding: 20px;
-    overflow-wrap: anywhere;
-    color: var(--afro-gold-light);
-    background: #201A2A;
-    border: 1px solid var(--afro-border);
-    border-radius: 10px;
-    font-size: clamp(21px, 2.5vw, 30px);
-}
-
-.pagina-remover form {
-    display: flex;
-    flex-wrap: wrap;
-    align-items: center;
-    gap: 16px;
-    margin-top: 28px;
-}
-
-.pagina-remover .btn-remover-obra {
-    min-height: 50px;
-    padding: 12px 24px;
-    color: white;
-    background: var(--afro-terracotta);
-    border: 1px solid var(--afro-gold);
-    border-radius: 9px;
-    font: inherit;
-    font-weight: 700;
-}
-
-.pagina-remover .btn-remover-obra:hover {
-    background: var(--afro-terracotta-dark);
-}
-
-.pagina-remover form a {
-    display: inline-block;
-    padding: 12px 16px;
-    color: var(--afro-tech-light);
-    text-decoration: none;
-}
-
-.pagina-remover form a:hover {
-    color: var(--afro-gold-light);
-    text-decoration: underline;
-}
-
-/* ---------- 14. Rodapé ---------- */
-
-footer {
-    color: var(--afro-muted);
-    background: #0D0B12;
-    border-top: 1px solid rgb(229 184 75 / 30%);
-}
-
-/* ---------- 15. Responsividade ---------- */
-
-@media (max-width: 1000px) {
-    .grid-container,
     .grid-cards {
-        grid-template-columns: repeat(3, minmax(0, 1fr));
-        gap: 14px;
-        padding-left: 0;
-        padding-right: 0;
-    }
-
-    .card {
-        padding: 10px;
-    }
-}
-
-@media (max-width: 650px) {
-    .menu-categorias-catalogo {
-        width: 100%;
-    }
-
-    .grid-container,
-    .grid-cards {
-        grid-template-columns: repeat(2, minmax(0, 1fr));
-        gap: 10px;
-        padding-left: 0;
-        padding-right: 0;
-    }
-
-    .card {
-        padding: 8px;
-        border-radius: 10px;
-    }
-
-    .card img {
-        height: 150px;
-        margin-bottom: 5px;
-        border-radius: 6px;
-    }
-
-    .card h2,
-    .card .titulo {
-        font-size: 0.78rem;
-        line-height: 1.25;
-    }
-
-    .card p {
-        font-size: 0.7rem;
-        line-height: 1.3;
-    }
-
-    .card .card-actions {
-        gap: 5px;
-        padding-top: 5px;
-    }
-
-    .card .card-actions button {
-        min-height: 32px;
-        padding: 6px 4px;
-        font-size: 0.68rem;
-    }
-
-    .card .card-actions .acoes-secundarias > button,
-    .card .card-actions .acoes-secundarias > a {
-        min-height: 32px;
-        padding: 6px 3px;
-        font-size: 0.64rem;
-    }
-
-    .card .card-actions .btn-info {
-        min-height: 29px;
-        padding: 5px;
-        font-size: 0.68rem;
-    }
-
-    .container-pesquisa {
-        gap: 8px;
-    }
-
-    .pagina-obra .obra-informacoes {
-        padding: 18px 12px;
-    }
-
-    .pagina-adicionar.card,
-    .pagina-remover.card {
-        width: calc(100% - 24px);
-        min-height: auto;
-        margin: 12px 0;
-        padding: 22px 16px;
-        border-radius: 12px;
-    }
-
-    .pagina-adicionar .formulario-obra {
-        grid-template-columns: minmax(0, 1fr);
+        grid-template-columns: repeat(
+            auto-fill,
+            minmax(min(100%, 220px), 1fr)
+        );
         gap: 18px;
     }
 
-    .pagina-adicionar .campo-obra:has(textarea) {
-        grid-column: 1 / -1;
-    }
-
-    .pagina-adicionar .formulario-obra button[type="submit"] {
-        grid-column: 1 / -1;
-        width: 100%;
-        min-width: 0;
+    .card > img {
+        height: 280px;
     }
 }
 
-/* ---------- 16. Movimento reduzido ---------- */
+@media (max-width: 600px) {
+
+    .catalogo-intro {
+        width: 94%;
+        margin-top: 25px;
+        padding: 35px 18px;
+    }
+
+    .catalogo-intro strong {
+        font-size: 0.75rem;
+        letter-spacing: 3px;
+    }
+
+    .catalogo-intro p {
+        font-size: 0.92rem;
+    }
+
+    .container-pesquisa {
+        width: 94%;
+        padding: 18px;
+        margin-bottom: 40px;
+    }
+
+    .pesquisa-linha {
+        flex-direction: column;
+    }
+
+    #botao-pesquisa {
+        width: 100%;
+        min-height: 45px;
+    }
+
+    .filtro-item {
+        width: 100%;
+    }
+
+    #card-container {
+        width: 94%;
+    }
+
+    .secao-categoria {
+        margin-bottom: 45px;
+    }
+
+    .grid-cards {
+        grid-template-columns: repeat(2, minmax(0, 1fr));
+        gap: 12px;
+    }
+
+    .card > img {
+        height: 210px;
+    }
+
+    .card-content {
+        padding: 12px;
+    }
+
+    .card-content .titulo {
+        font-size: 0.94rem;
+    }
+
+    .card-content .genero,
+    .card-content .autor,
+    .card-content .detalhes {
+        font-size: 0.76rem;
+    }
+
+    .card-content .descricao {
+        font-size: 0.75rem;
+        -webkit-line-clamp: 4;
+    }
+
+    .genero-badge {
+        padding: 5px 9px;
+        font-size: 0.66rem;
+    }
+
+    .card-actions {
+        gap: 8px;
+        padding: 0 12px 12px;
+    }
+
+    .btn-acao {
+        min-height: 40px;
+        padding: 9px 7px;
+        font-size: 0.72rem;
+    }
+}
+
+@media (max-width: 380px) {
+
+    .grid-cards {
+        grid-template-columns: 1fr;
+    }
+
+    .card > img {
+        height: 280px;
+    }
+
+    .card-content {
+        padding: 18px;
+    }
+
+    .card-actions {
+        padding: 0 18px 18px;
+    }
+
+    .btn-acao {
+        font-size: 0.82rem;
+    }
+}
+
+/* -------------------- ACESSIBILIDADE -------------------- */
+
+button:focus-visible,
+a:focus-visible,
+input:focus-visible {
+    outline: 3px solid var(--dourado);
+    outline-offset: 3px;
+}
 
 @media (prefers-reduced-motion: reduce) {
     *,
     *::before,
     *::after {
         scroll-behavior: auto !important;
-        animation-duration: 0.01ms !important;
-        animation-iteration-count: 1 !important;
         transition-duration: 0.01ms !important;
+        animation-duration: 0.01ms !important;
     }
 }
 
 
-/* =========================================================
-   17. PÁGINA ACESSAR OBRA
-   Layout único para todas as categorias
-   ========================================================= */
-
-.pagina-obra {
-    width: min(1200px, calc(100% - 40px));
-    min-height: calc(100vh - 120px);
-    margin: 30px auto;
-    padding: clamp(20px, 4vw, 45px);
-    color: var(--afro-text);
-    background: linear-gradient(
-        145deg,
-        var(--afro-surface),
-        #1B1722
-    );
-    border: 1px solid var(--afro-border);
-    border-top: 3px solid var(--afro-gold);
-    border-radius: 18px;
-    box-shadow: var(--afro-shadow);
-}
-
-/* Botão voltar */
-
-.obra-voltar {
-    display: inline-block;
-    margin-bottom: 28px;
-    padding: 10px 18px;
-    color: var(--afro-gold-light);
-    background: #201A2A;
-    border: 1px solid var(--afro-border);
-    border-radius: 8px;
-    text-decoration: none;
-}
-
-.obra-voltar:hover {
-    color: var(--afro-tech-light);
-    border-color: var(--afro-tech);
-}
-
-/* Apresentação principal */
-
-.obra-hero {
-    display: grid;
-    grid-template-columns: minmax(220px, 340px) minmax(0, 1fr);
-    gap: clamp(25px, 5vw, 55px);
-    align-items: start;
-}
-
-/* Capa */
-
-.obra-capa {
-    width: 100%;
-    min-width: 0;
-}
-
-.obra-imagem {
-    display: block;
-    width: 100%;
-    max-height: 480px;
-    object-fit: contain;
-    object-position: center;
-    background: #17131E;
-    border: 1px solid rgb(229 184 75 / 35%);
-    border-radius: 12px;
-    box-shadow: var(--afro-shadow);
-}
-
-.obra-sem-imagem {
-    display: flex;
-    flex-direction: column;
-    align-items: center;
-    justify-content: center;
-    min-height: 320px;
-    padding: 20px;
-    color: var(--afro-muted);
-    background: #201A2A;
-    border: 1px dashed var(--afro-border);
-    border-radius: 12px;
-    text-align: center;
-}
-
-.obra-sem-imagem span {
-    margin-bottom: 10px;
-    color: var(--afro-gold);
-    font-size: 1.3rem;
-    font-weight: 700;
-}
-
-/* Informações principais */
-
-.obra-conteudo {
-    min-width: 0;
-}
-
-.obra-etiqueta {
-    display: inline-block;
-    padding: 7px 13px;
-    color: var(--afro-tech-light);
-    background: rgb(32 198 210 / 9%);
-    border: 1px solid rgb(32 198 210 / 30%);
-    border-radius: 8px;
-    font-size: 0.85rem;
-    font-weight: 700;
-}
-
-.obra-conteudo h1 {
-    margin: 18px 0;
-    color: var(--afro-gold-light);
-    font-size: clamp(2rem, 4vw, 3rem);
-    line-height: 1.2;
-    overflow-wrap: anywhere;
-}
-
-.obra-destaque {
-    margin: 20px 0;
-    color: var(--afro-text);
-    font-size: 1.1rem;
-}
-
-.obra-destaque span {
-    display: block;
-    margin-bottom: 4px;
-    color: var(--afro-tech-light);
-    font-size: 0.9rem;
-    font-weight: 700;
-}
-
-.obra-genero,
-.obra-tipo {
-    color: var(--afro-muted);
-}
-
-.obra-genero strong,
-.obra-tipo strong {
-    color: var(--afro-tech-light);
-}
-
-/* Descrição */
-
-.obra-sinopse {
-    margin-top: 30px;
-    padding: 22px;
-    background: rgb(18 17 22 / 55%);
-    border: 1px solid var(--afro-border);
-    border-left: 3px solid var(--afro-terracotta);
-    border-radius: 10px;
-}
-
-.obra-sinopse h2,
-.obra-ficha h2 {
-    margin-top: 0;
-    color: var(--afro-gold);
-}
-
-.obra-sinopse p {
-    color: var(--afro-muted);
-    line-height: 1.8;
-    overflow-wrap: anywhere;
-}
-
-/* Ficha técnica */
-
-.obra-ficha {
-    margin-top: 45px;
-    padding-top: 28px;
-    border-top: 1px solid var(--afro-border);
-}
-
-.obra-grade {
-    display: grid;
-    grid-template-columns: repeat(3, minmax(0, 1fr));
-    gap: 15px;
-}
-
-.obra-dado {
-    min-width: 0;
-    padding: 18px;
-    background: #201A2A;
-    border: 1px solid var(--afro-border);
-    border-radius: 10px;
-}
-
-.obra-dado span {
-    color: var(--afro-tech-light);
-    font-size: 0.85rem;
-    font-weight: 700;
-}
-
-.obra-dado p {
-    margin-bottom: 0;
-    color: var(--afro-text);
-    overflow-wrap: anywhere;
-}
-
-/* Responsividade */
-
-@media (max-width: 700px) {
-
-    .pagina-obra {
-        width: calc(100% - 24px);
-        margin: 15px auto;
-        padding: 20px 15px;
-    }
-
-    .obra-hero {
-        grid-template-columns: minmax(0, 1fr);
-    }
-
-    .obra-capa {
-        max-width: 300px;
-        margin: 0 auto;
-    }
-
-    .obra-grade {
-        grid-template-columns: repeat(2, minmax(0, 1fr));
-    }
-}
-
-@media (max-width: 420px) {
-
-    .obra-grade {
-        grid-template-columns: minmax(0, 1fr);
-    }
-}
-
-/* =========================================
-   AJUSTES DO CATÁLOGO
-========================================= */
-
-.catalogo-intro {
-    width: min(1100px, calc(100% - 32px));
-    margin: 36px auto 22px;
-    padding: 0 12px;
-    text-align: center;
-}
-
-.container-pesquisa {
-    display: grid;
-    gap: 12px;
-    width: min(1100px, calc(100% - 32px));
-    margin: 24px auto 30px;
-    color: var(--afro-text);
-}
-
-.pesquisa-linha {
-    display: grid;
-    grid-template-columns: minmax(0, 1fr) auto;
-    gap: 10px;
-    width: 100%;
-}
-
-.filtro-item {
-    display: flex;
-    flex-wrap: wrap;
-    align-items: center;
-    gap: 12px;
-}
-
-.menu-categorias-catalogo {
-    width: min(100%, 320px);
-}
-
-.lista-categorias-catalogo button {
-    display: block;
-    width: 100%;
-    padding: 11px 13px;
-    color: var(--afro-text);
-    background: transparent;
-    border: 0;
-    border-radius: 8px;
-    text-align: left;
-    cursor: pointer;
-}
-
-.lista-categorias-catalogo button:hover {
-    color: var(--afro-gold-light);
-    background: var(--afro-surface-hover);
-}
-
-/* Botão Adicionar ocupa uma linha inteira */
-
-.card .card-actions button.btn-add,
-.card .card-actions button[class*="adicionar-catalogo-"] {
-    grid-column: 1 / -1;
-}
-
-/* Mantém os botões secundários juntos */
-
-.card .card-actions .acoes-secundarias {
-    grid-column: 1 / -1;
-}
-
-/* Ajuste da pesquisa em telas pequenas */
-
-@media (max-width: 650px) {
-    .pesquisa-linha {
-        grid-template-columns: minmax(0, 1fr);
-    }
-
-    .pesquisa-linha button {
-        width: 100%;
-    }
-
-    .filtro-item {
-        align-items: stretch;
-        flex-direction: column;
-    }
-
-    .menu-categorias-catalogo {
-        width: 100%;
-    }
-}
-
-
-/* =========================================
-   18. CORREÇÃO DOS CARDS E BOTÕES
-========================================= */
-
-/* Grade uniforme do catálogo */
-#card-container,
-.grid-container,
-.grid-cards {
-    display: grid;
-    grid-template-columns: repeat(auto-fill, minmax(230px, 1fr));
-    align-items: stretch;
-    gap: 22px;
-    width: 100%;
-    max-width: 1400px;
-    margin: 0 auto;
-    padding: 20px;
-}
-
-/* Cards com dimensões uniformes */
-#card-container > .card,
-.grid-container > .card,
-.grid-cards > .card {
-    display: flex;
-    flex-direction: column;
-    width: 100%;
-    min-width: 0;
-    min-height: 100%;
-    padding: 14px;
-    background: linear-gradient(145deg, #292333, #1B1722);
-    border: 1px solid #494052;
-    border-top: 3px solid #E5B84B;
-    border-radius: 14px;
-}
-
-/* Capas com tamanho uniforme */
-.card img {
-    width: 100%;
-    height: 230px;
-    object-fit: contain;
-    object-position: center;
-    background: #201A2A;
-    border-radius: 9px;
-}
-
-/* Conteúdo do card */
-.card-content {
-    flex: 1;
-    min-width: 0;
-}
-
-.card .titulo {
-    color: #F5F0E8;
-    font-size: 1rem;
-    line-height: 1.4;
-    overflow-wrap: anywhere;
-}
-
-/* Organização dos botões */
-.card .card-actions {
-    display: flex;
-    flex-direction: column;
-    gap: 10px;
-    width: 100%;
-    margin-top: auto;
-    padding-top: 14px;
-}
-
-/* Botões principais */
-.card .card-actions button,
-.card .card-actions a {
-    display: flex;
-    align-items: center;
-    justify-content: center;
-    min-height: 40px;
-    padding: 9px 10px;
-    border: 1px solid transparent;
-    border-radius: 8px;
-    color: #FFFFFF;
-    font-size: 0.78rem;
-    font-weight: 700;
-    text-align: center;
-    text-decoration: none;
-    overflow-wrap: anywhere;
-    cursor: pointer;
-}
-
-/* Ler livro */
-.card .card-actions .ler-catalogo-Livro {
-    background: #78613A !important;
-    border-color: #E5B84B !important;
-}
-
-/* Assistir e ouvir */
-.card .card-actions button[class*="assistir-catalogo-"],
-.card .card-actions button[class*="ouvir-catalogo-"] {
-    background: #57427D !important;
-    border-color: #A58AC7 !important;
-}
-
-/* Adicionar obra: link ou botão */
-.card .card-actions .btn-add {
-    width: 100%;
-    color: #FFFFFF !important;
-    background: #C74732 !important;
-    border: 1px solid #E5B84B !important;
-}
-
-.card .card-actions .btn-add:hover {
-    background: #963624 !important;
-}
-
-/* Área dos botões secundários */
-.card .card-actions .acoes-secundarias {
+.card-actions .acoes-principais {
     display: grid;
     grid-template-columns: repeat(2, minmax(0, 1fr));
-    gap: 8px;
-    width: 100%;
+    gap: 10px;
 }
 
-/* Adicionar ocupa toda a primeira linha */
-.card .card-actions .acoes-secundarias > .btn-add {
-    grid-column: 1 / -1;
-}
-
-/* Formulário de remover */
-.card .card-actions .acoes-secundarias form {
-    display: flex;
+.card-actions .acoes-principais .btn-acao {
     min-width: 0;
-    margin: 0;
-}
-
-.card .card-actions .acoes-secundarias form button {
-    width: 100%;
-    color: #FFFFFF !important;
-    background: #963624 !important;
-    border: 1px solid #C74732 !important;
-}
-
-/* Meus Favoritos */
-.card .card-actions .acoes-secundarias .btn-favoritos {
-    width: 100%;
-    color: #F4D98A !important;
-    background: #382B46 !important;
-    border: 1px solid #E5B84B !important;
-}
-
-/* Saiba Mais */
-.card .card-actions .btn-info {
-    width: 100%;
-    color: #F4D98A !important;
-    background: #292333 !important;
-    border: 1px solid #E5B84B !important;
-}
-
-/* Efeitos dos botões */
-.card .card-actions button:hover,
-.card .card-actions a:hover {
-    filter: brightness(1.15);
-    transform: translateY(-2px);
-}
-
-/* Botões desativados */
-.card .card-actions button:disabled {
-    opacity: 0.6;
-    cursor: not-allowed;
-    transform: none;
-}
-
-/* Telas menores */
-@media (max-width: 650px) {
-    #card-container,
-    .grid-container,
-    .grid-cards {
-        grid-template-columns: repeat(2, minmax(0, 1fr));
-        gap: 12px;
-        padding: 10px;
-    }
-
-    .card img {
-        height: 170px;
-    }
-
-    .card {
-        padding: 9px;
-    }
-
-    .card .card-actions button,
-    .card .card-actions a {
-        font-size: 0.68rem;
-        padding: 7px 5px;
-    }
-}
-
-@media (max-width: 360px) {
-    #card-container,
-    .grid-container,
-    .grid-cards {
-        grid-template-columns: minmax(0, 1fr);
-    }
-}
-
-/* Grade 2x2 dos botões */
-.card .card-actions {
-    display: flex !important;
-    flex-direction: column !important;
-    align-items: center !important;
-    gap: 8px !important;
-}
-
-/* Grade única */
-.card .card-actions .acoes-principais,
-.card .card-actions .acoes-secundarias {
-    display: grid !important;
-    grid-template-columns: repeat(2, 130px) !important;
-    justify-content: center !important;
-    gap: 8px !important;
-    width: 100% !important;
-}
-
-/* Padronização dos botões */
-.card .card-actions .acoes-principais > *,
-.card .card-actions .acoes-secundarias > * {
-    width: 100% !important;
-    min-width: 0 !important;
-    min-height: 38px !important;
-    margin: 0 !important;
-    box-sizing: border-box !important;
-}
-
-/* Formulário de remoção */
-.card .acoes-secundarias form {
-    display: flex !important;
-}
-
-.card .acoes-secundarias form button {
-    width: 100% !important;
-}
-
-/* Texto centralizado */
-.card .acoes-principais button,
-.card .acoes-principais a,
-.card .acoes-secundarias button,
-.card .acoes-secundarias a {
-    display: flex !important;
-    justify-content: center !important;
-    align-items: center !important;
-    text-align: center !important;
-    padding: 6px !important;
-    white-space: normal !important;
-    overflow-wrap: anywhere !important;
-}
-
-/* Botão Ler menor */
-.card .acoes-principais .ler-catalogo-Livro {
-    width: 75% !important;
-    justify-self: center !important;
-}
-
-/* Saiba Mais */
-.card .card-actions > .btn-info {
-    width: 80% !important;
-    margin: 0 auto !important;
-}
-
-/* Quatro botões com o mesmo tamanho */
-.card .card-actions .acoes-principais,
-.card .card-actions .acoes-secundarias {
-    display: grid !important;
-    grid-template-columns: repeat(2, 130px) !important;
-    grid-auto-rows: minmax(42px, auto) !important;
-    justify-content: center !important;
-    align-items: stretch !important;
-    gap: 8px !important;
-}
-
-/* Mesmo tamanho para todos */
-.card .card-actions .acoes-principais > *,
-.card .card-actions .acoes-secundarias > a,
-.card .card-actions .acoes-secundarias > form {
-    width: 130px !important;
-    min-width: 130px !important;
-    height: 42px !important;
-    min-height: 42px !important;
-    margin: 0 !important;
-    box-sizing: border-box !important;
-}
-
-/* Botão Ler sem redução */
-.card .acoes-principais .ler-catalogo-Livro {
-    width: 130px !important;
-    height: 42px !important;
-    justify-self: stretch !important;
-}
-
-/* Botão Remover */
-.card .acoes-secundarias form {
-    display: flex !important;
-}
-
-.card .acoes-secundarias form button {
-    width: 100% !important;
-    height: 42px !important;
-}
-
-
-/* =====================================
-   FORMULÁRIO ADICIONAR OBRA
-===================================== */
-
-.pagina-adicionar {
-    width: min(900px, 94%);
-    margin: 35px auto;
-    padding: 28px;
-    background: var(--afro-surface);
-    border: 1px solid var(--afro-border);
-    border-radius: 16px;
-    box-sizing: border-box;
-}
-
-.adicionar-cabecalho {
+    min-height: 48px;
+    padding: 8px;
     text-align: center;
-    margin-bottom: 28px;
 }
 
-.adicionar-cabecalho span {
-    color: var(--afro-gold);
-    font-size: 12px;
-    letter-spacing: 3px;
-}
 
-.adicionar-cabecalho h1 {
-    color: var(--afro-gold-light);
-    margin: 10px 0;
-}
+/* Organização dos botões dos cards */
 
-.adicionar-cabecalho p {
-    color: var(--afro-muted);
-}
-
-.form-adicionar fieldset {
-    border: 1px solid var(--afro-border);
-    border-radius: 12px;
-    padding: 20px;
-    margin-bottom: 22px;
-    min-width: 0;
-}
-
-.form-adicionar legend {
-    color: var(--afro-gold);
-    font-weight: bold;
-    padding: 0 10px;
-}
-
-.campos-adicionar {
+.card-actions {
     display: grid;
     grid-template-columns: repeat(2, minmax(0, 1fr));
-    gap: 18px;
+    gap: 10px;
 }
 
-.campo-adicionar {
-    display: flex;
-    flex-direction: column;
-    gap: 8px;
+.card-actions .acoes-principais,
+.card-actions .acoes-secundarias {
+    display: contents;
+}
+
+.card-actions > a,
+.card-actions > .acoes-principais > a,
+.card-actions > .acoes-secundarias > a,
+.card-actions > .acoes-secundarias > form {
+    width: 100%;
     min-width: 0;
 }
 
-.campo-completo {
+.card-actions .acoes-principais > a:first-child {
+    grid-column: 1;
+    grid-row: 1;
+}
+
+.card-actions .acoes-principais > a.btn-add {
+    grid-column: 2;
+    grid-row: 1;
+}
+
+.card-actions .acoes-secundarias > a.btn-favoritos {
+    grid-column: 1;
+    grid-row: 2;
+}
+
+.card-actions .acoes-secundarias > form {
+    grid-column: 2;
+    grid-row: 2;
+}
+
+.card-actions > a:last-child {
     grid-column: 1 / -1;
 }
 
-.campo-adicionar label {
-    color: var(--afro-text);
-    font-weight: 600;
-}
-
-.campo-adicionar input,
-.campo-adicionar select,
-.campo-adicionar textarea {
+.card-actions .acoes-secundarias form button {
     width: 100%;
-    box-sizing: border-box;
-    padding: 12px;
-    background: var(--afro-bg);
-    color: var(--afro-text);
-    border: 1px solid var(--afro-border);
-    border-radius: 8px;
-    font: inherit;
 }
 
-.campo-adicionar input:focus,
-.campo-adicionar select:focus,
-.campo-adicionar textarea:focus {
-    outline: 2px solid var(--afro-gold);
-    border-color: var(--afro-gold);
-}
-
-.campo-adicionar textarea {
-    resize: vertical;
-}
-
-.campo-adicionar small {
-    color: var(--afro-muted);
-}
-
-.mensagem-adicionar {
-    padding: 12px;
-    text-align: center;
-    color: var(--afro-gold-light);
-    background: var(--afro-bg);
-    border-radius: 8px;
-}
-
-.botoes-adicionar {
-    display: flex;
-    justify-content: center;
-    align-items: center;
-    gap: 15px;
-    margin-top: 25px;
-    flex-wrap: wrap;
-}
-
-.btn-cadastrar-obra,
-.btn-voltar-obra {
-    min-width: 180px;
-    padding: 12px 20px;
-    border-radius: 8px;
-    text-align: center;
-    font-weight: bold;
-    text-decoration: none;
-    cursor: pointer;
-    box-sizing: border-box;
-}
-
-.btn-cadastrar-obra {
-    background: var(--afro-gold);
-    color: var(--afro-bg);
-    border: none;
-}
-
-.btn-voltar-obra {
-    background: var(--afro-terracotta);
-    color: white;
-}
-
-.btn-cadastrar-obra:hover,
-.btn-voltar-obra:hover {
-    filter: brightness(1.12);
-}
-
-@media (max-width: 600px) {
-    .pagina-adicionar {
-        padding: 16px;
-    }
-
-    .campos-adicionar {
-        grid-template-columns: 1fr;
-    }
-
-    .campo-completo {
-        grid-column: auto;
-    }
-
-    .botoes-adicionar {
-        flex-direction: column;
-    }
-
-    .btn-cadastrar-obra,
-    .btn-voltar-obra {
-        width: 100%;
-    }
-}
-
-
-/* =========================================
-   19. AJUSTE FINAL: BOTÕES DENTRO DOS CARDS
-========================================= */
-
-/* Impede que a área dos botões ultrapasse o card */
-.card .card-actions {
-    width: 100% !important;
-    max-width: 100% !important;
-    min-width: 0 !important;
-    box-sizing: border-box !important;
-    align-items: stretch !important;
-}
-
-/* Colunas flexíveis, sem largura fixa de 130px */
-.card .card-actions .acoes-principais,
-.card .card-actions .acoes-secundarias {
-    display: grid !important;
-    grid-template-columns: repeat(2, minmax(0, 1fr)) !important;
-    width: 100% !important;
-    max-width: 100% !important;
-    min-width: 0 !important;
-    justify-content: stretch !important;
-    box-sizing: border-box !important;
-}
-
-/* Impede que botões e formulários ultrapassem as colunas */
-.card .card-actions .acoes-principais > *,
-.card .card-actions .acoes-secundarias > *,
-.card .card-actions .acoes-secundarias form {
-    width: 100% !important;
-    min-width: 0 !important;
-    max-width: 100% !important;
-    margin: 0 !important;
-    box-sizing: border-box !important;
-}
-
-/* Botões dentro dos formulários */
-.card .card-actions .acoes-secundarias form button {
-    width: 100% !important;
-    min-width: 0 !important;
-    max-width: 100% !important;
-    box-sizing: border-box !important;
-}
-
-/* Evita que o botão de leitura fique maior que sua coluna */
-.card .card-actions .acoes-principais .ler-catalogo-Livro {
-    width: 100% !important;
-    min-width: 0 !important;
-    max-width: 100% !important;
-    justify-self: stretch !important;
-}
-
-/* Mantém o Saiba Mais dentro do card */
-.card .card-actions > .btn-info {
-    width: 100% !important;
-    max-width: 100% !important;
-    box-sizing: border-box !important;
-    margin: 0 !important;
+.card-actions > a:last-child {
+    grid-column: 1 / -1;
+    width: 100%;
 }

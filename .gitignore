@@ -1,0 +1,8 @@
+venv/
+__pycache__/
+*.pyc
+*.pyo
+*.pyd
+instance/config.py
+instance/
+instance/login.db
