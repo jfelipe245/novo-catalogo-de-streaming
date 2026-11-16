@@ -714,19 +714,17 @@
 
 <!-- ========================= FAVORITOS ========================= -->
 
+<!-- FAVORITOS EXISTENTES -->
+
 <div hidden>
-
     {% for favorito in favoritos %}
-
-    <span
-        data-favorito-id="{{ favorito.id }}"
-        data-favorito-titulo="{{ favorito.titulo }}"
-        data-favorito-categoria="{{ favorito.categoria }}"
-    ></span>
-
+        <span
+            data-favorito-id="{{ favorito.id }}"
+            data-favorito-obra-id="{{ favorito.obra_id }}"
+        ></span>
     {% endfor %}
-
 </div>
+
 
 {% endblock conteudo %}
 

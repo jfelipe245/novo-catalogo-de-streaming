@@ -1,116 +1,86 @@
 
-document.addEventListener('DOMContentLoaded', () => {
+"use strict";
 
-    // ========================================
-    // ELEMENTOS DO LOGIN
-    // ========================================
+document.addEventListener("DOMContentLoaded", () => {
 
-    const loginForm = document.getElementById('login-form');
-    const emailInput = document.getElementById('email-login');
+    // LOGIN
+    const loginForm = document.getElementById("login-form");
+    const emailInput = document.getElementById("email-login");
 
     const passwordInput =
-        document.getElementById('senha-login') ||
-        document.getElementById('password-login') ||
-        document.getElementById('senha');
+        document.getElementById("senha-login") ||
+        document.getElementById("password-login") ||
+        document.getElementById("senha");
 
-    const togglePasswordBtn = document.getElementById('toggle-password');
-    const btnEntrar = document.getElementById('btn-entrar');
+    const togglePasswordBtn =
+        document.getElementById("toggle-password");
 
-    // ========================================
-    // MOSTRAR OU OCULTAR SENHA
-    // ========================================
+    const btnEntrar = document.getElementById("btn-entrar");
 
+    // Mostrar ou ocultar senha
     if (togglePasswordBtn && passwordInput) {
+        togglePasswordBtn.addEventListener("click", () => {
+            const mostrar = passwordInput.type === "password";
 
-        togglePasswordBtn.addEventListener('click', () => {
-
-            const mostrar = passwordInput.type === 'password';
-
-            passwordInput.type = mostrar ? 'text' : 'password';
-
-            togglePasswordBtn.textContent = mostrar ? 'Ocultar' : 'Mostrar';
+            passwordInput.type = mostrar ? "text" : "password";
+            togglePasswordBtn.textContent = mostrar ? "Ocultar" : "Mostrar";
 
             togglePasswordBtn.setAttribute(
-                'aria-label',
-                mostrar ? 'Ocultar senha' : 'Mostrar senha'
+                "aria-label",
+                mostrar ? "Ocultar senha" : "Mostrar senha"
             );
-
-            togglePasswordBtn.setAttribute(
-                'aria-pressed',
-                mostrar ? 'true' : 'false'
-            );
-
         });
-
     }
 
-    // ========================================
-    // LOGIN COM FLASK
-    // ========================================
-
+    // Envio do login
     if (loginForm) {
-
-        loginForm.addEventListener('submit', event => {
-
-            const email = emailInput ? emailInput.value.trim() : '';
-            const senha = passwordInput ? passwordInput.value : '';
+        loginForm.addEventListener("submit", event => {
+            const email = emailInput?.value.trim() || "";
+            const senha = passwordInput?.value || "";
 
             if (!email || !senha.trim()) {
                 event.preventDefault();
-
-                alert('Preencha o e-mail e a senha para entrar.');
+                alert("Preencha o e-mail e a senha para entrar.");
                 return;
             }
 
-            // Não usamos preventDefault quando os campos estão corretos.
-            // Assim, o formulário é enviado para a rota Flask.
-
             if (btnEntrar) {
-                btnEntrar.textContent = 'Entrando...';
                 btnEntrar.disabled = true;
+                btnEntrar.textContent = "Entrando...";
             }
-
         });
-
     }
 
-    // ========================================
     // CADASTRO
-    // ========================================
-
-    const cadastroForm = document.getElementById('cadastro-form');
+    const cadastroForm = document.getElementById("cadastro-form");
 
     if (cadastroForm) {
-
-        cadastroForm.addEventListener('submit', event => {
-
-            const senhaCadastro =
-                document.getElementById('senha');
-
+        cadastroForm.addEventListener("submit", event => {
+            const nome = document.getElementById("nome");
+            const nomeUsuario = document.getElementById("nome_usuario");
+            const senha = document.getElementById("senha");
             const confirmarSenha =
-                document.getElementById('confirmar-senha');
+                document.getElementById("confirmar-senha");
 
-            if (senhaCadastro && confirmarSenha) {
-
-                if (senhaCadastro.value !== confirmarSenha.value) {
-                    event.preventDefault();
-
-                    alert('As senhas não são iguais.');
-                    confirmarSenha.focus();
-                    return;
-                }
-
-                if (senhaCadastro.value.length < 8) {
-                    event.preventDefault();
-
-                    alert('A senha deve ter pelo menos 8 caracteres.');
-                    senhaCadastro.focus();
-                }
-
+            if (!nome?.value.trim() || !nomeUsuario?.value.trim()) {
+                event.preventDefault();
+                alert("Preencha seu nome e nome de usuário.");
+                return;
             }
 
-        });
+            if (!senha || senha.value.length < 8) {
+                event.preventDefault();
+                alert("A senha deve ter pelo menos 8 caracteres.");
+                senha?.focus();
+                return;
+            }
 
+            if (confirmarSenha && senha.value !== confirmarSenha.value) {
+                event.preventDefault();
+                alert("As senhas não são iguais.");
+                confirmarSenha.focus();
+            }
+        });
     }
 
 });

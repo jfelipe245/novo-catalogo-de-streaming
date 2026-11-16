@@ -11,6 +11,7 @@ document.addEventListener("DOMContentLoaded", () => {
     inicializarBotoesDeDetalhes();
     inicializarRemoverDoCatalogo();
     inicializarBotoesDeFavoritos();
+    criarBotoesDeFavoritosNosCards();
     inicializarEstadoDosFavoritos();
     inicializarMenuCategorias();
 });
@@ -95,8 +96,7 @@ function inicializarFiltros() {
             "musica de protesto": "musica",
             curtas: "curta",
             "curta metragem": "curta",
-            "curta-metragem": "curta",
-            "curtas-metragens": "curta"
+            "curtas metragens": "curta"
         };
 
         return equivalencias[categoria] || categoria;
@@ -115,16 +115,23 @@ function inicializarFiltros() {
             const categoria = categoriaNormalizada(card);
             const titulo = normalizarTexto(obterTitulo(card));
             const responsavel = normalizarTexto(obterResponsavel(card));
+            const genero = normalizarTexto(obterGenero(card));
+            const descricao = normalizarTexto(
+                card.dataset.descricao ||
+                selecionar(".descricao", card)?.textContent ||
+                ""
+            );
 
             const correspondeCategoria =
                 !categoriaSelecionada ||
                 categoria === categoriaSelecionada;
 
-            // Pesquisa somente título e responsável.
             const correspondePesquisa =
                 !termo ||
                 titulo.includes(termo) ||
-                responsavel.includes(termo);
+                responsavel.includes(termo) ||
+                genero.includes(termo) ||
+                descricao.includes(termo);
 
             const mostrar =
                 correspondeCategoria && correspondePesquisa;
@@ -196,13 +203,12 @@ function inicializarBotoesDeDetalhes() {
 
 function abrirDetalhesDaObra(card) {
     const destino = window.url_Obra;
+    const obraId = card.dataset.id;
 
     if (!destino) {
         alert("A página de detalhes não foi configurada.");
         return;
     }
-
-    const obraId = card.dataset.id;
 
     if (!obraId) {
         alert("Não foi possível identificar esta obra.");
@@ -211,7 +217,6 @@ function abrirDetalhesDaObra(card) {
 
     const url = new URL(destino, window.location.origin);
 
-    // Busca os dados da obra diretamente no banco de dados.
     url.searchParams.set("obra_id", obraId);
 
     window.location.href = url.toString();
@@ -219,18 +224,13 @@ function abrirDetalhesDaObra(card) {
 
 /* =========================================
    4. REMOVER OBRA DO CATÁLOGO
-   REMOÇÃO TEMPORÁRIA COM CONFIRMAÇÃO
-========================================= */
-/* =========================================
-   4. REMOVER OBRA DO CATÁLOGO
-   APENAS ESCONDE O CARD
+   APENAS ESCONDE O CARD NA PÁGINA
 ========================================= */
 
 function inicializarRemoverDoCatalogo() {
     document.addEventListener("submit", function (evento) {
         const formulario = evento.target;
 
-        // Verifica se é o formulário de remoção do catálogo
         if (!formulario.matches('form[action*="/remover"]')) {
             return;
         }
@@ -239,9 +239,7 @@ function inicializarRemoverDoCatalogo() {
 
         const card = formulario.closest(".card");
 
-        if (!card) {
-            return;
-        }
+        if (!card) return;
 
         const titulo = obterTitulo(card);
 
@@ -249,11 +247,8 @@ function inicializarRemoverDoCatalogo() {
             `Deseja esconder "${titulo}" do catálogo?`
         );
 
-        if (!confirmar) {
-            return;
-        }
+        if (!confirmar) return;
 
-        // Esconde somente o card na página atual
         card.hidden = true;
     });
 }
@@ -292,9 +287,39 @@ function criarFormulario(url, campos) {
    6. FAVORITOS
 ========================================= */
 
+/*
+   Cria um botão de favorito em cada card.
+   O botão envia o ID real da obra ao Flask.
+*/
+
+function criarBotoesDeFavoritosNosCards() {
+    const cards = selecionarTodos("#card-container .card");
+
+    cards.forEach((card) => {
+        const acoes = selecionar(".card-actions", card);
+
+        if (!acoes) return;
+
+        if (selecionar(".adicionar-catalogo-favorito", acoes)) {
+            return;
+        }
+
+        const botao = document.createElement("button");
+
+        botao.type = "button";
+        botao.className =
+            "btn-acao btn-favoritos adicionar-catalogo-favorito";
+
+        botao.textContent = "+ Adicionar aos favoritos";
+
+        acoes.appendChild(botao);
+    });
+}
+
 function inicializarBotoesDeFavoritos() {
     document.addEventListener("click", (evento) => {
         const botao = evento.target.closest(
+            ".adicionar-catalogo-favorito, " +
             ".adicionar-catalogo-Livro, " +
             ".adicionar-catalogo-Filme, " +
             ".adicionar-catalogo-Serie, " +
@@ -309,10 +334,10 @@ function inicializarBotoesDeFavoritos() {
         if (!botao || botao.disabled) return;
 
         evento.preventDefault();
+
         adicionarFavorito(botao);
     });
 }
-
 
 function adicionarFavorito(botao) {
     const url = window.url_Adicionar_Favoritos;
@@ -323,12 +348,11 @@ function adicionarFavorito(botao) {
         return;
     }
 
+    const obraId = card.dataset.id;
     const titulo = obterTitulo(card);
-    const categoria = obterCategoria(card);
-    const genero = obterGenero(card);
 
-    if (!titulo || !categoria) {
-        alert("Não foi possível identificar o título ou a categoria.");
+    if (!obraId) {
+        alert("Não foi possível identificar o ID desta obra.");
         return;
     }
 
@@ -336,10 +360,11 @@ function adicionarFavorito(botao) {
         return;
     }
 
+    botao.disabled = true;
+    botao.textContent = "Salvando...";
+
     criarFormulario(url, {
-        titulo: titulo,
-        categoria: categoria,
-        genero: genero,
+        obra_id: obraId,
         origem: "catalogo"
     });
 }
@@ -349,36 +374,31 @@ function adicionarFavorito(botao) {
 ========================================= */
 
 function inicializarEstadoDosFavoritos() {
-    const favoritos = selecionarTodos("[data-favorito-id]");
+    const favoritos = selecionarTodos("[data-favorito-obra-id]");
 
-    if (!favoritos.length) return;
-
-    const mapa = new Set(
-        favoritos.map((item) =>
-            `${normalizarTexto(item.dataset.favoritoTitulo)}::` +
-            `${normalizarTexto(item.dataset.favoritoCategoria)}`
-        )
+    const idsFavoritos = new Set(
+        favoritos
+            .map((item) => String(item.dataset.favoritoObraId || ""))
+            .filter(Boolean)
     );
 
     selecionarTodos("#card-container .card").forEach((card) => {
-        const chave =
-            `${normalizarTexto(obterTitulo(card))}::` +
-            `${normalizarTexto(obterCategoria(card))}`;
+        const obraId = String(card.dataset.id || "");
 
-        const adicionar = selecionar(
-            "[class*='adicionar-catalogo-']",
+        const botao = selecionar(
+            ".adicionar-catalogo-favorito",
             card
         );
 
-        if (!adicionar) return;
+        if (!botao) return;
 
-        const jaFavoritado = mapa.has(chave);
+        const jaFavoritado = idsFavoritos.has(obraId);
 
-        adicionar.textContent = jaFavoritado
+        botao.textContent = jaFavoritado
             ? "✓ Já está nos favoritos"
-            : "+ Adicionar esta obra";
+            : "+ Adicionar aos favoritos";
 
-        adicionar.disabled = jaFavoritado;
+        botao.disabled = jaFavoritado;
     });
 }
 

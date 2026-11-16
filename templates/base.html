@@ -15,7 +15,7 @@
 
 <body>
 
-    {% if session.get('usuario_id') %}
+    {% if session.get('usuario_id') and request.endpoint not in ['login', 'entrar', 'cadastrar_usuario'] %}
     <nav class="navbar">
     <ul class="nav-list">
     <li><a href="{{ url_for('catalogo') }}">Catálogo</a></li>
@@ -28,11 +28,17 @@
         Adicionar Livro
     </a></li>
 
-    <li><a href="{{ url_for('saiba_mais') }}">
+    <li><a href="{{ url_for('catalogo') }}">
         Saiba Mais
     </a></li>
 
-    <li><a href="{{ url_for('logout') }}">Sair</a></li>
+    
+    <li>
+        <form action="{{ url_for('logout') }}" method="post">
+            <button type="submit" class="btn-logout">
+                Sair da conta
+            </button>
+        </form>
 </ul>
     </nav>
     {% endif %}

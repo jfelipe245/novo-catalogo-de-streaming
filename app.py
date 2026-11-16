@@ -213,41 +213,73 @@ class SaibaMais(db.Model):
 
 @app.route('/')
 def home():
-    return redirect(url_for('catalogo'))
+    return redirect(url_for('cadastrar_usuario'))
 
 
 @app.route('/login', methods=['GET', 'POST'])
 def login():
     if request.method == 'POST':
+
         email = request.form.get('email', '').strip()
         senha = request.form.get('senha', '')
 
-        usuario = Usuario.query.filter_by(
-            email=email,
-            senha=senha
-        ).first()
+        usuario = Usuario.query.filter_by(email=email).first()
 
-        if usuario:
-            session['usuario_id'] = usuario.id
-            session['usuario_nome'] = usuario.nome
-            session['usuario_email'] = usuario.email
+        if usuario is None:
+            return render_template(
+                'entrar.html',
+                error='E-mail ou senha inválidos.'
+            )
 
-            return redirect(url_for('catalogo'))
+        if usuario.senha != senha:
+            return render_template(
+                'entrar.html',
+                error='E-mail ou senha inválidos.'
+            )
 
-        return render_template(
-            'entrar.html',
-            error='E-mail ou senha inválidos.'
-        )
+        session.clear()
+        session['usuario_id'] = usuario.id
+        session['usuario_nome'] = usuario.nome
+        session['usuario_email'] = usuario.email
+
+        return redirect(url_for('catalogo'))
 
     return render_template('entrar.html')
 
-@app.route('/entrar')
+
+@app.route('/entrar', methods=['GET', 'POST'])
 def entrar():
-    return render_template('entrar.html')
+    if request.method == 'POST':
 
+        email = request.form.get('email', '').strip()
+        senha = request.form.get('senha', '')
+
+        usuario = Usuario.query.filter_by(email=email).first()
+
+        if usuario is None:
+            return render_template(
+                'entrar.html',
+                error='E-mail ou senha inválidos.'
+            )
+
+        if usuario.senha != senha:
+            return render_template(
+                'entrar.html',
+                error='E-mail ou senha inválidos.'
+            )
+
+        session.clear()
+        session['usuario_id'] = usuario.id
+        session['usuario_nome'] = usuario.nome
+        session['usuario_email'] = usuario.email
+
+        return redirect(url_for('catalogo'))
+
+    return render_template('entrar.html')
 # ==========================================
 # CADASTRO
 # ==========================================
+
 
 @app.route('/cadastrar', methods=['GET', 'POST'])
 def cadastrar_usuario():
@@ -255,7 +287,7 @@ def cadastrar_usuario():
         return render_template('login.html')
 
     try:
-        nome_usuario = request.form.get('Nome-Usuario', '').strip()
+        nome_usuario = request.form.get('nome_usuario', '').strip()
         nome = request.form.get('nome', '').strip()
         idade = request.form.get('idade', '').strip()
         cpf = request.form.get('cpf', '').strip()
@@ -268,18 +300,24 @@ def cadastrar_usuario():
         endereco = request.form.get('endereco', '').strip()
 
         if not all([
-            nome_usuario, nome, idade, cpf, data_nascimento,
-            email, senha, rua, bairro, endereco
+            nome_usuario, nome, idade, cpf,
+            data_nascimento, email, senha, telefone, rua, bairro, endereco
         ]):
             return render_template(
                 'login.html',
                 error='Preencha todos os campos obrigatórios.'
             )
 
-        if not idade.isdigit():
+        if not idade.isdigit() or not 1 <= int(idade) <= 120:
             return render_template(
                 'login.html',
                 error='Digite uma idade válida.'
+            )
+
+        if len(senha) < 8:
+            return render_template(
+                'login.html',
+                error='A senha deve ter pelo menos 8 caracteres.'
             )
 
         if Usuario.query.filter_by(email=email).first():
@@ -288,11 +326,21 @@ def cadastrar_usuario():
                 error='Este e-mail já está cadastrado.'
             )
 
-        if Usuario.query.filter_by(cpf=cpf).first():
-            return render_template(
-                'login.html',
-                error='Este CPF já está cadastrado.'
-            )
+        if nome_usuario:
+            if Usuario.query.filter_by(
+                nome_usuario=nome_usuario
+            ).first():
+                return render_template(
+                    'login.html',
+                    error='Este nome de usuário já está cadastrado.'
+                )
+
+        if cpf:
+            if Usuario.query.filter_by(cpf=cpf).first():
+                return render_template(
+                    'login.html',
+                    error='Este CPF já está cadastrado.'
+                )
 
         novo_usuario = Usuario(
             nome_usuario=nome_usuario,
@@ -301,11 +349,11 @@ def cadastrar_usuario():
             cpf=cpf,
             data_nascimento=data_nascimento,
             email=email,
-            telefone=telefone,
+            telefone=telefone or None,
             senha=senha,
-            rua=rua,
-            bairro=bairro,
-            endereco=endereco
+            rua=rua or '',
+            bairro=bairro or '',
+            endereco=endereco or ''
         )
 
         db.session.add(novo_usuario)
@@ -326,6 +374,7 @@ def cadastrar_usuario():
             error='Não foi possível concluir o cadastro. Confira o terminal.'
         )
 
+
 # ==========================================
 # CATÁLOGO PRINCIPAL
 # ==========================================
@@ -333,7 +382,8 @@ def cadastrar_usuario():
 @app.route('/catalogo')
 def catalogo():
 
-    # Recupera as obras ocultadas nesta sessão.
+    if 'usuario_id' not in session:
+        return redirect(url_for('login'))
     obras_ocultas = session.get('obras_ocultas', [])
 
     obras = Obra.query.filter(
@@ -521,6 +571,7 @@ def adicionar_favoritos():
 # ROTA ACESSAR OBRA
 # ==========================================
 
+
 @app.route('/acessar_obra')
 def acessar_obra():
 
@@ -533,8 +584,9 @@ def acessar_obra():
 
     if obra:
         dados = {
+            'id': obra.id,
             'titulo': obra.titulo or '',
-            'categoria': obra.tipo or '',
+            'categoria': obra.categoria or obra.tipo or '',
             'tipo': obra.tipo or '',
             'imagem': obra.imagem or '',
             'genero': obra.genero or '',
@@ -551,32 +603,12 @@ def acessar_obra():
         }
 
     else:
-        dados = {
-            'titulo': request.args.get('titulo', ''),
-            'categoria': request.args.get('categoria',request.args.get('tipo', '')),
-            'tipo': request.args.get('tipo', ''),
-            'imagem': request.args.get('imagem', ''),
-            'genero': request.args.get('genero', ''),
-            'descricao': request.args.get('descricao', ''),
-            'autor': request.args.get('autor', ''),
-            'diretor': request.args.get('diretor', ''),
-            'artista': request.args.get('artista', ''),
-            'album': request.args.get('album', ''),
-            'ano_publicacao': request.args.get('ano_publicacao', ''),
-            'ano_lancamento': request.args.get('ano_lancamento', ''),
-            'numero_paginas': request.args.get(
-                'numero_paginas',
-                request.args.get('paginas', '')
-            ),
-            'duracao': request.args.get('duracao', ''),
-            'temporadas': request.args.get('temporadas', '')
-        }
+        return redirect(url_for('catalogo'))
 
     return render_template(
         'funcoes/acessar_obra.html',
-        **dados
+        dados=dados
     )
-
 
 @app.route('/adicionar', methods=['GET', 'POST'])
 def adicionar():
@@ -696,7 +728,8 @@ def obras_visiveis(modelo, categoria):
 
 @app.route('/remover', methods=['POST'])
 def remover():
-
+    if 'usuario_id' not in session:
+        return redirect(url_for('login'))
     obra_id = request.form.get('obra_id', type=int)
 
     if not obra_id:
@@ -746,21 +779,50 @@ def deletar():
 
 @app.route('/saibamais')
 def saiba_mais():
+    obra_id = request.args.get('id', type=int)
+
+    if not obra_id:
+        obra_id = request.args.get('obra_id', type=int)
+
+    obra = db.session.get(Obra, obra_id) if obra_id else None
+
+    if obra is None:
+        return redirect(url_for('catalogo'))
+
+    informacao = SaibaMais.query.filter_by(
+        obra_id=obra.id
+    ).first()
+
     return render_template(
         'funcoes/Saiba-Mais.html',
-        titulo=request.args.get('titulo', 'Obra'),
-        categoria=request.args.get('categoria', ''),
-        genero=request.args.get('genero', ''),
-        autor=request.args.get('autor', ''),
-        imagem=request.args.get('imagem', ''),
-        descricao=request.args.get('descricao', '')
+        obra=obra,
+        titulo=obra.titulo or '',
+        categoria=obra.categoria or obra.tipo or '',
+        genero=obra.genero or '',
+        autor=obra.autor or obra.diretor or obra.artista or '',
+        imagem=obra.imagem or '',
+        descricao=(
+            informacao.descricao
+            if informacao and informacao.descricao
+            else obra.descricao or ''
+        ),
+        ano_publicacao=obra.ano_publicacao or '',
+        ano_lancamento=obra.ano_lancamento or '',
+        editora=obra.editora or '',
+        numero_paginas=obra.numero_paginas or '',
+        diretor=obra.diretor or '',
+        artista=obra.artista or '',
+        edicao=obra.edicao or '',
+        album=obra.album or '',
+        duracao=obra.duracao or '',
+        temporadas=obra.temporadas or ''
     )
 
 # ==========================================
 # rota SAIR
 # ==========================================
 
-@app.route('/logout')
+@app.route('/logout', methods=['POST'])
 def logout():
     session.clear()
     return redirect(url_for('login'))

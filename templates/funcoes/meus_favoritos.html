@@ -4,8 +4,9 @@
 {% block title %}Meus Favoritos | AfroEdu Stream{% endblock %}
 
 {% block css %}
+{{ super() }}
 <link rel="stylesheet" href="{{ url_for('static', filename='css/meus-favoritos.css') }}">
-{% endblock %}
+{% endblock css %}
 
 {% block conteudo %}
 
@@ -15,70 +16,185 @@
 
 <header class="header-favoritos">
     <strong>Minha Coleção Pessoal</strong>
+
     <h1>Meus Livros, Filmes e Séries Favoritos</h1>
-    <p>Acompanhe e gerencie todos os itens salvos do seu catálogo educacional.</p>
+
+    <p>
+        Acompanhe e gerencie todas as obras salvas
+        do seu catálogo educacional.
+    </p>
 </header>
 
 <main class="grid-container" id="container-favoritos">
 
-    {% for item in favoritos %}
+    {% for favorito in favoritos %}
 
-    <article class="card">
+    <article class="card" data-favorito-id="{{ favorito.id }}">
 
-        {% if item.obra and item.obra.imagem %}
-            <img
-                class="card-img"
-                src="{{ url_for('static', filename=item.obra.imagem) }}"
-                alt="Capa de {{ item.favorito.titulo }}"
-            >
-        {% else %}
+        {% if favorito.obra and favorito.obra.imagem %}
+
+    {% set imagem = favorito.obra.imagem %}
+
+    {% if imagem.startswith('http://') or imagem.startswith('https://') or imagem.startswith('/static/') %}
+        {% set imagem_url = imagem %}
+    {% elif imagem.startswith('static/') %}
+        {% set imagem_url = url_for('static', filename=imagem[7:]) %}
+    {% else %}
+        {% set imagem_url = url_for('static', filename=imagem) %}
+    {% endif %}
+
+    <img
+        class="card-img"
+        src="{{ imagem_url }}"
+        alt="Imagem de {{ favorito.obra.titulo }}"
+        loading="lazy"
+    >
+
+{% else %}
+
             <div class="obra-sem-imagem">
                 Imagem não disponível
             </div>
+
         {% endif %}
 
         <div class="card-content">
 
-            <h2 class="titulo">
-                {{ item.favorito.titulo }}
-            </h2>
+            {% if favorito.obra %}
 
-            <p class="genero-badge">
-                {{ item.favorito.categoria }}
-            </p>
+                <h2 class="titulo">
+                    {{ favorito.obra.titulo }}
+                </h2>
 
-            <p>{{ item.favorito.genero }}</p>
+                <p class="genero-badge">
+                    {{ favorito.obra.categoria or favorito.obra.tipo or 'Categoria não informada' }}
+                </p>
 
-            {% if item.obra %}
+                {% if favorito.obra.genero %}
+                    <p class="genero">
+                        Gênero: {{ favorito.obra.genero }}
+                    </p>
+                {% endif %}
+
+                {% if favorito.obra.autor %}
+                    <p class="autor">
+                        Autor: {{ favorito.obra.autor }}
+                    </p>
+                {% endif %}
+
+                {% if favorito.obra.diretor %}
+                    <p class="autor">
+                        Direção: {{ favorito.obra.diretor }}
+                    </p>
+                {% endif %}
+
+                {% if favorito.obra.artista %}
+                    <p class="autor">
+                        Artista: {{ favorito.obra.artista }}
+                    </p>
+                {% endif %}
+
+                {% if favorito.obra.ano_publicacao %}
+                    <p class="detalhes">
+                        Ano de publicação:
+                        {{ favorito.obra.ano_publicacao }}
+                    </p>
+                {% endif %}
+
+                {% if favorito.obra.ano_lancamento %}
+                    <p class="detalhes">
+                        Ano de lançamento:
+                        {{ favorito.obra.ano_lancamento }}
+                    </p>
+                {% endif %}
+
+                {% if favorito.obra.numero_paginas %}
+                    <p class="detalhes">
+                        Páginas: {{ favorito.obra.numero_paginas }}
+                    </p>
+                {% endif %}
+
+                {% if favorito.obra.duracao %}
+                    <p class="detalhes">
+                        Duração: {{ favorito.obra.duracao }}
+                    </p>
+                {% endif %}
+
+                {% if favorito.obra.temporadas %}
+                    <p class="detalhes">
+                        Temporadas: {{ favorito.obra.temporadas }}
+                    </p>
+                {% endif %}
+
+                {% if favorito.obra.descricao %}
+                    <p class="descricao">
+                        {{ favorito.obra.descricao }}
+                    </p>
+                {% endif %}
+
                 <a
-                    href="{{ url_for('acessar_obra', obra_id=item.obra.id) }}"
+                    href="{{ url_for('acessar_obra', id=favorito.obra.id) }}"
                     class="btn-ver-obra"
                 >
-                    Ver detalhes
+                    Ver detalhes da obra
                 </a>
+
+            {% else %}
+
+                <h2 class="titulo">
+                    Obra não encontrada
+                </h2>
+
+                <p>
+                    Esta obra não está disponível no catálogo.
+                </p>
+
             {% endif %}
 
         </div>
 
-        <form action="{{ url_for('deletar_favorito') }}" method="POST">
+        <form
+            action="{{ url_for('deletar_favorito') }}"
+            method="POST"
+            class="form-remover-favorito"
+        >
+
             <input
                 type="hidden"
                 name="favorito_id"
-                value="{{ item.favorito.id }}"
+                value="{{ favorito.id }}"
             >
 
-            <button type="submit" class="btn-remover-obra">
+            <input
+                type="hidden"
+                name="origem"
+                value="favoritos"
+            >
+
+            <button
+                type="submit"
+                class="btn-remover-obra"
+            >
                 Remover dos favoritos
             </button>
+
         </form>
 
     </article>
 
     {% else %}
 
-    <p class="mensagem-catalogo-vazio">
-        Você ainda não adicionou obras aos favoritos.
-    </p>
+        <div class="mensagem-catalogo-vazio">
+            <h2>Sua coleção está vazia.</h2>
+
+            <p>
+                Você ainda não adicionou obras aos favoritos.
+            </p>
+
+            <a href="{{ url_for('catalogo') }}">
+                Explorar catálogo
+            </a>
+        </div>
 
     {% endfor %}
 
@@ -87,5 +203,6 @@
 {% endblock conteudo %}
 
 {% block js %}
+{{ super() }}
 <script src="{{ url_for('static', filename='js/meus-favoritos.js') }}"></script>
 {% endblock js %}

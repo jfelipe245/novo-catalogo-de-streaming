@@ -2,7 +2,7 @@
 {% extends "base.html" %}
 
 {% block title %}
-    {{ titulo or 'Detalhes da obra' }} | AfroEdu Stream
+    {{ dados.titulo or 'Detalhes da obra' }} | AfroEdu Stream
 {% endblock title %}
 
 {% block css %}
@@ -12,49 +12,10 @@
 
 {% block conteudo %}
 
-{% set categoria = categoria|default('', true)|string|trim %}
-{% set titulo = titulo|default('', true)|string|trim %}
-{% set imagem = imagem|default('', true)|string|trim %}
-{% set genero = genero|default('', true)|string|trim %}
-{% set tipo = tipo|default('', true)|string|trim %}
-{% set descricao = descricao|default('', true)|string|trim %}
-{% set autor = autor|default('', true)|string|trim %}
-{% set diretor = diretor|default('', true)|string|trim %}
-{% set artista = artista|default('', true)|string|trim %}
-{% set album = album|default('', true)|string|trim %}
-{% set ano_publicacao = ano_publicacao|default('', true)|string|trim %}
-{% set ano_lancamento = ano_lancamento|default('', true)|string|trim %}
-{% set numero_paginas = numero_paginas|default('', true)|string|trim %}
-{% set duracao = duracao|default('', true)|string|trim %}
-{% set temporadas = temporadas|default('', true)|string|trim %}
-
-{% set eh_livro = categoria|lower in ['livro', 'livros'] or tipo|lower in ['livro', 'livros'] %}
-{% set eh_musica = categoria|lower in ['musica', 'música'] %}
-
-{% if imagem %}
-    {% if imagem.startswith('http://') or imagem.startswith('https://') or imagem.startswith('/static/') %}
-        {% set imagem_url = imagem %}
-    {% elif imagem.startswith('static/') %}
-        {% set imagem_url = url_for('static', filename=imagem[7:]) %}
-    {% else %}
-        {% set imagem_url = url_for('static', filename=imagem) %}
-    {% endif %}
-{% else %}
-    {% set imagem_url = '' %}
-{% endif %}
-
-{% if eh_livro %}
-    {% set responsavel = autor %}
-    {% set nome_responsavel = 'Autor' %}
-{% elif eh_musica %}
-    {% set responsavel = artista or autor %}
-    {% set nome_responsavel = 'Artista' %}
-{% else %}
-    {% set responsavel = diretor %}
-    {% set nome_responsavel = 'Diretor' %}
-{% endif %}
-
-<main class="detalhes-pagina">
+<main
+    class="detalhes-pagina"
+    data-obra-id="{{ dados.id }}"
+>
 
     <a class="voltar-catalogo" href="{{ url_for('catalogo') }}">
         ← Voltar ao catálogo
@@ -66,11 +27,19 @@
 
             <div class="moldura-capa">
 
-                {% if imagem_url %}
+                {% if dados.imagem %}
+                    {% if dados.imagem.startswith('http://') or dados.imagem.startswith('https://') %}
+                        {% set imagem_url = dados.imagem %}
+                    {% elif dados.imagem.startswith('/static/') %}
+                        {% set imagem_url = dados.imagem %}
+                    {% else %}
+                        {% set imagem_url = url_for('static', filename=dados.imagem) %}
+                    {% endif %}
+
                     <img
                         id="detalhe-img"
                         src="{{ imagem_url }}"
-                        alt="Capa de {{ titulo }}"
+                        alt="Capa de {{ dados.titulo }}"
                     >
                 {% else %}
                     <div class="obra-sem-imagem">
@@ -80,118 +49,73 @@
 
             </div>
 
-            <span class="legenda-capa">
-                Obra selecionada no catálogo
-            </span>
-
-            <!-- FICHA TÉCNICA ABAIXO DA IMAGEM -->
-
             <section class="secao-detalhe">
-
                 <h2>Ficha técnica</h2>
 
                 <dl class="lista-ficha">
 
-                    {% if titulo %}
-                    <div>
-                        <dt>Título</dt>
-                        <dd>{{ titulo }}</dd>
-                    </div>
-                    {% endif %}
-
-                    {% if categoria %}
-                    <div>
-                        <dt>Categoria</dt>
-                        <dd>{{ categoria }}</dd>
-                    </div>
-                    {% endif %}
-
-                
-                    {% if responsavel %}
-                    <div>
-                        <dt>{{ nome_responsavel }}</dt>
-                        <dd>{{ responsavel }}</dd>
-                    </div>
-                    {% endif %}
-
-                    {% if genero %}
-                    <div>
-                        <dt>Gênero</dt>
-                        <dd>{{ genero }}</dd>
-                    </div>
-                    {% endif %}
-
-                    {% if album %}
-                    <div>
-                        <dt>Álbum</dt>
-                        <dd>{{ album }}</dd>
-                    </div>
-                    {% endif %}
-
-                    {% if ano_publicacao and ano_publicacao != '0' %}
-                    <div>
-                        <dt>Ano de publicação</dt>
-                        <dd>{{ ano_publicacao }}</dd>
-                    </div>
-                    {% endif %}
-
-                    {% if ano_lancamento and ano_lancamento != '0' %}
-                    <div>
-                        <dt>Ano de lançamento</dt>
-                        <dd>{{ ano_lancamento }}</dd>
-                    </div>
-                    {% endif %}
-
-                    {% if numero_paginas and numero_paginas != '0' %}
-                    <div>
-                        <dt>Número de páginas</dt>
-                        <dd>{{ numero_paginas }}</dd>
-                    </div>
-                    {% endif %}
-
-                    {% if duracao %}
-                    <div>
-                        <dt>Duração</dt>
-                        <dd>{{ duracao }}</dd>
-                    </div>
-                    {% endif %}
-
-                    {% if temporadas and temporadas != '0' %}
-                    <div>
-                        <dt>Temporadas</dt>
-                        <dd>{{ temporadas }}</dd>
-                    </div>
-                    {% endif %}
+                    {% for campo, valor in [
+                        ('Título', dados.titulo),
+                        ('Categoria', dados.categoria),
+                        ('Gênero', dados.genero),
+                        ('Autor', dados.autor),
+                        ('Diretor', dados.diretor),
+                        ('Artista', dados.artista),
+                        ('Álbum', dados.album),
+                        ('Ano de publicação', dados.ano_publicacao),
+                        ('Ano de lançamento', dados.ano_lancamento),
+                        ('Número de páginas', dados.numero_paginas),
+                        ('Duração', dados.duracao),
+                        ('Temporadas', dados.temporadas)
+                    ] %}
+                        {% if valor and valor|string not in ['0', 'None'] %}
+                            <div>
+                                <dt>{{ campo }}</dt>
+                                <dd>{{ valor }}</dd>
+                            </div>
+                        {% endif %}
+                    {% endfor %}
 
                 </dl>
-
             </section>
 
         </div>
 
         <div class="info-container">
 
-            {% if categoria %}
-                <span id="detalhe-badge" class="badge">
-                    {{ categoria }}
-                </span>
-            {% endif %}
+            <span class="badge">
+                {{ dados.categoria }}
+            </span>
 
-            <h1 id="detalhe-titulo">{{ titulo }}</h1>
+            <h1 id="detalhe-titulo">
+                {{ dados.titulo }}
+            </h1>
 
-            {% if responsavel %}
-                <p class="autor-diretor">
-                    <strong>{{ nome_responsavel }}:</strong>
-                    {{ responsavel }}
-                </p>
-            {% endif %}
-
-            {% if descricao %}
+            {% if dados.descricao %}
                 <section class="secao-detalhe">
                     <h2>Descrição da obra</h2>
-                    <p id="detalhe-sinopse">{{ descricao }}</p>
+                    <p>{{ dados.descricao }}</p>
                 </section>
             {% endif %}
+
+            <div class="botoes-detalhes">
+
+                <button
+                    type="button"
+                    id="btn-favoritos"
+                    class="btn-favoritos"
+                >
+                    Adicionar aos favoritos
+                </button>
+
+                <a
+                    href="{{ url_for('catalogo') }}"
+                    class="btn-voltar"
+                >
+                    Voltar ao catálogo
+                </a>
+
+            </div>
 
         </div>
 
@@ -201,7 +125,13 @@
 
 {% endblock conteudo %}
 
-{% block scripts %}
+{% block js %}
     {{ super() }}
-    <script src="{{ url_for('static', filename='js/catalogo.js') }}"></script>
-{% endblock scripts %}
+
+    <script>
+        window.url_Adicionar_Favoritos =
+            "{{ url_for('adicionar_favoritos') }}";
+    </script>
+
+    <script src="{{ url_for('static', filename='js/saiba-mais.js') }}"></script>
+{% endblock js %}
