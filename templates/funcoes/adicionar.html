@@ -1,10 +1,10 @@
 
 {% extends "base.html" %}
 
-{% block title %}Adicionar obra - AfroEdu Stream{% endblock %}
+{% block title %}Adicionar obra | AfroEdu Stream{% endblock %}
 
 {% block css %}
-<link rel="stylesheet" href="{{ url_for('static', filename='css/catalogo.css') }}">
+    <link rel="stylesheet" href="{{ url_for('static', filename='css/catalogo.css') }}">
 {% endblock css %}
 
 {% block conteudo %}
@@ -21,7 +21,11 @@
         <p class="mensagem-adicionar">{{ mensagem }}</p>
     {% endif %}
 
-    <form action="{{ url_for('adicionar') }}" method="POST" class="form-adicionar">
+    <form
+        action="{{ url_for('adicionar') }}"
+        method="POST"
+        class="form-adicionar"
+    >
 
         <fieldset>
             <legend>Informações principais</legend>
@@ -30,59 +34,84 @@
 
                 <div class="campo-adicionar campo-completo">
                     <label for="titulo">Título da obra *</label>
-                    <input type="text" id="titulo" name="titulo"
-                           placeholder="Digite o título" required>
+                    <input
+                        type="text"
+                        id="titulo"
+                        name="titulo"
+                        maxlength="200"
+                        placeholder="Digite o título"
+                        required
+                    >
                 </div>
 
                 <div class="campo-adicionar">
                     <label for="tipo">Categoria *</label>
+
+                    {% set tipo_atual = request.form.get('tipo') or request.args.get('tipo', '') %}
+
                     <select id="tipo" name="tipo" required>
                         <option value="">Selecione uma categoria</option>
-                        <option value="livro">Livro</option>
-                        <option value="filme">Filme</option>
-                        <option value="serie">Série</option>
-                        <option value="documentario">Documentário</option>
-                        <option value="curta">Curta-metragem</option>
-                        <option value="musica">Música de protesto</option>
+
+                        <option value="livro" {% if tipo_atual == 'livro' %}selected{% endif %}>Livro</option>
+                        <option value="filme" {% if tipo_atual == 'filme' %}selected{% endif %}>Filme</option>
+                        <option value="serie" {% if tipo_atual in ['serie', 'série'] %}selected{% endif %}>Série</option>
+                        <option value="documentario" {% if tipo_atual in ['documentario', 'documentário'] %}selected{% endif %}>Documentário</option>
+                        <option value="curta" {% if tipo_atual in ['curta', 'curta-metragem'] %}selected{% endif %}>Curta-metragem</option>
+                        <option value="musica" {% if tipo_atual in ['musica', 'música'] %}selected{% endif %}>Música de protesto</option>
                     </select>
                 </div>
 
                 <div class="campo-adicionar">
                     <label for="genero">Gênero</label>
-                    <input type="text" id="genero" name="genero"
-                           placeholder="Ex.: Educação, drama...">
+                    <input
+                        type="text"
+                        id="genero"
+                        name="genero"
+                        placeholder="Ex.: Educação, drama..."
+                    >
                 </div>
 
             </div>
         </fieldset>
 
-        <fieldset>
+        <fieldset id="campos-autoria">
             <legend>Autoria e produção</legend>
 
             <div class="campos-adicionar">
 
-                <div class="campo-adicionar">
+                <div class="campo-adicionar grupo-categoria" data-tipos="livro">
                     <label for="autor">Autor</label>
-                    <input type="text" id="autor" name="autor"
-                           placeholder="Nome do autor">
+                    <input type="text" id="autor" name="autor" placeholder="Nome do autor">
                 </div>
 
-                <div class="campo-adicionar">
+                <div class="campo-adicionar grupo-categoria" data-tipos="filme serie documentario curta">
                     <label for="diretor">Diretor</label>
-                    <input type="text" id="diretor" name="diretor"
-                           placeholder="Nome do diretor">
+                    <input type="text" id="diretor" name="diretor" placeholder="Nome do diretor">
                 </div>
 
-                <div class="campo-adicionar">
+                <div class="campo-adicionar grupo-categoria" data-tipos="musica">
                     <label for="artista">Artista</label>
-                    <input type="text" id="artista" name="artista"
-                           placeholder="Nome do artista">
+                    <input type="text" id="artista" name="artista" placeholder="Nome do artista">
                 </div>
 
-                <div class="campo-adicionar">
+                <div class="campo-adicionar grupo-categoria" data-tipos="musica">
                     <label for="album">Álbum</label>
-                    <input type="text" id="album" name="album"
-                           placeholder="Nome do álbum">
+                    <input type="text" id="album" name="album" placeholder="Nome do álbum">
+                </div>
+
+                <div class="campo-adicionar grupo-categoria" data-tipos="livro">
+                    <label for="editora">Editora</label>
+                    <input type="text" id="editora" name="editora" placeholder="Nome da editora">
+                </div>
+
+                <div class="campo-adicionar grupo-categoria" data-tipos="livro">
+                    <label for="edicao">Edição</label>
+                    <input type="text" id="edicao" name="edicao" placeholder="Ex.: 2ª edição">
+                </div>
+
+                <div class="campo-adicionar grupo-categoria" data-tipos="livro">
+                    <label for="isbn">ISBN</label>
+                    <input type="text" id="isbn" name="isbn" placeholder="ISBN do livro">
                 </div>
 
             </div>
@@ -93,34 +122,56 @@
 
             <div class="campos-adicionar">
 
-                <div class="campo-adicionar">
+                <div class="campo-adicionar grupo-categoria" data-tipos="livro">
                     <label for="ano_publicacao">Ano de publicação</label>
-                    <input type="number" id="ano_publicacao"
-                           name="ano_publicacao" min="1800" max="2100">
+                    <input
+                        type="number"
+                        id="ano_publicacao"
+                        name="ano_publicacao"
+                        min="1800"
+                        max="2100"
+                    >
                 </div>
 
-                <div class="campo-adicionar">
+                <div class="campo-adicionar grupo-categoria" data-tipos="filme serie documentario curta musica">
                     <label for="ano_lancamento">Ano de lançamento</label>
-                    <input type="number" id="ano_lancamento"
-                           name="ano_lancamento" min="1800" max="2100">
+                    <input
+                        type="number"
+                        id="ano_lancamento"
+                        name="ano_lancamento"
+                        min="1800"
+                        max="2100"
+                    >
                 </div>
 
-                <div class="campo-adicionar">
+                <div class="campo-adicionar grupo-categoria" data-tipos="livro">
                     <label for="numero_paginas">Número de páginas</label>
-                    <input type="number" id="numero_paginas"
-                           name="numero_paginas" min="1">
+                    <input
+                        type="number"
+                        id="numero_paginas"
+                        name="numero_paginas"
+                        min="1"
+                    >
                 </div>
 
-                <div class="campo-adicionar">
+                <div class="campo-adicionar grupo-categoria" data-tipos="filme documentario curta">
                     <label for="duracao">Duração</label>
-                    <input type="text" id="duracao" name="duracao"
-                           placeholder="Ex.: 1h 30min">
+                    <input
+                        type="text"
+                        id="duracao"
+                        name="duracao"
+                        placeholder="Ex.: 1h 30min"
+                    >
                 </div>
 
-                <div class="campo-adicionar">
+                <div class="campo-adicionar grupo-categoria" data-tipos="serie">
                     <label for="temporadas">Temporadas</label>
-                    <input type="number" id="temporadas"
-                           name="temporadas" min="1">
+                    <input
+                        type="number"
+                        id="temporadas"
+                        name="temporadas"
+                        min="1"
+                    >
                 </div>
 
             </div>
@@ -132,16 +183,32 @@
             <div class="campos-adicionar">
 
                 <div class="campo-adicionar campo-completo">
-                    <label for="descricao">Descrição da obra</label>
-                    <textarea id="descricao" name="descricao"
-                              rows="5"
-                              placeholder="Escreva uma descrição sobre a obra..." required></textarea>
+                    <label for="imagem">Caminho da imagem</label>
+                    <input
+                        type="text"
+                        id="imagem"
+                        name="imagem"
+                        placeholder="Ex.: css/image/img/tipos/livros/capa.jpg"
+                    >
+                    <small>Informe o caminho relativo à pasta static.</small>
+                </div>
+
+                <div class="campo-adicionar campo-completo">
+                    <label for="descricao">Descrição da obra *</label>
+                    <textarea
+                        id="descricao"
+                        name="descricao"
+                        rows="5"
+                        placeholder="Escreva uma descrição sobre a obra..."
+                        required
+                    ></textarea>
                 </div>
 
             </div>
         </fieldset>
 
         <div class="botoes-adicionar">
+
             <button type="submit" class="btn-cadastrar-obra">
                 Cadastrar obra
             </button>
@@ -149,6 +216,7 @@
             <a href="{{ url_for('catalogo') }}" class="btn-voltar-obra">
                 Voltar ao catálogo
             </a>
+
         </div>
 
     </form>
@@ -157,6 +225,6 @@
 
 {% endblock conteudo %}
 
-{% block js%}
+{% block js %}
     <script src="{{ url_for('static', filename='js/catalogo.js') }}"></script>
-{% endblock js%}
+{% endblock js %}

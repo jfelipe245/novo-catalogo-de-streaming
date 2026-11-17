@@ -4,7 +4,6 @@
 {% block title %}Meus Favoritos | AfroEdu Stream{% endblock %}
 
 {% block css %}
-{{ super() }}
 <link rel="stylesheet" href="{{ url_for('static', filename='css/meus-favoritos.css') }}">
 {% endblock css %}
 
@@ -203,6 +202,5 @@
 {% endblock conteudo %}
 
 {% block js %}
-{{ super() }}
 <script src="{{ url_for('static', filename='js/meus-favoritos.js') }}"></script>
 {% endblock js %}

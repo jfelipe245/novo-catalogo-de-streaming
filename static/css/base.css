@@ -119,165 +119,150 @@ p {
 
 /* ===== MENU DE NAVEGAÇÃO ===== */
 
+/* =========================================================
+   NAVEGAÇÃO PRINCIPAL — AFROEDU STREAM
+   ========================================================= */
+
 .navbar {
-    position: relative;
-    z-index: 10;
-
-    display: flex;
-    align-items: center;
-    justify-content: center;
-
+    position: sticky;
+    top: 0;
+    z-index: 1000;
     width: 100%;
-    padding: 16px 30px;
 
-    background: rgba(43, 29, 25, 0.96);
-    border-bottom: 1px solid var(--borda);
-    box-shadow: var(--sombra-suave);
+    background: #1B100C;
+    border-bottom: 1px solid rgba(229, 162, 59, 0.25);
+
+    box-shadow: 0 5px 20px rgba(0, 0, 0, 0.35);
 }
+
+.navbar-container {
+    display: grid;
+    grid-template-columns: 1fr auto 1fr;
+    align-items: center;
+
+    width: min(1450px, 94%);
+    min-height: 78px;
+    margin: 0 auto;
+}
+
+/* LOGO À ESQUERDA */
+
+.navbar-logo {
+    justify-self: start;
+
+    color: #E5A23B;
+    font-family: "Sora", sans-serif;
+    font-size: 1.4rem;
+    font-weight: 800;
+    white-space: nowrap;
+}
+
+.navbar-logo span {
+    color: #F5E8D3;
+}
+
+/* LINKS CENTRALIZADOS */
 
 .nav-list {
     display: flex;
     align-items: center;
     justify-content: center;
-    flex-wrap: wrap;
     gap: 8px;
 
     margin: 0;
     padding: 0;
-
     list-style: none;
 }
 
-.nav-list li {
-    margin: 0;
-    padding: 0;
-}
-
 .nav-list a {
-    position: relative;
+    display: block;
+    padding: 11px 14px;
 
-    display: inline-flex;
-    align-items: center;
-    justify-content: center;
+    color: #D2BDA4;
+    font-size: 0.9rem;
+    font-weight: 700;
+    white-space: nowrap;
 
-    min-height: 42px;
-    padding: 10px 17px;
-
-    color: var(--texto-secundario);
-    font-size: 0.92rem;
-    font-weight: 600;
-
-    border: 1px solid transparent;
-    border-radius: var(--raio-pequeno);
-
-    transition:
-        color var(--transicao),
-        background-color var(--transicao),
-        border-color var(--transicao),
-        transform var(--transicao);
+    border-radius: 8px;
+    transition: 0.3s ease;
 }
 
 .nav-list a:hover {
-    color: var(--dourado-claro);
-    background-color: var(--dourado-suave);
-    border-color: var(--borda);
-    transform: translateY(-1px);
+    color: #E5A23B;
+    background: rgba(229, 162, 59, 0.12);
 }
 
-.nav-list a:active {
-    transform: translateY(0);
+/* BOTÃO À DIREITA */
+
+.form-logout {
+    justify-self: end;
+    margin: 0;
 }
 
-/* ===== RODAPÉ ===== */
+.btn-logout {
+    padding: 10px 17px;
 
-footer {
-    width: 100%;
-    margin-top: auto;
-    padding: 24px 20px;
+    background: transparent;
+    color: #C83B1E;
 
-    background: var(--fundo-secundario);
-    border-top: 1px solid var(--borda);
+    border: 1px solid #C83B1E;
+    border-radius: 8px;
 
-    text-align: center;
+    font-size: 0.85rem;
+    font-weight: 800;
+
+    cursor: pointer;
+    transition: 0.3s ease;
 }
 
-footer p {
-    max-width: 900px;
-    margin: 0 auto;
-
-    color: var(--texto-secundario);
-    font-size: 0.82rem;
-    line-height: 1.8;
+.btn-logout:hover {
+    background: #C83B1E;
+    color: #FFFFFF;
 }
 
-/* ===== SELEÇÃO DE TEXTO ===== */
+/* TABLETS */
 
-::selection {
-    color: var(--fundo);
-    background: var(--dourado-claro);
-}
-
-/* ===== ROLAGEM ===== */
-
-:focus:not(:focus-visible) {
-    outline: none;
-}
-
-/* ===== RESPONSIVIDADE ===== */
-
-@media (max-width: 768px) {
-    .navbar {
-        padding: 14px 16px;
+@media (max-width: 950px) {
+    .navbar-container {
+        grid-template-columns: 1fr auto;
+        gap: 12px;
+        padding: 14px 0;
     }
 
     .nav-list {
-        gap: 6px;
+        grid-column: 1 / -1;
+        grid-row: 2;
+        flex-wrap: wrap;
     }
 
-    .nav-list a {
-        padding: 10px 12px;
-        font-size: 0.88rem;
+    .form-logout {
+        grid-column: 2;
+        grid-row: 1;
     }
 }
 
-@media (max-width: 480px) {
-    .navbar {
-        padding: 12px 8px;
+/* CELULARES */
+
+@media (max-width: 500px) {
+    .navbar-container {
+        width: 94%;
+    }
+
+    .navbar-logo {
+        font-size: 1.15rem;
     }
 
     .nav-list {
-        width: 100%;
-        gap: 5px;
-    }
-
-    .nav-list li {
-        flex: 0 1 auto;
+        gap: 3px;
     }
 
     .nav-list a {
-        min-height: 40px;
-        padding: 9px 10px;
-        font-size: 0.8rem;
-    }
-
-    footer {
-        padding: 18px 14px;
-    }
-
-    footer p {
+        padding: 9px 8px;
         font-size: 0.76rem;
     }
-}
 
-/* ===== MOVIMENTO REDUZIDO ===== */
-
-@media (prefers-reduced-motion: reduce) {
-    *,
-    *::before,
-    *::after {
-        scroll-behavior: auto !important;
-        animation-duration: 0.01ms !important;
-        animation-iteration-count: 1 !important;
-        transition-duration: 0.01ms !important;
+    .btn-logout {
+        padding: 8px 10px;
+        font-size: 0.75rem;
     }
 }

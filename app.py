@@ -33,6 +33,7 @@ class Usuario(db.Model):
     rua = db.Column(db.String(100), nullable=False)
     bairro = db.Column(db.String(100), nullable=False)
     endereco = db.Column(db.String(100), nullable=False)
+    cidade = db.Column(db.String(100), nullable=False)
 
 
 class Livros(db.Model):
@@ -249,36 +250,10 @@ def login():
 
 @app.route('/entrar', methods=['GET', 'POST'])
 def entrar():
-    if request.method == 'POST':
-
-        email = request.form.get('email', '').strip()
-        senha = request.form.get('senha', '')
-
-        usuario = Usuario.query.filter_by(email=email).first()
-
-        if usuario is None:
-            return render_template(
-                'entrar.html',
-                error='E-mail ou senha inválidos.'
-            )
-
-        if usuario.senha != senha:
-            return render_template(
-                'entrar.html',
-                error='E-mail ou senha inválidos.'
-            )
-
-        session.clear()
-        session['usuario_id'] = usuario.id
-        session['usuario_nome'] = usuario.nome
-        session['usuario_email'] = usuario.email
-
-        return redirect(url_for('catalogo'))
-
-    return render_template('entrar.html')
+    return login()
 # ==========================================
 # CADASTRO
-# ==========================================
+# ======================================
 
 
 @app.route('/cadastrar', methods=['GET', 'POST'])
@@ -298,10 +273,11 @@ def cadastrar_usuario():
         rua = request.form.get('rua', '').strip()
         bairro = request.form.get('bairro', '').strip()
         endereco = request.form.get('endereco', '').strip()
+        cidade = request.form.get('cidade', '').strip()
 
         if not all([
             nome_usuario, nome, idade, cpf,
-            data_nascimento, email, senha, telefone, rua, bairro, endereco
+            data_nascimento, email, senha, telefone, rua, bairro, endereco, cidade
         ]):
             return render_template(
                 'login.html',
@@ -353,7 +329,8 @@ def cadastrar_usuario():
             senha=senha,
             rua=rua or '',
             bairro=bairro or '',
-            endereco=endereco or ''
+            endereco=endereco or '',
+            cidade=cidade or ''
         )
 
         db.session.add(novo_usuario)
@@ -379,16 +356,14 @@ def cadastrar_usuario():
 # CATÁLOGO PRINCIPAL
 # ==========================================
 
+
 @app.route('/catalogo')
 def catalogo():
-
     if 'usuario_id' not in session:
         return redirect(url_for('login'))
-    obras_ocultas = session.get('obras_ocultas', [])
 
-    obras = Obra.query.filter(
-        ~Obra.id.in_(obras_ocultas)
-    ).order_by(Obra.id.desc()).all()
+    # Carrega todas as obras, sem ocultar nenhuma pelo histórico da sessão.
+    obras = Obra.query.order_by(Obra.id.desc()).all()
 
     livros = [o for o in obras if o.categoria == 'livro']
     filmes = [o for o in obras if o.categoria == 'filme']
@@ -408,14 +383,14 @@ def catalogo():
         if o.categoria in ['musica', 'música']
     ]
 
-    curtas = [o for o in obras if o.categoria == 'curta']
+    curtas = [
+        o for o in obras
+        if o.categoria == 'curta'
+    ]
 
-    favoritos = []
-
-    if 'usuario_id' in session:
-        favoritos = Favorito.query.filter_by(
-            usuario_id=session['usuario_id']
-        ).all()
+    favoritos = Favorito.query.filter_by(
+        usuario_id=session['usuario_id']
+    ).all()
 
     return render_template(
         'catalogo.html',
@@ -429,6 +404,7 @@ def catalogo():
         favoritos=favoritos,
         nome=session.get('usuario_nome', 'Visitante')
     )
+
 
 # ==========================================
 # PÁGINAS DAS CATEGORIAS
@@ -572,47 +548,70 @@ def adicionar_favoritos():
 # ==========================================
 
 
-@app.route('/acessar_obra')
-def acessar_obra():
+@app.route('/acessar_obra/<int:obra_id>')
+def acessar_obra(obra_id):
+    if 'usuario_id' not in session:
+        return redirect(url_for('login'))
 
-    obra_id = (
-        request.args.get('id', type=int)
-        or request.args.get('obra_id', type=int)
-    )
+    obra = Obra.query.get_or_404(obra_id)
 
-    obra = db.session.get(Obra, obra_id) if obra_id else None
+    categoria = (obra.categoria or obra.tipo or '').lower().strip()
 
-    if obra:
-        dados = {
-            'id': obra.id,
-            'titulo': obra.titulo or '',
-            'categoria': obra.categoria or obra.tipo or '',
-            'tipo': obra.tipo or '',
-            'imagem': obra.imagem or '',
-            'genero': obra.genero or '',
-            'descricao': obra.descricao or '',
-            'autor': obra.autor or '',
-            'diretor': obra.diretor or '',
-            'artista': obra.artista or '',
-            'album': obra.album or '',
-            'ano_publicacao': obra.ano_publicacao or '',
-            'ano_lancamento': obra.ano_lancamento or '',
-            'numero_paginas': obra.numero_paginas or '',
-            'duracao': obra.duracao or '',
-            'temporadas': obra.temporadas or ''
-        }
+    campos = {
+        'livro': [
+            ('Autor', obra.autor),
+            ('Editora', obra.editora),
+            ('Edição', obra.edicao),
+            ('ISBN', obra.isbn),
+            ('Ano de publicação', obra.ano_publicacao),
+            ('Número de páginas', obra.numero_paginas),
+            ('Gênero', obra.genero)
+        ],
+        'filme': [
+            ('Diretor', obra.diretor),
+            ('Ano de lançamento', obra.ano_lancamento),
+            ('Duração', obra.duracao),
+            ('Gênero', obra.genero)
+        ],
+        'serie': [
+            ('Diretor', obra.diretor),
+            ('Ano de lançamento', obra.ano_lancamento),
+            ('Temporadas', obra.temporadas),
+            ('Gênero', obra.genero)
+        ],
+        'documentario': [
+            ('Diretor', obra.diretor),
+            ('Ano de lançamento', obra.ano_lancamento),
+            ('Duração', obra.duracao),
+            ('Gênero', obra.genero)
+        ],
+        'curta': [
+            ('Diretor', obra.diretor),
+            ('Ano de lançamento', obra.ano_lancamento),
+            ('Duração', obra.duracao),
+            ('Gênero', obra.genero)
+        ],
+        'musica': [
+            ('Artista', obra.artista),
+            ('Álbum', obra.album),
+            ('Ano de lançamento', obra.ano_lancamento),
+            ('Gênero', obra.genero)
+        ]
+    }
 
-    else:
-        return redirect(url_for('catalogo'))
+    campos_obra = campos.get(categoria, [])
 
     return render_template(
         'funcoes/acessar_obra.html',
-        dados=dados
+        obra=obra,
+        campos_obra=campos_obra
     )
+
 
 @app.route('/adicionar', methods=['GET', 'POST'])
 def adicionar():
-
+    if 'usuario_id' not in session:
+        return redirect(url_for('login'))
     if request.method == 'POST':
 
         titulo = request.form.get('titulo', '').strip()
@@ -726,32 +725,23 @@ def obras_visiveis(modelo, categoria):
 # rota REMOVER OBRA TEMPORARIAMENTE DO CATÁLOGO
 # ==========================================
 
+
 @app.route('/remover', methods=['POST'])
 def remover():
     if 'usuario_id' not in session:
         return redirect(url_for('login'))
-    obra_id = request.form.get('obra_id', type=int)
 
-    if not obra_id:
-        return redirect(url_for('catalogo'))
 
-    obra = db.session.get(Obra, obra_id)
-
-    if obra is None:
-        return redirect(url_for('catalogo'))
-
-    obras_ocultas = session.get('obras_ocultas', [])
-
-    if obra_id not in obras_ocultas:
-        obras_ocultas.append(obra_id)
-
-    session['obras_ocultas'] = obras_ocultas
-    session.modified = True
 
     return redirect(url_for('catalogo'))
 
+
 @app.route('/restaurar/<int:obra_id>', methods=['POST'])
 def restaurar(obra_id):
+
+    if 'usuario_id' not in session:
+        return redirect(url_for('login'))
+
     obras_ocultas = session.get('obras_ocultas', [])
 
     if obra_id in obras_ocultas:
@@ -777,9 +767,9 @@ def deletar():
 # rota SAIBA MAIS
 # ==========================================
 
-@app.route('/saibamais')
-def saiba_mais():
-    obra_id = request.args.get('id', type=int)
+@app.route('/saibamais/<int:id>',methods=['GET'])
+def saiba_mais(id):
+    obra_id = id
 
     if not obra_id:
         obra_id = request.args.get('obra_id', type=int)

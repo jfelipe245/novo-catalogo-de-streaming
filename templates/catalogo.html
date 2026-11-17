@@ -4,7 +4,6 @@
 {% block title %}Catálogo AfroEdu Stream{% endblock %}
 
 {% block css %}
-{{ super() }}
 <link rel="stylesheet" href="{{ url_for('static', filename='css/catalogo.css') }}">
 {% endblock css %}
 
@@ -232,7 +231,7 @@
 
     <!-- 1. Acessar obra -->
     <a
-        href="{{ url_for('acessar_obra', id=livro.id) }}"
+        href="{{ url_for('acessar_obra', obra_id=livro.id) }}"
         class="btn-acao"
     >
         ler este Livro
@@ -318,7 +317,7 @@
                 <div class="acoes-principais">
 
                     <a
-                        href="{{ url_for('acessar_obra', id=filme.id) }}"
+                        href="{{ url_for('acessar_obra', obra_id=filme.id) }}"
                         class="btn-acao"
                     >
                         assistir este filme
@@ -409,7 +408,7 @@
                 <div class="acoes-principais">
 
                     <a
-                        href="{{ url_for('acessar_obra', id=serie.id) }}"
+                        href="{{ url_for('acessar_obra', obra_id=serie.id) }}"
                         class="btn-acao"
                     >
                         Assistir esta série
@@ -501,7 +500,7 @@
                 <div class="acoes-principais">
 
                     <a
-                        href="{{ url_for('acessar_obra', id=documentario.id) }}"
+                        href="{{ url_for('acessar_obra', obra_id=documentario.id) }}"
                         class="btn-acao"
                     >
                         Assistir este documentário
@@ -592,7 +591,7 @@
                 <div class="acoes-principais">
 
                     <a
-                        href="{{ url_for('acessar_obra', id=musica.id) }}"
+                        href="{{ url_for('acessar_obra', obra_id=musica.id) }}"
                         class="btn-acao"
                     >
                         ouvir esta música
@@ -679,7 +678,7 @@
 
                 <div class="acoes-principais">
 
-                     <a href="{{ url_for('acessar_obra', id=curta.id) }}" class="btn-acao btn-favoritos">
+                     <a href="{{ url_for('acessar_obra', obra_id=curta.id) }}" class="btn-acao btn-favoritos">
                         Assistir este curta
                     </a>
 
@@ -732,15 +731,12 @@
 <!-- ========================= JAVASCRIPT ========================= -->
 
 {% block js %}
-
-{{ super() }}
-
 <script>
-window.url_Obra = "{{ url_for('acessar_obra') }}";
+window.url_Obra = "{{ url_for('acessar_obra', obra_id=0) }}";
 window.url_Adicionar_Favoritos = "{{ url_for('adicionar_favoritos') }}";
 window.url_Remover_Favoritos = "{{ url_for('deletar_favorito') }}";
 window.url_Remover_Catalogo = "{{ url_for('remover') }}";
-window.url_Saiba_Mais = "{{ url_for('saiba_mais') }}";
+window.url_Saiba_Mais = "{{ url_for('saiba_mais', id=0) }}";
 window.url_deletar = "{{ url_for('deletar') }}";
 </script>
 

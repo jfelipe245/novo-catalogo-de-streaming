@@ -14,6 +14,7 @@ document.addEventListener("DOMContentLoaded", () => {
     criarBotoesDeFavoritosNosCards();
     inicializarEstadoDosFavoritos();
     inicializarMenuCategorias();
+    inicializarCamposAdicionar();
 });
 
 /* =========================================
@@ -71,6 +72,7 @@ function obterResponsavel(card) {
    2. PESQUISA E FILTROS
 ========================================= */
 
+
 function inicializarFiltros() {
     const container = selecionar("#card-container");
     const filtroCategoria = selecionar("#filtro-categoria");
@@ -84,38 +86,53 @@ function inicializarFiltros() {
 
     const cards = selecionarTodos(".card", container);
 
-    function categoriaNormalizada(card) {
-        const categoria = normalizarTexto(obterCategoria(card));
+    function normalizarCategoria(categoria) {
+        const valor = normalizarTexto(categoria);
 
         const equivalencias = {
             livros: "livro",
+            livro: "livro",
             filmes: "filme",
+            filme: "filme",
             series: "serie",
+            serie: "serie",
             documentarios: "documentario",
+            documentario: "documentario",
             musicas: "musica",
+            musica: "musica",
             "musica de protesto": "musica",
             curtas: "curta",
+            curta: "curta",
             "curta metragem": "curta",
             "curtas metragens": "curta"
         };
 
-        return equivalencias[categoria] || categoria;
+        return equivalencias[valor] || valor;
     }
 
     function aplicarFiltros() {
-        const categoriaSelecionada =
-            normalizarTexto(filtroCategoria.value);
+        const categoriaSelecionada = normalizarCategoria(
+            filtroCategoria.value
+        );
 
-        const termo =
-            normalizarTexto(campoPesquisa?.value || "");
+        const termo = normalizarTexto(
+            campoPesquisa?.value || ""
+        );
 
         let quantidade = 0;
 
         cards.forEach((card) => {
-            const categoria = categoriaNormalizada(card);
+            const categoria = normalizarCategoria(
+                obterCategoria(card)
+            );
+
+            // Pesquisa também diretamente no texto do card.
+            const textoCard = normalizarTexto(card.textContent);
+
             const titulo = normalizarTexto(obterTitulo(card));
             const responsavel = normalizarTexto(obterResponsavel(card));
             const genero = normalizarTexto(obterGenero(card));
+
             const descricao = normalizarTexto(
                 card.dataset.descricao ||
                 selecionar(".descricao", card)?.textContent ||
@@ -126,19 +143,32 @@ function inicializarFiltros() {
                 !categoriaSelecionada ||
                 categoria === categoriaSelecionada;
 
+            const textoCompleto = [
+                textoCard,
+                titulo,
+                responsavel,
+                genero,
+                descricao
+            ].join(" ");
+
             const correspondePesquisa =
-                !termo ||
-                titulo.includes(termo) ||
-                responsavel.includes(termo) ||
-                genero.includes(termo) ||
-                descricao.includes(termo);
+                !termo || textoCompleto.includes(termo);
 
             const mostrar =
                 correspondeCategoria && correspondePesquisa;
 
             card.hidden = !mostrar;
 
-            if (mostrar) quantidade++;
+            if (mostrar) {
+                quantidade++;
+            }
+        });
+
+        selecionarTodos(".secao-categoria", container).forEach((secao) => {
+            const possuiObrasVisiveis = selecionarTodos(".card", secao)
+                .some((card) => !card.hidden);
+
+            secao.hidden = !possuiObrasVisiveis;
         });
 
         let mensagem = selecionar("#mensagem-pesquisa");
@@ -161,7 +191,9 @@ function inicializarFiltros() {
     }
 
     filtroCategoria.addEventListener("change", aplicarFiltros);
+
     campoPesquisa?.addEventListener("input", aplicarFiltros);
+
     botaoPesquisa?.addEventListener("click", aplicarFiltros);
 
     aplicarFiltros();
@@ -231,27 +263,46 @@ function inicializarRemoverDoCatalogo() {
     document.addEventListener("submit", function (evento) {
         const formulario = evento.target;
 
-        if (!formulario.matches('form[action*="/remover"]')) {
+        if (
+            !(formulario instanceof HTMLFormElement) ||
+            !formulario.matches('form[action*="/remover"]')
+        ) {
+            return;
+        }
+
+        const card = formulario.closest(".card");
+
+        if (!card) {
             return;
         }
 
         evento.preventDefault();
 
-        const card = formulario.closest(".card");
-
-        if (!card) return;
-
         const titulo = obterTitulo(card);
 
-        const confirmar = confirm(
-            `Deseja esconder "${titulo}" do catálogo?`
+        const confirmar = window.confirm(
+            `Deseja esconder "${titulo}" temporariamente do catálogo?`
         );
 
-        if (!confirmar) return;
+        if (!confirmar) {
+            return;
+        }
 
         card.hidden = true;
+
+        const mensagem = selecionar("#mensagem-pesquisa");
+
+        if (mensagem) {
+            const cardsVisiveis = selecionarTodos(
+                "#card-container .card"
+            ).filter((item) => !item.hidden).length;
+
+            mensagem.textContent = `${cardsVisiveis} obra(s) encontrada(s).`;
+        }
     });
 }
+
+
 
 /* =========================================
    5. FORMULÁRIOS AUXILIARES
@@ -474,4 +525,49 @@ function inicializarMenuCategorias() {
             fecharMenu();
         }
     });
+}
+
+
+/* =========================================
+   9. FORMULÁRIO ADICIONAR OBRA
+   EXIBE OS CAMPOS DA CATEGORIA SELECIONADA
+========================================= */
+
+function inicializarCamposAdicionar() {
+
+    const seletor = selecionar("#tipo");
+    const campos = selecionarTodos(".grupo-categoria");
+
+    // Se não estiver na página adicionar, encerra.
+    if (!seletor || campos.length === 0) {
+        return;
+    }
+
+    function atualizarCampos() {
+
+        const categoria = normalizarTexto(seletor.value);
+
+        campos.forEach((campo) => {
+
+            const categorias = campo.dataset.tipos
+                .split(" ")
+                .map(normalizarTexto);
+
+            const mostrar = categorias.includes(categoria);
+
+            campo.hidden = !mostrar;
+            campo.style.display = mostrar ? "" : "none";
+
+            selecionarTodos("input, select, textarea", campo)
+                .forEach((input) => {
+                    input.disabled = !mostrar;
+                });
+
+        });
+    }
+
+    seletor.addEventListener("change", atualizarCampos);
+
+    // Aplica a categoria recebida pela URL ao abrir a página.
+    atualizarCampos();
 }

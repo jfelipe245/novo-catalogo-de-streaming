@@ -2,11 +2,10 @@
 {% extends "base.html" %}
 
 {% block title %}
-    {{ dados.titulo or 'Detalhes da obra' }} | AfroEdu Stream
+    {{ obra.titulo or 'Detalhes da obra' }} | AfroEdu Stream
 {% endblock title %}
 
 {% block css %}
-    {{ super() }}
     <link rel="stylesheet" href="{{ url_for('static', filename='css/Saiba-Mais.css') }}">
 {% endblock css %}
 
@@ -14,7 +13,7 @@
 
 <main
     class="detalhes-pagina"
-    data-obra-id="{{ dados.id }}"
+    data-obra-id="{{ obra.id }}"
 >
 
     <a class="voltar-catalogo" href="{{ url_for('catalogo') }}">
@@ -27,19 +26,19 @@
 
             <div class="moldura-capa">
 
-                {% if dados.imagem %}
-                    {% if dados.imagem.startswith('http://') or dados.imagem.startswith('https://') %}
-                        {% set imagem_url = dados.imagem %}
-                    {% elif dados.imagem.startswith('/static/') %}
-                        {% set imagem_url = dados.imagem %}
+                {% if obra.imagem %}
+                    {% if obra.imagem.startswith('http://') or obra.imagem.startswith('https://') %}
+                        {% set imagem_url = obra.imagem %}
+                    {% elif obra.imagem.startswith('/static/') %}
+                        {% set imagem_url = obra.imagem %}
                     {% else %}
-                        {% set imagem_url = url_for('static', filename=dados.imagem) %}
+                        {% set imagem_url = url_for('static', filename=obra.imagem) %}
                     {% endif %}
 
                     <img
                         id="detalhe-img"
                         src="{{ imagem_url }}"
-                        alt="Capa de {{ dados.titulo }}"
+                        alt="Capa de {{ obra.titulo }}"
                     >
                 {% else %}
                     <div class="obra-sem-imagem">
@@ -55,18 +54,18 @@
                 <dl class="lista-ficha">
 
                     {% for campo, valor in [
-                        ('Título', dados.titulo),
-                        ('Categoria', dados.categoria),
-                        ('Gênero', dados.genero),
-                        ('Autor', dados.autor),
-                        ('Diretor', dados.diretor),
-                        ('Artista', dados.artista),
-                        ('Álbum', dados.album),
-                        ('Ano de publicação', dados.ano_publicacao),
-                        ('Ano de lançamento', dados.ano_lancamento),
-                        ('Número de páginas', dados.numero_paginas),
-                        ('Duração', dados.duracao),
-                        ('Temporadas', dados.temporadas)
+                        ('Título', obra.titulo),
+                        ('Categoria', obra.categoria),
+                        ('Gênero', obra.genero),
+                        ('Autor', obra.autor),
+                        ('Diretor', obra.diretor),
+                        ('Artista', obra.artista),
+                        ('Álbum', obra.album),
+                        ('Ano de publicação', obra.ano_publicacao),
+                        ('Ano de lançamento', obra.ano_lancamento),
+                        ('Número de páginas', obra.numero_paginas),
+                        ('Duração', obra.duracao),
+                        ('Temporadas', obra.temporadas)
                     ] %}
                         {% if valor and valor|string not in ['0', 'None'] %}
                             <div>
@@ -84,17 +83,17 @@
         <div class="info-container">
 
             <span class="badge">
-                {{ dados.categoria }}
+                {{ obra.categoria }}
             </span>
 
             <h1 id="detalhe-titulo">
-                {{ dados.titulo }}
+                {{ obra.titulo }}
             </h1>
 
-            {% if dados.descricao %}
+            {% if obra.descricao %}
                 <section class="secao-detalhe">
                     <h2>Descrição da obra</h2>
-                    <p>{{ dados.descricao }}</p>
+                    <p>{{ obra.descricao }}</p>
                 </section>
             {% endif %}
 
@@ -126,12 +125,13 @@
 {% endblock conteudo %}
 
 {% block js %}
-    {{ super() }}
-
     <script>
-        window.url_Adicionar_Favoritos =
-            "{{ url_for('adicionar_favoritos') }}";
+        window.url_Obra = "{{ url_for('acessar_obra', obra_id=obra.id) }}";
     </script>
 
-    <script src="{{ url_for('static', filename='js/saiba-mais.js') }}"></script>
+    <script>
+        window.url_Adicionar_Favoritos = "{{ url_for('adicionar_favoritos') }}";
+    </script>
+
+    <script src="{{ url_for('static', filename='js/saiba-mais.js', obra_id=obra.id) }}"></script>
 {% endblock js %}
